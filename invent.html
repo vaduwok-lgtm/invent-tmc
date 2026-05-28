@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Инвентаризация ТМЦ</title>
     <style>
         * {
@@ -60,6 +60,7 @@
             color: #5a6e7c;
             cursor: pointer;
             transition: all 0.2s;
+            touch-action: manipulation;
         }
         .tab.active {
             background: #2c7a4d;
@@ -84,6 +85,7 @@
             flex: 1 0 auto;
             color: #1e2a3a;
             transition: all 0.2s;
+            touch-action: manipulation;
         }
         .location-btn.active {
             background: #2c7a4d;
@@ -165,6 +167,7 @@
             cursor: pointer;
             color: #1e2a3a;
             transition: all 0.1s;
+            touch-action: manipulation;
         }
         .value-controls button:active {
             background: #2c7a4d;
@@ -196,6 +199,7 @@
             cursor: pointer;
             transition: 0.1s;
             color: #2c7a4d;
+            touch-action: manipulation;
         }
         .action-buttons button:active {
             background: #2c7a4d;
@@ -218,6 +222,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            touch-action: manipulation;
         }
         .custom-unit-form {
             margin-top: 12px;
@@ -246,6 +251,7 @@
             border-radius: 30px;
             color: white;
             cursor: pointer;
+            touch-action: manipulation;
         }
         .save-btn, .reset-all-btn, .copy-btn {
             background: #2c7a4d;
@@ -259,6 +265,7 @@
             margin-top: 20px;
             cursor: pointer;
             text-align: center;
+            touch-action: manipulation;
         }
         .reset-btn { background: #b91c1c; margin-top: 10px; }
         .reset-all-btn { background: #6c757d; }
@@ -290,7 +297,7 @@
             color: #6c757d;
             margin-top: 20px;
         }
-        /* Кнопка наверх — всегда видна */
+        /* Кнопка наверх всегда видна */
         .scroll-top-btn {
             position: fixed;
             bottom: 20px;
@@ -310,6 +317,7 @@
             justify-content: center;
             z-index: 1000;
             transition: all 0.2s;
+            touch-action: manipulation;
         }
         .scroll-top-btn:hover {
             background: #1f5a3a;
@@ -323,7 +331,7 @@
 <body>
 <div class="header">
     <h1>📦 Инвентаризация</h1>
-    <button id="hardResetBtn" style="background: none; border: none; color: #6c757d; font-size: 22px; cursor: pointer;">🗑️</button>
+    <button id="hardResetBtn" style="background: none; border: none; color: #6c757d; font-size: 22px; cursor: pointer; touch-action: manipulation;">🗑️</button>
 </div>
 <div class="container">
     <div class="tabs">
@@ -515,7 +523,8 @@
             const key = `inv_${location}_${productId}_${unitIndex}`;
             const raw = localStorage.getItem(key);
             if (raw) return JSON.parse(raw);
-            return [0];
+            // Возвращаем массив с пустой строкой (null) вместо 0
+            return [null];
         }
         function setUnitRows(location, productId, unitIndex, rows) {
             const key = `inv_${location}_${productId}_${unitIndex}`;
@@ -539,12 +548,18 @@
                 for (let uIdx = 0; uIdx < rules.length; uIdx++) {
                     const rows = getUnitRows(location, productId, uIdx);
                     const converter = rules[uIdx].toBase;
-                    rows.forEach(v => total += converter(parseFloat(v) || 0));
+                    rows.forEach(v => {
+                        let val = (v === null || v === undefined || v === '') ? 0 : parseFloat(v);
+                        total += converter(val);
+                    });
                 }
             }
             const custom = getCustomUnits(location, productId);
             custom.forEach(cu => {
-                cu.rows.forEach(v => total += (parseFloat(v) || 0) * cu.coefficient);
+                cu.rows.forEach(v => {
+                    let val = (v === null || v === undefined || v === '') ? 0 : parseFloat(v);
+                    total += val * cu.coefficient;
+                });
             });
             return total;
         }
@@ -655,7 +670,8 @@
                     decBtn.textContent = '−';
                     const input = document.createElement('input');
                     input.type = 'number';
-                    input.value = val;
+                    // Если значение null или undefined или пустая строка, показываем пустое поле
+                    input.value = (val === null || val === undefined || val === '') ? '' : val;
                     const step = getStepForUnit(label);
                     input.step = step;
                     const incBtn = document.createElement('button');
@@ -680,7 +696,8 @@
                     rowsContainer.appendChild(rowDiv);
                     
                     const update = () => {
-                        let newVal = parseFloat(input.value) || 0;
+                        let rawVal = input.value;
+                        let newVal = (rawVal === '' || rawVal === null) ? 0 : parseFloat(rawVal);
                         const rounded = roundValue(newVal, step);
                         if (rounded !== newVal) input.value = rounded;
                         const newRows = [...getUnitRows(location, productId, unitIndex)];
@@ -690,27 +707,29 @@
                     };
                     input.addEventListener('change', update);
                     decBtn.addEventListener('click', () => {
-                        let newVal = (parseFloat(input.value) || 0) - step;
+                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
+                        let newVal = currentVal - step;
                         if (newVal < 0) newVal = 0;
                         const rounded = roundValue(newVal, step);
                         input.value = rounded;
                         update();
                     });
                     incBtn.addEventListener('click', () => {
-                        let newVal = (parseFloat(input.value) || 0) + step;
+                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
+                        let newVal = currentVal + step;
                         const rounded = roundValue(newVal, step);
                         input.value = rounded;
                         update();
                     });
                     addRowBtn.addEventListener('click', () => {
-                        const newRows = [...getUnitRows(location, productId, unitIndex), 0];
+                        const newRows = [...getUnitRows(location, productId, unitIndex), null];
                         setUnitRows(location, productId, unitIndex, newRows);
                         refreshRows();
                         if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
                     });
                     delRowBtn.addEventListener('click', () => {
                         let newRows = [...getUnitRows(location, productId, unitIndex)];
-                        if (newRows.length === 1) newRows = [0];
+                        if (newRows.length === 1) newRows = [null];
                         else newRows.splice(i, 1);
                         setUnitRows(location, productId, unitIndex, newRows);
                         refreshRows();
@@ -767,7 +786,7 @@
                     decBtn.textContent = '−';
                     const input = document.createElement('input');
                     input.type = 'number';
-                    input.value = val;
+                    input.value = (val === null || val === undefined || val === '') ? '' : val;
                     const step = 1;
                     input.step = step;
                     const incBtn = document.createElement('button');
@@ -789,7 +808,8 @@
                     rowsContainer.appendChild(rowDiv);
                     
                     const update = () => {
-                        let newVal = parseFloat(input.value) || 0;
+                        let rawVal = input.value;
+                        let newVal = (rawVal === '' || rawVal === null) ? 0 : parseFloat(rawVal);
                         const rounded = Math.round(newVal);
                         if (rounded !== newVal) input.value = rounded;
                         let customsUpd = getCustomUnits(location, productId);
@@ -799,28 +819,30 @@
                     };
                     input.addEventListener('change', update);
                     decBtn.addEventListener('click', () => {
-                        let newVal = (parseFloat(input.value) || 0) - step;
+                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
+                        let newVal = currentVal - step;
                         if (newVal < 0) newVal = 0;
                         const rounded = Math.round(newVal);
                         input.value = rounded;
                         update();
                     });
                     incBtn.addEventListener('click', () => {
-                        let newVal = (parseFloat(input.value) || 0) + step;
+                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
+                        let newVal = currentVal + step;
                         const rounded = Math.round(newVal);
                         input.value = rounded;
                         update();
                     });
                     addRowBtn.addEventListener('click', () => {
                         let customsUpd = getCustomUnits(location, productId);
-                        customsUpd[cuIdx].rows.push(0);
+                        customsUpd[cuIdx].rows.push(null);
                         setCustomUnits(location, productId, customsUpd);
                         refreshCustomRows();
                         if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
                     });
                     delRowBtn.addEventListener('click', () => {
                         let customsUpd = getCustomUnits(location, productId);
-                        if (customsUpd[cuIdx].rows.length === 1) customsUpd[cuIdx].rows = [0];
+                        if (customsUpd[cuIdx].rows.length === 1) customsUpd[cuIdx].rows = [null];
                         else customsUpd[cuIdx].rows.splice(i, 1);
                         setCustomUnits(location, productId, customsUpd);
                         refreshCustomRows();
@@ -853,7 +875,7 @@
                     return;
                 }
                 let customs = getCustomUnits(location, productId);
-                customs.push({ label: label, coefficient: coef, rows: [0] });
+                customs.push({ label: label, coefficient: coef, rows: [null] });
                 setCustomUnits(location, productId, customs);
                 renderProductsForLocation();
                 if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
@@ -867,7 +889,7 @@
             if (rules) {
                 for (let pid of Object.keys(rules)) {
                     for (let uIdx = 0; uIdx < rules[pid].length; uIdx++) {
-                        setUnitRows(currentLocation, pid, uIdx, [0]);
+                        setUnitRows(currentLocation, pid, uIdx, [null]);
                     }
                 }
             }
@@ -885,7 +907,7 @@
                 if (rules) {
                     for (let pid of Object.keys(rules)) {
                         for (let uIdx = 0; uIdx < rules[pid].length; uIdx++) {
-                            setUnitRows(loc, pid, uIdx, [0]);
+                            setUnitRows(loc, pid, uIdx, [null]);
                         }
                     }
                 }
@@ -950,7 +972,6 @@
                     switchTab(tab.dataset.tab);
                 };
             });
-            // Кнопка наверх всегда активна, добавляем обработчик
             document.getElementById('scrollTopBtn').addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
