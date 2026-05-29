@@ -18,6 +18,8 @@
             --green-light: #f0fdf4;
             --red: #dc2626;
             --red-light: #fef2f2;
+            --orange: #ea580c;
+            --orange-light: #fff7ed;
             --gray-50: #f8fafc;
             --gray-100: #f1f5f9;
             --gray-200: #e2e8f0;
@@ -32,10 +34,7 @@
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
+        html, body { height: 100%; overflow: hidden; }
 
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -45,6 +44,7 @@
             flex-direction: column;
         }
 
+        /* ── HEADER ── */
         .app-header {
             height: var(--header-h);
             background: #fff;
@@ -53,7 +53,6 @@
             align-items: center;
             padding: 0 16px;
             gap: 12px;
-            position: relative;
             z-index: 10;
             flex-shrink: 0;
         }
@@ -62,436 +61,277 @@
             background: var(--primary);
             border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
+            font-size: 16px; flex-shrink: 0;
         }
         .app-header .header-title {
-            flex: 1;
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--gray-800);
+            flex: 1; font-size: 17px; font-weight: 700; color: var(--gray-800);
         }
         .header-reset-btn {
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 8px;
-            color: var(--gray-400);
+            background: none; border: none; font-size: 22px; cursor: pointer;
+            padding: 6px; border-radius: 8px; color: var(--gray-400);
             touch-action: manipulation;
         }
         .header-reset-btn:active { background: var(--red-light); color: var(--red); }
 
+        /* ── BODY ── */
         .app-body {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
+            flex: 1; overflow-y: auto; overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
             padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
         }
 
+        /* ── BOTTOM NAV ── */
         .bottom-nav {
             height: calc(var(--nav-h) + var(--safe-bottom));
             padding-bottom: var(--safe-bottom);
-            background: #fff;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            align-items: stretch;
-            flex-shrink: 0;
-            z-index: 10;
+            background: #fff; border-top: 1px solid var(--gray-200);
+            display: flex; align-items: stretch; flex-shrink: 0; z-index: 10;
         }
         .nav-btn {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            touch-action: manipulation;
-            color: var(--gray-400);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 8px 4px;
-            transition: color 0.15s;
-            position: relative;
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 3px;
+            background: none; border: none; cursor: pointer;
+            touch-action: manipulation; color: var(--gray-400);
+            font-size: 11px; font-weight: 600; padding: 8px 4px;
+            transition: color 0.15s; position: relative;
         }
         .nav-btn .nav-icon { font-size: 22px; line-height: 1; }
         .nav-btn.active { color: var(--primary); }
         .nav-btn.active::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 20%; right: 20%;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 0 0 4px 4px;
+            content: ''; position: absolute; top: 0; left: 20%; right: 20%;
+            height: 3px; background: var(--primary); border-radius: 0 0 4px 4px;
         }
         .nav-badge {
-            position: absolute;
-            top: 6px; right: calc(50% - 20px);
-            background: var(--green);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            min-width: 18px; height: 18px;
-            border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            padding: 0 4px;
+            position: absolute; top: 6px; right: calc(50% - 20px);
+            background: var(--green); color: white; font-size: 10px; font-weight: 700;
+            min-width: 18px; height: 18px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; padding: 0 4px;
         }
 
+        /* ── TAB VIEWS ── */
         .tab-view { display: none; }
         .tab-view.active { display: block; }
 
+        /* ── LOCATION STRIP ── */
         .loc-strip-wrap {
-            background: #fff;
-            border-bottom: 1px solid var(--gray-200);
-            padding: 10px 12px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            display: flex;
-            gap: 8px;
-            scrollbar-width: none;
+            background: #fff; border-bottom: 1px solid var(--gray-200);
+            padding: 10px 12px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+            display: flex; gap: 8px; scrollbar-width: none;
         }
         .loc-strip-wrap::-webkit-scrollbar { display: none; }
         .loc-chip {
-            flex-shrink: 0;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            border: 1.5px solid var(--gray-200);
-            background: #fff;
-            color: var(--gray-500);
-            cursor: pointer;
-            touch-action: manipulation;
-            transition: all 0.15s;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            flex-shrink: 0; padding: 8px 16px; border-radius: 20px;
+            font-size: 13px; font-weight: 600; border: 1.5px solid var(--gray-200);
+            background: #fff; color: var(--gray-500); cursor: pointer;
+            touch-action: manipulation; transition: all 0.15s;
+            white-space: nowrap; display: flex; align-items: center; gap: 6px;
         }
-        .loc-chip.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: #fff;
-        }
+        .loc-chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
         .loc-chip .loc-dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--green);
-            display: none;
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--green); display: none;
         }
         .loc-chip.has-data .loc-dot { display: block; }
         .loc-chip.active .loc-dot { background: rgba(255,255,255,0.7); }
 
-        .stats-row {
-            display: flex;
-            gap: 10px;
-            padding: 12px 12px 0;
-        }
+        /* ── STATS ── */
+        .stats-row { display: flex; gap: 10px; padding: 12px 12px 0; }
         .stat-pill {
-            flex: 1;
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 10px 8px;
-            text-align: center;
+            flex: 1; background: #fff; border: 1px solid var(--gray-200);
+            border-radius: 12px; padding: 10px 8px; text-align: center;
         }
-        .stat-pill .sp-val {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gray-800);
-            line-height: 1;
-        }
+        .stat-pill .sp-val { font-size: 20px; font-weight: 700; color: var(--gray-800); line-height: 1; }
         .stat-pill .sp-val.green { color: var(--green); }
         .stat-pill .sp-val.blue { color: var(--primary); }
-        .stat-pill .sp-lbl {
-            font-size: 10px;
-            color: var(--gray-400);
-            margin-top: 3px;
-            font-weight: 500;
-        }
+        .stat-pill .sp-lbl { font-size: 10px; color: var(--gray-400); margin-top: 3px; font-weight: 500; }
 
-        .products-list {
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        /* ── PRODUCTS LIST ── */
+        .products-list { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 
+        /* ── PRODUCT CARD ── */
         .product-card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 16px;
-            overflow: hidden;
+            background: #fff; border: 1px solid var(--gray-200);
+            border-radius: 16px; overflow: hidden;
         }
         .product-card.has-data { border-color: #bfdbfe; }
+        .product-card.custom-product { border-color: #fed7aa; }
+        .product-card.custom-product.has-data { border-color: #fb923c; }
 
         .product-header {
-            display: flex;
-            align-items: center;
-            padding: 14px 14px 14px 16px;
-            gap: 10px;
-            cursor: pointer;
-            touch-action: manipulation;
-            user-select: none;
+            display: flex; align-items: center;
+            padding: 14px 14px 14px 16px; gap: 10px;
+            cursor: pointer; touch-action: manipulation; user-select: none;
         }
         .product-indicator {
-            width: 4px;
-            align-self: stretch;
-            border-radius: 4px;
-            background: var(--gray-200);
-            flex-shrink: 0;
-            margin-left: -4px;
+            width: 4px; align-self: stretch; border-radius: 4px;
+            background: var(--gray-200); flex-shrink: 0; margin-left: -4px;
         }
         .product-card.has-data .product-indicator { background: var(--primary); }
+        .product-card.custom-product .product-indicator { background: #fed7aa; }
+        .product-card.custom-product.has-data .product-indicator { background: var(--orange); }
 
-        .product-name {
-            flex: 1;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--gray-800);
-            line-height: 1.3;
-        }
-        .product-meta {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 3px;
-        }
+        .product-name { flex: 1; font-size: 15px; font-weight: 700; color: var(--gray-800); line-height: 1.3; }
+        .product-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
         .product-total { font-size: 16px; font-weight: 700; color: var(--primary); }
         .product-total.zero { color: var(--gray-300); }
         .product-unit-tag {
-            font-size: 11px;
-            color: var(--gray-400);
-            background: var(--gray-100);
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-weight: 600;
+            font-size: 11px; color: var(--gray-400); background: var(--gray-100);
+            padding: 2px 8px; border-radius: 20px; font-weight: 600;
         }
-        .product-chevron {
-            font-size: 18px;
-            color: var(--gray-300);
-            transition: transform 0.2s;
-            flex-shrink: 0;
+        .custom-tag {
+            font-size: 10px; color: var(--orange); background: var(--orange-light);
+            padding: 2px 8px; border-radius: 20px; font-weight: 700;
         }
+        .product-chevron { font-size: 18px; color: var(--gray-300); transition: transform 0.2s; flex-shrink: 0; }
         .product-card.open .product-chevron { transform: rotate(180deg); }
 
         .product-body {
-            display: none;
-            border-top: 1px solid var(--gray-100);
-            padding: 12px;
-            background: var(--gray-50);
+            display: none; border-top: 1px solid var(--gray-100);
+            padding: 12px; background: var(--gray-50);
         }
         .product-card.open .product-body { display: block; }
 
+        /* ── UNIT BLOCK ── */
         .unit-block {
-            margin-bottom: 10px;
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            overflow: hidden;
+            margin-bottom: 10px; background: #fff;
+            border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden;
         }
         .unit-block:last-of-type { margin-bottom: 0; }
-
         .unit-block-header {
-            padding: 8px 12px;
-            background: var(--gray-50);
+            padding: 8px 12px; background: var(--gray-50);
             border-bottom: 1px solid var(--gray-100);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
         }
-        .unit-name {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
+        .unit-name { font-size: 12px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.04em; }
         .unit-subtotal { font-size: 12px; font-weight: 600; color: var(--primary); }
-
         .unit-rows { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
 
-        .row-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .row-num {
-            width: 20px;
-            text-align: center;
-            font-size: 11px;
-            color: var(--gray-400);
-            font-weight: 600;
-            flex-shrink: 0;
-        }
+        /* ── ROW ITEM ── */
+        .row-item { display: flex; align-items: center; gap: 6px; }
+        .row-num { width: 20px; text-align: center; font-size: 11px; color: var(--gray-400); font-weight: 600; flex-shrink: 0; }
 
+        /* ── VALUE CONTROL ── */
         .vc {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            background: var(--gray-100);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid var(--gray-200);
-            height: 48px;
+            flex: 1; display: flex; align-items: center; background: var(--gray-100);
+            border-radius: 10px; overflow: hidden; border: 1px solid var(--gray-200); height: 48px;
         }
         .vc-btn {
-            width: 48px; height: 48px;
-            flex-shrink: 0;
-            background: transparent;
-            border: none;
-            font-size: 26px;
-            font-weight: 300;
-            color: var(--gray-600);
-            cursor: pointer;
-            touch-action: manipulation;
-            display: flex; align-items: center; justify-content: center;
+            width: 48px; height: 48px; flex-shrink: 0; background: transparent; border: none;
+            font-size: 26px; font-weight: 300; color: var(--gray-600); cursor: pointer;
+            touch-action: manipulation; display: flex; align-items: center; justify-content: center;
             transition: background 0.1s;
         }
         .vc-btn:active { background: var(--primary); color: white; }
         .vc-input {
-            flex: 1;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 700;
-            background: #fff;
-            border: none;
-            color: var(--gray-800);
-            padding: 0 4px;
-            height: 100%;
-            min-width: 0;
+            flex: 1; text-align: center; font-size: 18px; font-weight: 700;
+            background: #fff; border: none; color: var(--gray-800);
+            padding: 0 4px; height: 100%; min-width: 0;
         }
         .vc-input:focus { outline: none; }
         .vc-input::placeholder { color: var(--gray-300); font-weight: 400; }
 
         .row-actions { display: flex; gap: 4px; flex-shrink: 0; }
         .row-action-btn {
-            width: 40px; height: 48px;
-            border-radius: 10px;
-            border: 1px solid var(--gray-200);
-            background: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            touch-action: manipulation;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--gray-500);
-            transition: all 0.1s;
+            width: 40px; height: 48px; border-radius: 10px; border: 1px solid var(--gray-200);
+            background: #fff; font-size: 18px; font-weight: bold; cursor: pointer;
+            touch-action: manipulation; display: flex; align-items: center; justify-content: center;
+            color: var(--gray-500); transition: all 0.1s;
         }
         .row-action-btn:active { background: var(--gray-200); }
         .row-action-btn.del { background: var(--red-light); color: var(--red); border-color: #fecaca; }
         .row-action-btn.del:active { background: #fecaca; }
 
-        .product-footer {
-            padding: 10px 12px 12px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .add-custom-btn, .clear-product-btn {
-            flex: 1;
-            padding: 10px 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            border: 1.5px dashed var(--gray-300);
-            background: transparent;
-            color: var(--gray-500);
-            cursor: pointer;
-            touch-action: manipulation;
-            text-align: center;
+        /* ── PRODUCT FOOTER ── */
+        .product-footer { padding: 10px 12px 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .add-custom-btn, .clear-product-btn, .delete-product-btn {
+            flex: 1; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 600;
+            border: 1.5px dashed var(--gray-300); background: transparent; color: var(--gray-500);
+            cursor: pointer; touch-action: manipulation; text-align: center;
         }
         .add-custom-btn:active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); border-style: solid; }
         .clear-product-btn { border-color: #fecaca; color: var(--red); }
         .clear-product-btn:active { background: var(--red-light); }
+        .delete-product-btn { border-color: #fed7aa; color: var(--orange); border-style: solid; background: var(--orange-light); }
+        .delete-product-btn:active { background: #fed7aa; }
 
+        /* ── CUSTOM UNIT FORM ── */
         .custom-form {
-            margin: 0 12px 12px;
-            background: var(--primary-light);
-            border: 1px solid #bfdbfe;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            margin: 0 12px 12px; background: var(--primary-light);
+            border: 1px solid #bfdbfe; border-radius: 12px;
+            padding: 12px; display: flex; flex-direction: column; gap: 8px;
         }
         .custom-form-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
         .custom-form input {
-            background: #fff;
-            border: 1px solid #bfdbfe;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: var(--gray-800);
-            font-size: 14px;
-            width: 100%;
+            background: #fff; border: 1px solid #bfdbfe; padding: 10px 12px;
+            border-radius: 10px; color: var(--gray-800); font-size: 14px; width: 100%;
         }
         .custom-form input:focus { outline: 2px solid var(--primary); }
         .custom-form-btns { display: flex; gap: 8px; }
         .custom-form-btns button {
-            flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            touch-action: manipulation;
+            flex: 1; padding: 10px; border-radius: 10px; font-size: 14px;
+            font-weight: 700; border: none; cursor: pointer; touch-action: manipulation;
         }
         .cf-save { background: var(--primary); color: white; }
         .cf-cancel { background: var(--gray-100); color: var(--gray-600); }
 
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
-            color: var(--gray-400);
+        /* ── ADD NEW PRODUCT FORM ── */
+        .add-product-form {
+            margin: 0 12px 12px; background: var(--orange-light);
+            border: 1px solid #fed7aa; border-radius: 16px;
+            padding: 14px; display: flex; flex-direction: column; gap: 10px;
         }
-        .empty-state .ei { font-size: 52px; margin-bottom: 12px; }
-        .empty-state p { font-size: 15px; }
+        .add-product-form-title {
+            font-size: 14px; font-weight: 700; color: var(--orange);
+        }
+        .add-product-form input,
+        .add-product-form select {
+            background: #fff; border: 1px solid #fed7aa; padding: 12px;
+            border-radius: 10px; color: var(--gray-800); font-size: 15px; width: 100%;
+        }
+        .add-product-form input:focus,
+        .add-product-form select:focus { outline: 2px solid var(--orange); border-color: var(--orange); }
+        .add-product-form-btns { display: flex; gap: 8px; }
+        .add-product-form-btns button {
+            flex: 1; padding: 12px; border-radius: 10px; font-size: 14px;
+            font-weight: 700; border: none; cursor: pointer; touch-action: manipulation;
+        }
+        .apf-save { background: var(--orange); color: white; }
+        .apf-cancel { background: var(--gray-100); color: var(--gray-600); }
 
+        /* ── ADD PRODUCT BUTTON ── */
+        .add-product-btn {
+            margin: 0 12px 4px; padding: 14px; border-radius: 14px;
+            font-size: 14px; font-weight: 700;
+            border: 2px dashed #fed7aa; background: var(--orange-light);
+            color: var(--orange); cursor: pointer; touch-action: manipulation;
+            text-align: center; width: calc(100% - 24px);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .add-product-btn:active { background: #fed7aa; }
+
+        /* ── CLEAR LOCATION ── */
         .clear-loc-btn {
-            margin: 12px;
-            width: calc(100% - 24px);
-            padding: 14px;
-            background: var(--red-light);
-            border: 1.5px solid #fecaca;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--red);
-            cursor: pointer;
-            touch-action: manipulation;
-            text-align: center;
+            margin: 8px 12px 12px; width: calc(100% - 24px); padding: 14px;
+            background: var(--red-light); border: 1.5px solid #fecaca;
+            border-radius: 12px; font-size: 14px; font-weight: 700; color: var(--red);
+            cursor: pointer; touch-action: manipulation; text-align: center;
         }
         .clear-loc-btn:active { background: #fecaca; }
 
-        .summary-header {
-            padding: 16px 16px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
+        /* ── EMPTY STATE ── */
+        .empty-state { text-align: center; padding: 48px 24px; color: var(--gray-400); }
+        .empty-state .ei { font-size: 52px; margin-bottom: 12px; }
+        .empty-state p { font-size: 15px; }
+
+        /* ══════════════════════
+           SUMMARY TAB
+        ══════════════════════ */
+        .summary-header { padding: 16px 16px 12px; }
         .summary-header h2 { font-size: 18px; font-weight: 700; color: var(--gray-800); }
         .summary-header p { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
 
-        .summary-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 0 16px 16px;
-        }
-        .ss-card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 14px;
-            padding: 14px;
-        }
+        .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
+        .ss-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 14px; }
         .ss-card .ss-val { font-size: 26px; font-weight: 700; color: var(--gray-800); line-height: 1; }
         .ss-card .ss-val.green { color: var(--green); }
         .ss-card .ss-val.blue { color: var(--primary); }
@@ -499,50 +339,31 @@
 
         .search-wrap { padding: 0 16px 12px; position: relative; }
         .search-wrap input {
-            width: 100%;
-            background: #fff;
-            border: 1.5px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 12px 16px 12px 40px;
-            font-size: 15px;
-            color: var(--gray-800);
+            width: 100%; background: #fff; border: 1.5px solid var(--gray-200);
+            border-radius: 12px; padding: 12px 16px 12px 40px; font-size: 15px; color: var(--gray-800);
         }
         .search-wrap input:focus { outline: none; border-color: var(--primary); }
         .search-icon {
-            position: absolute;
-            left: 28px; top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            color: var(--gray-400);
-            pointer-events: none;
+            position: absolute; left: 28px; top: 50%; transform: translateY(-50%);
+            font-size: 16px; color: var(--gray-400); pointer-events: none;
         }
 
         .filter-row { padding: 0 16px 12px; display: flex; gap: 8px; }
         .filter-chip {
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            border: 1.5px solid var(--gray-200);
-            background: #fff;
-            color: var(--gray-500);
-            cursor: pointer;
-            touch-action: manipulation;
-            transition: all 0.15s;
+            padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            border: 1.5px solid var(--gray-200); background: #fff; color: var(--gray-500);
+            cursor: pointer; touch-action: manipulation; transition: all 0.15s;
         }
         .filter-chip.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
 
         .summary-list { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
         .sum-item {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
+            background: #fff; border: 1px solid var(--gray-200);
+            border-radius: 14px; padding: 14px;
+            display: flex; align-items: flex-start; gap: 10px;
         }
         .sum-item.zero { opacity: 0.5; }
+        .sum-item.custom { border-color: #fed7aa; }
         .sum-item-left { flex: 1; }
         .sum-item-name { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
         .sum-item-detail { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
@@ -553,40 +374,22 @@
 
         .copy-block { padding: 16px; }
         .copy-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            touch-action: manipulation;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%; padding: 16px; background: var(--primary); color: white;
+            border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
+            cursor: pointer; touch-action: manipulation;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .copy-btn:active { background: var(--primary-dark); }
         .copy-hint { text-align: center; font-size: 12px; color: var(--gray-400); margin-top: 8px; }
 
+        /* ── TOAST ── */
         .toast {
-            position: fixed;
-            bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--gray-800);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            opacity: 0;
-            transition: all 0.3s;
-            z-index: 1000;
-            white-space: nowrap;
-            pointer-events: none;
+            position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
+            left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--gray-800); color: white; padding: 10px 20px;
+            border-radius: 20px; font-size: 14px; font-weight: 600;
+            opacity: 0; transition: all 0.3s; z-index: 1000;
+            white-space: nowrap; pointer-events: none;
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
@@ -595,41 +398,29 @@
 
 <header class="app-header">
     <div class="logo">📦</div>
-    <div style="flex:1;">
-        <div class="header-title">Инвентаризация</div>
-    </div>
+    <div style="flex:1;"><div class="header-title">Инвентаризация</div></div>
     <button class="header-reset-btn" id="hardResetBtn">🗑️</button>
 </header>
 
 <div class="app-body" id="appBody">
 
+    <!-- ══ TAB: INVENTORY ══ -->
     <div class="tab-view active" id="tabInventory">
         <div class="loc-strip-wrap" id="locStrip"></div>
         <div class="stats-row">
-            <div class="stat-pill">
-                <div class="sp-val" id="stTotal">—</div>
-                <div class="sp-lbl">Позиций</div>
-            </div>
-            <div class="stat-pill">
-                <div class="sp-val green" id="stFilled">—</div>
-                <div class="sp-lbl">Заполнено</div>
-            </div>
-            <div class="stat-pill">
-                <div class="sp-val blue" id="stPct">—</div>
-                <div class="sp-lbl">Готовность</div>
-            </div>
+            <div class="stat-pill"><div class="sp-val" id="stTotal">—</div><div class="sp-lbl">Позиций</div></div>
+            <div class="stat-pill"><div class="sp-val green" id="stFilled">—</div><div class="sp-lbl">Заполнено</div></div>
+            <div class="stat-pill"><div class="sp-val blue" id="stPct">—</div><div class="sp-lbl">Готовность</div></div>
         </div>
         <div class="products-list" id="productsList"></div>
+        <div id="addProductFormWrap"></div>
+        <button class="add-product-btn" id="addProductBtn">➕ Добавить свой продукт</button>
         <button class="clear-loc-btn" id="clearLocBtn">🧹 Очистить помещение</button>
     </div>
 
+    <!-- ══ TAB: SUMMARY ══ -->
     <div class="tab-view" id="tabSummary">
-        <div class="summary-header">
-            <div>
-                <h2>Итоги</h2>
-                <p>По всем помещениям</p>
-            </div>
-        </div>
+        <div class="summary-header"><h2>Итоги</h2><p>По всем помещениям</p></div>
         <div class="summary-stats" id="summaryStats"></div>
         <div class="search-wrap">
             <span class="search-icon">🔍</span>
@@ -650,12 +441,10 @@
 
 <nav class="bottom-nav">
     <button class="nav-btn active" id="navInventory" data-tab="inventory">
-        <span class="nav-icon">📝</span>
-        Подсчёт
+        <span class="nav-icon">📝</span>Подсчёт
     </button>
     <button class="nav-btn" id="navSummary" data-tab="summary">
-        <span class="nav-icon">📊</span>
-        Итоги
+        <span class="nav-icon">📊</span>Итоги
         <span class="nav-badge" id="navBadge" style="display:none;"></span>
     </button>
 </nav>
@@ -664,7 +453,11 @@
 
 <script>
 (function () {
-    const products = [
+
+    /* ════════════════════════════════
+       СТАНДАРТНЫЕ ПРОДУКТЫ
+    ════════════════════════════════ */
+    const stdProducts = [
         { id:"p1",  name:"Голень",                    baseUnit:"шт" },
         { id:"p2",  name:"Крылья",                    baseUnit:"шт" },
         { id:"p3",  name:"Байтсы",                    baseUnit:"кг" },
@@ -695,7 +488,6 @@
     ];
 
     function mu(label, fn) { return { label, toBase: fn }; }
-
     const RM = {1:22.31,2:20.09,3:17.87,4:15.65,5:13.43,6:11.21,7:8.99,8:6.77};
     const RC = {1:25.38,2:23.22,3:21.06,4:18.9,5:16.74,6:14.58,7:12.42,8:10.26};
 
@@ -722,47 +514,47 @@
             p17: [mu("кг",q=>q), mu("упаковка (11,34 кг)",q=>q*11.34)],
             p18: [mu("л",q=>q), mu("кега 20 л",q=>q*20), mu("кега 30 л",q=>q*30)],
             p19: [mu("л",q=>q), mu("кега 20 л",q=>q*20), mu("кега 30 л",q=>q*30)],
-            p20: [mu("шт",q=>q)], p21:[mu("шт",q=>q)], p22:[mu("шт",q=>q)], p23:[mu("шт",q=>q)],
-            p24: [mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2)],
-            p25: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q)],
-            p26: [mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25)],
-            p27: [mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+            p20:[mu("шт",q=>q)], p21:[mu("шт",q=>q)], p22:[mu("шт",q=>q)], p23:[mu("шт",q=>q)],
+            p24:[mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2)],
+            p25:[mu("кг",q=>q), mu("упаковка (1 кг)",q=>q)],
+            p26:[mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25)],
+            p27:[mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
         },
         "Морозный ларь": {
-            p8:  [mu("шт",q=>q), mu("кг",q=>q/0.019), mu("пакет (100 шт)",q=>q*100)],
-            p9:  [mu("кг",q=>q), mu("пакет (1 кг)",q=>q)],
-            p10: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
-            p11: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
-            p24: [mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
-            p25: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)]
+            p8: [mu("шт",q=>q), mu("кг",q=>q/0.019), mu("пакет (100 шт)",q=>q*100)],
+            p9: [mu("кг",q=>q), mu("пакет (1 кг)",q=>q)],
+            p10:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
+            p11:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
+            p24:[mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
+            p25:[mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)]
         },
         "Морозильная камера": {
-            p1:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (6 пак.)",q=>q*108), mu("коробка (8 пак.)",q=>q*144)],
-            p2:  [mu("шт",q=>q), mu("пакет (50 шт)",q=>q*50), mu("пакет (60 шт)",q=>q*60), mu("коробка (6 пак.)",q=>q*300), mu("коробка (8 пак.)",q=>q*400)],
-            p3:  [mu("кг",q=>q), mu("пакет (2 кг)",q=>q*2), mu("коробка (6 пак.)",q=>q*12), mu("коробка (8 пак.)",q=>q*16)],
-            p4:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
-            p5:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
-            p6:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
-            p7:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
-            p8:  [mu("шт",q=>q), mu("пакет (100 шт)",q=>q*100), mu("коробка (7 пак.)",q=>q*700)],
-            p9:  [mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (10 пак.)",q=>q*10)],
-            p10: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
-            p11: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
-            p24: [mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
-            p25: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)],
-            p26: [mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25), mu("коробка (2,5 кг)",q=>q*2.5), mu("коробка (5 кг)",q=>q*5), mu("коробка (2,4 кг)",q=>q*2.4)]
+            p1: [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (6 пак.)",q=>q*108), mu("коробка (8 пак.)",q=>q*144)],
+            p2: [mu("шт",q=>q), mu("пакет (50 шт)",q=>q*50), mu("пакет (60 шт)",q=>q*60), mu("коробка (6 пак.)",q=>q*300), mu("коробка (8 пак.)",q=>q*400)],
+            p3: [mu("кг",q=>q), mu("пакет (2 кг)",q=>q*2), mu("коробка (6 пак.)",q=>q*12), mu("коробка (8 пак.)",q=>q*16)],
+            p4: [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
+            p5: [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
+            p6: [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
+            p7: [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
+            p8: [mu("шт",q=>q), mu("пакет (100 шт)",q=>q*100), mu("коробка (7 пак.)",q=>q*700)],
+            p9: [mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (10 пак.)",q=>q*10)],
+            p10:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
+            p11:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
+            p24:[mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
+            p25:[mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)],
+            p26:[mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25), mu("коробка (2,5 кг)",q=>q*2.5), mu("коробка (5 кг)",q=>q*5), mu("коробка (2,4 кг)",q=>q*2.4)]
         },
         "Холодильная камера": {
-            p12: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
-            p13: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
-            p14: [mu("л",q=>q), mu("упаковка (1 л)",q=>q), mu("коробка (12 л)",q=>q*12)],
-            p15: [mu("шт",q=>q), mu("брикет (160 шт)",q=>q*160), mu("коробка (960 шт)",q=>q*960)],
-            p27: [mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+            p12:[mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
+            p13:[mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
+            p14:[mu("л",q=>q), mu("упаковка (1 л)",q=>q), mu("коробка (12 л)",q=>q*12)],
+            p15:[mu("шт",q=>q), mu("брикет (160 шт)",q=>q*160), mu("коробка (960 шт)",q=>q*960)],
+            p27:[mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
         },
         "Сухой склад": {
-            p16: [mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (8 кг)",q=>q*8), mu("коробка (4 кг)",q=>q*4)],
-            p17: [mu("пакет (11,34 кг)",q=>q*11.34)],
-            p27: [mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+            p16:[mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (8 кг)",q=>q*8), mu("коробка (4 кг)",q=>q*4)],
+            p17:[mu("пакет (11,34 кг)",q=>q*11.34)],
+            p27:[mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
         }
     };
 
@@ -772,7 +564,9 @@
     let filterOnlyFilled = true;
     let searchQ = '';
 
-    /* ── Storage ── */
+    /* ════════════════════════════════
+       STORAGE — стандартные данные
+    ════════════════════════════════ */
     function getRows(loc, pid, uIdx) {
         const raw = localStorage.getItem(`inv_${loc}_${pid}_${uIdx}`);
         return raw ? JSON.parse(raw) : [null];
@@ -788,8 +582,41 @@
         localStorage.setItem(`cu_${loc}_${pid}`, JSON.stringify(cu));
     }
 
-    /* ── Calc ── */
+    /* ════════════════════════════════
+       STORAGE — кастомные продукты
+       Структура: [{ id, name, baseUnit, rows: [null], customUnits: [] }, ...]
+    ════════════════════════════════ */
+    function getCustomProducts(loc) {
+        const raw = localStorage.getItem(`cprods_${loc}`);
+        return raw ? JSON.parse(raw) : [];
+    }
+    function setCustomProducts(loc, arr) {
+        localStorage.setItem(`cprods_${loc}`, JSON.stringify(arr));
+    }
+    function genId() {
+        return 'cp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    }
+
+    /* ════════════════════════════════
+       CALC
+    ════════════════════════════════ */
     function getLocTotal(loc, pid) {
+        // Кастомный продукт?
+        const cps = getCustomProducts(loc);
+        const cp = cps.find(p => p.id === pid);
+        if (cp) {
+            let t = 0;
+            (cp.rows || [null]).forEach(v => {
+                t += v == null || v === '' ? 0 : parseFloat(v);
+            });
+            (cp.customUnits || []).forEach(cu => {
+                (cu.rows || [null]).forEach(v => {
+                    t += (v == null || v === '' ? 0 : parseFloat(v)) * cu.coefficient;
+                });
+            });
+            return t;
+        }
+        // Стандартный
         let t = 0;
         const rules = locationRules[loc]?.[pid];
         if (rules) rules.forEach((u, i) => getRows(loc, pid, i).forEach(v => {
@@ -800,12 +627,21 @@
         }));
         return t;
     }
+
     function getAllTotal(pid) {
         return locations.reduce((s, loc) => s + getLocTotal(loc, pid), 0);
     }
-    function fmt(pid, val) {
-        const p = products.find(x => x.id === pid);
-        return p?.baseUnit === 'шт' ? Math.round(val) : Math.round(val * 1000) / 1000;
+
+    function getCustomProductAllTotal(pid) {
+        return locations.reduce((s, loc) => {
+            const cp = getCustomProducts(loc).find(p => p.id === pid);
+            if (!cp) return s;
+            return s + getLocTotal(loc, pid);
+        }, 0);
+    }
+
+    function fmt(baseUnit, val) {
+        return baseUnit === 'шт' ? Math.round(val) : Math.round(val * 1000) / 1000;
     }
     function getStep(label) {
         const l = label.toLowerCase();
@@ -813,7 +649,9 @@
     }
     function rnd(v, s) { return s === 0.1 ? Math.round(v * 10) / 10 : Math.round(v); }
 
-    /* ── Toast ── */
+    /* ════════════════════════════════
+       TOAST
+    ════════════════════════════════ */
     function toast(msg) {
         const t = document.getElementById('toast');
         t.textContent = msg;
@@ -821,18 +659,23 @@
         setTimeout(() => t.classList.remove('show'), 2200);
     }
 
-    /* ── Nav badge ── */
+    /* ════════════════════════════════
+       NAV BADGE
+    ════════════════════════════════ */
     function updateNavBadge() {
-        const totalFilled = products.filter(p => getAllTotal(p.id) > 0).length;
+        const stdFilled = stdProducts.filter(p => locations.some(loc => getLocTotal(loc, p.id) > 0)).length;
+        const cpFilled = locations.reduce((s, loc) => {
+            return s + getCustomProducts(loc).filter(cp => getLocTotal(loc, cp.id) > 0).length;
+        }, 0);
+        const total = stdFilled + cpFilled;
         const badge = document.getElementById('navBadge');
-        badge.style.display = totalFilled > 0 ? 'flex' : 'none';
-        badge.textContent = totalFilled;
+        badge.style.display = total > 0 ? 'flex' : 'none';
+        badge.textContent = total;
     }
 
-    /* ── Location strip
-         ИСПРАВЛЕНИЕ: renderLocStrip только рисует чипы,
-         scrollIntoView вызывается отдельно только при смене локации
-    ── */
+    /* ════════════════════════════════
+       LOCATION STRIP
+    ════════════════════════════════ */
     function renderLocStrip() {
         const c = document.getElementById('locStrip');
         c.innerHTML = '';
@@ -840,71 +683,84 @@
             const chip = document.createElement('div');
             chip.className = 'loc-chip' + (i === currentLocIdx ? ' active' : '');
             chip.id = `locchip_${i}`;
-            const hasData = Object.keys(locationRules[loc] || {})
-                .some(pid => getLocTotal(loc, pid) > 0);
-            if (hasData) chip.classList.add('has-data');
+            const stdHas = Object.keys(locationRules[loc] || {}).some(pid => getLocTotal(loc, pid) > 0);
+            const cpHas = getCustomProducts(loc).some(cp => getLocTotal(loc, cp.id) > 0);
+            if (stdHas || cpHas) chip.classList.add('has-data');
             chip.innerHTML = `<span class="loc-dot"></span>${loc}`;
             chip.onclick = () => switchLocation(i);
             c.appendChild(chip);
         });
     }
 
-    /* ── Точечное обновление has-data у чипа (без перерисовки и без scrollIntoView) ── */
     function updateLocChipData(locIdx) {
         const chip = document.getElementById(`locchip_${locIdx}`);
         if (!chip) return;
         const loc = locations[locIdx];
-        const hasData = Object.keys(locationRules[loc] || {})
-            .some(pid => getLocTotal(loc, pid) > 0);
-        chip.classList.toggle('has-data', hasData);
+        const stdHas = Object.keys(locationRules[loc] || {}).some(pid => getLocTotal(loc, pid) > 0);
+        const cpHas = getCustomProducts(loc).some(cp => getLocTotal(loc, cp.id) > 0);
+        chip.classList.toggle('has-data', stdHas || cpHas);
     }
 
-    /* ── Stats (только текстовые счётчики, без перерисовки локаций) ── */
+    /* ════════════════════════════════
+       STATS
+    ════════════════════════════════ */
     function renderStats() {
-        const rules = locationRules[currentLoc] || {};
-        const pids = Object.keys(rules);
-        const total = pids.length;
-        const filled = pids.filter(pid => getLocTotal(currentLoc, pid) > 0).length;
+        const stdPids = Object.keys(locationRules[currentLoc] || {});
+        const cpList = getCustomProducts(currentLoc);
+        const total = stdPids.length + cpList.length;
+        const filled = stdPids.filter(pid => getLocTotal(currentLoc, pid) > 0).length
+                     + cpList.filter(cp => getLocTotal(currentLoc, cp.id) > 0).length;
         const pct = total > 0 ? Math.round(filled / total * 100) : 0;
         document.getElementById('stTotal').textContent = total;
         document.getElementById('stFilled').textContent = filled;
         document.getElementById('stPct').textContent = pct + '%';
     }
 
-    /* ── Switch location ── */
+    /* ════════════════════════════════
+       SWITCH LOCATION
+    ════════════════════════════════ */
     function switchLocation(idx) {
         currentLocIdx = idx;
         currentLoc = locations[idx];
         renderLocStrip();
-        // scrollIntoView только здесь — при явной смене помещения
         const active = document.getElementById(`locchip_${idx}`);
         if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
         renderStats();
         renderProducts();
+        // Сбросить форму добавления продукта
+        document.getElementById('addProductFormWrap').innerHTML = '';
     }
 
-    /* ── Products ── */
+    /* ════════════════════════════════
+       RENDER PRODUCTS
+    ════════════════════════════════ */
     function renderProducts() {
         const container = document.getElementById('productsList');
         container.innerHTML = '';
-        const rules = locationRules[currentLoc] || {};
-        const pids = new Set(Object.keys(rules));
-        products.forEach(p => { if (getCU(currentLoc, p.id).length > 0) pids.add(p.id); });
 
-        if (pids.size === 0) {
-            container.innerHTML = `<div class="empty-state"><div class="ei">📭</div><p>Нет позиций для этого помещения</p></div>`;
-            return;
-        }
-        pids.forEach(pid => {
-            const product = products.find(p => p.id === pid);
+        // Стандартные
+        const rules = locationRules[currentLoc] || {};
+        const stdPids = new Set(Object.keys(rules));
+        stdProducts.forEach(p => { if (getCU(currentLoc, p.id).length > 0) stdPids.add(p.id); });
+
+        stdPids.forEach(pid => {
+            const product = stdProducts.find(p => p.id === pid);
             if (!product) return;
-            container.appendChild(buildProductCard(product, rules[pid] || []));
+            container.appendChild(buildStdProductCard(product, rules[pid] || []));
+        });
+
+        // Кастомные
+        getCustomProducts(currentLoc).forEach(cp => {
+            container.appendChild(buildCustomProductCard(cp));
         });
     }
 
-    function buildProductCard(product, unitRules) {
+    /* ════════════════════════════════
+       СТАНДАРТНАЯ КАРТОЧКА
+    ════════════════════════════════ */
+    function buildStdProductCard(product, unitRules) {
         const pid = product.id;
-        const totalVal = fmt(pid, getLocTotal(currentLoc, pid));
+        const totalVal = fmt(product.baseUnit, getLocTotal(currentLoc, pid));
         const hasData = totalVal > 0;
 
         const card = document.createElement('div');
@@ -928,10 +784,10 @@
         body.className = 'product-body';
 
         unitRules.forEach((unit, uIdx) => {
-            body.appendChild(buildUnitBlock(currentLoc, pid, uIdx, unit.label, false));
+            body.appendChild(buildUnitBlock(currentLoc, pid, uIdx, unit.label, false, null, product.baseUnit));
         });
         getCU(currentLoc, pid).forEach((cu, cuIdx) => {
-            body.appendChild(buildUnitBlock(currentLoc, pid, cuIdx, cu.label, true, cu.coefficient));
+            body.appendChild(buildUnitBlock(currentLoc, pid, cuIdx, cu.label, true, cu.coefficient, product.baseUnit));
         });
 
         const footer = document.createElement('div');
@@ -940,7 +796,7 @@
         const addBtn = document.createElement('button');
         addBtn.className = 'add-custom-btn';
         addBtn.textContent = '➕ Своя единица';
-        addBtn.onclick = () => toggleCustomForm(body, currentLoc, pid);
+        addBtn.onclick = () => toggleCustomUnitForm(body, currentLoc, pid, false);
 
         const clrBtn = document.createElement('button');
         clrBtn.className = 'clear-product-btn';
@@ -949,7 +805,7 @@
             if (!confirm(`Очистить "${product.name}"?`)) return;
             unitRules.forEach((_, uIdx) => setRows(currentLoc, pid, uIdx, [null]));
             setCU(currentLoc, pid, []);
-            refreshCard(pid);
+            refreshStdCard(pid, product, unitRules);
         };
 
         footer.appendChild(addBtn);
@@ -959,9 +815,163 @@
         return card;
     }
 
-    /* ── Unit block ── */
-    function buildUnitBlock(loc, pid, idx, label, isCustom, coef) {
-        const s = getStep(label);
+    /* ════════════════════════════════
+       КАСТОМНАЯ КАРТОЧКА ПРОДУКТА
+    ════════════════════════════════ */
+    function buildCustomProductCard(cp) {
+        const pid = cp.id;
+        const totalVal = fmt(cp.baseUnit, getLocTotal(currentLoc, pid));
+        const hasData = totalVal > 0;
+
+        const card = document.createElement('div');
+        card.className = 'product-card custom-product' + (hasData ? ' has-data' : '');
+        card.id = `pcard_${pid}`;
+
+        const header = document.createElement('div');
+        header.className = 'product-header';
+        header.innerHTML = `
+            <div class="product-indicator"></div>
+            <div class="product-name">${cp.name}</div>
+            <div class="product-meta">
+                <div class="product-total ${hasData?'':'zero'}" id="ptotal_${pid}">${totalVal}</div>
+                <div class="product-unit-tag">${cp.baseUnit}</div>
+                <div class="custom-tag">свой</div>
+            </div>
+            <div class="product-chevron">⌄</div>`;
+        header.onclick = () => card.classList.toggle('open');
+        card.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'product-body';
+
+        // Основной блок ввода (базовая единица)
+        body.appendChild(buildCustomProductUnitBlock(cp));
+
+        // Кастомные единицы кастомного продукта
+        (cp.customUnits || []).forEach((cu, cuIdx) => {
+            body.appendChild(buildCPCustomUnitBlock(cp, cuIdx));
+        });
+
+        const footer = document.createElement('div');
+        footer.className = 'product-footer';
+
+        const addUnitBtn = document.createElement('button');
+        addUnitBtn.className = 'add-custom-btn';
+        addUnitBtn.textContent = '➕ Своя единица';
+        addUnitBtn.onclick = () => toggleCustomUnitForm(body, currentLoc, pid, true);
+
+        const clrBtn = document.createElement('button');
+        clrBtn.className = 'clear-product-btn';
+        clrBtn.textContent = '🗑 Очистить';
+        clrBtn.onclick = () => {
+            if (!confirm(`Очистить "${cp.name}"?`)) return;
+            let cps = getCustomProducts(currentLoc);
+            const idx = cps.findIndex(p => p.id === pid);
+            if (idx !== -1) {
+                cps[idx].rows = [null];
+                cps[idx].customUnits = [];
+                setCustomProducts(currentLoc, cps);
+            }
+            refreshCustomCard(pid);
+        };
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-product-btn';
+        delBtn.textContent = '✖ Удалить продукт';
+        delBtn.onclick = () => {
+            if (!confirm(`Удалить продукт "${cp.name}" из этого помещения?`)) return;
+            let cps = getCustomProducts(currentLoc);
+            setCustomProducts(currentLoc, cps.filter(p => p.id !== pid));
+            renderProducts();
+            renderStats();
+            updateLocChipData(currentLocIdx);
+            updateNavBadge();
+            toast(`🗑 "${cp.name}" удалён`);
+        };
+
+        footer.appendChild(addUnitBtn);
+        footer.appendChild(clrBtn);
+        footer.appendChild(delBtn);
+        body.appendChild(footer);
+        card.appendChild(body);
+        return card;
+    }
+
+    /* ── Блок ввода базовой единицы кастомного продукта ── */
+    function buildCustomProductUnitBlock(cp) {
+        const pid = cp.id;
+        const s = getStep(cp.baseUnit);
+
+        const block = document.createElement('div');
+        block.className = 'unit-block';
+
+        const bHeader = document.createElement('div');
+        bHeader.className = 'unit-block-header';
+        bHeader.innerHTML = `
+            <div class="unit-name">${cp.baseUnit}</div>
+            <div class="unit-subtotal" id="cpust_${pid}_base"></div>`;
+        block.appendChild(bHeader);
+
+        const rowsWrap = document.createElement('div');
+        rowsWrap.className = 'unit-rows';
+        block.appendChild(rowsWrap);
+
+        function refreshRows() {
+            const cps = getCustomProducts(currentLoc);
+            const cur = cps.find(p => p.id === pid);
+            if (!cur) return;
+            const data = cur.rows || [null];
+            rowsWrap.innerHTML = '';
+            let subTotal = 0;
+
+            data.forEach((val, i) => {
+                const v = val == null || val === '' ? 0 : parseFloat(val);
+                subTotal += v;
+                const row = makeRowDOM(val, s,
+                    (nv) => {
+                        let c = getCustomProducts(currentLoc);
+                        const ci = c.findIndex(p => p.id === pid);
+                        if (ci !== -1) { c[ci].rows[i] = nv; setCustomProducts(currentLoc, c); }
+                        updateCPSubtotal(pid, 'base', cp.baseUnit);
+                        updateCPCardTotal(pid, cp.baseUnit);
+                        updateNavBadge();
+                        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+                    },
+                    () => {
+                        let c = getCustomProducts(currentLoc);
+                        const ci = c.findIndex(p => p.id === pid);
+                        if (ci !== -1) { c[ci].rows.push(null); setCustomProducts(currentLoc, c); }
+                        refreshRows();
+                    },
+                    () => {
+                        let c = getCustomProducts(currentLoc);
+                        const ci = c.findIndex(p => p.id === pid);
+                        if (ci !== -1) {
+                            if (c[ci].rows.length === 1) c[ci].rows = [null];
+                            else c[ci].rows.splice(i, 1);
+                            setCustomProducts(currentLoc, c);
+                        }
+                        refreshRows();
+                        updateCPSubtotal(pid, 'base', cp.baseUnit);
+                        updateCPCardTotal(pid, cp.baseUnit);
+                        updateNavBadge();
+                    },
+                    i
+                );
+                rowsWrap.appendChild(row);
+            });
+
+            const stEl = document.getElementById(`cpust_${pid}_base`);
+            if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, s)}` : '';
+        }
+
+        refreshRows();
+        return block;
+    }
+
+    /* ── Блок кастомной единицы кастомного продукта ── */
+    function buildCPCustomUnitBlock(cp, cuIdx) {
+        const pid = cp.id;
         const block = document.createElement('div');
         block.className = 'unit-block';
 
@@ -970,8 +980,85 @@
 
         const nameEl = document.createElement('div');
         nameEl.className = 'unit-name';
-        nameEl.textContent = isCustom ? `${label} ×${coef}` : label;
+        nameEl.textContent = `${cp.customUnits[cuIdx].label} ×${cp.customUnits[cuIdx].coefficient}`;
 
+        const delBtn = document.createElement('button');
+        delBtn.style.cssText = 'background:var(--red-light);border:none;color:var(--red);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;';
+        delBtn.textContent = '✖';
+        delBtn.onclick = () => {
+            let cps = getCustomProducts(currentLoc);
+            const ci = cps.findIndex(p => p.id === pid);
+            if (ci !== -1) { cps[ci].customUnits.splice(cuIdx, 1); setCustomProducts(currentLoc, cps); }
+            refreshCustomCard(pid);
+        };
+
+        bHeader.appendChild(nameEl);
+        bHeader.appendChild(delBtn);
+        block.appendChild(bHeader);
+
+        const rowsWrap = document.createElement('div');
+        rowsWrap.className = 'unit-rows';
+        block.appendChild(rowsWrap);
+
+        function refreshRows() {
+            const cps = getCustomProducts(currentLoc);
+            const cur = cps.find(p => p.id === pid);
+            if (!cur || !cur.customUnits[cuIdx]) return;
+            const coef = cur.customUnits[cuIdx].coefficient;
+            const data = cur.customUnits[cuIdx].rows || [null];
+            rowsWrap.innerHTML = '';
+
+            data.forEach((val, i) => {
+                const row = makeRowDOM(val, 1,
+                    (nv) => {
+                        let c = getCustomProducts(currentLoc);
+                        const ci = c.findIndex(p => p.id === pid);
+                        if (ci !== -1) { c[ci].customUnits[cuIdx].rows[i] = nv; setCustomProducts(currentLoc, c); }
+                        updateCPCardTotal(pid, cur.baseUnit);
+                        updateNavBadge();
+                        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+                    },
+                    () => {
+                        let c = getCustomProducts(currentLoc);
+                        const ci = c.findIndex(p => p.id === pid);
+                        if (ci !== -1) { c[ci].customUnits[cuIdx].rows.push(null); setCustomProducts(currentLoc, c); }
+                        refreshRows();
+                    },
+                    () => {
+                        let c = getCustomProducts(currentLoc);
+                        const ci = c.findIndex(p => p.id === pid);
+                        if (ci !== -1) {
+                            if (c[ci].customUnits[cuIdx].rows.length === 1) c[ci].customUnits[cuIdx].rows = [null];
+                            else c[ci].customUnits[cuIdx].rows.splice(i, 1);
+                            setCustomProducts(currentLoc, c);
+                        }
+                        refreshRows();
+                        updateCPCardTotal(pid, cur.baseUnit);
+                        updateNavBadge();
+                    },
+                    i
+                );
+                rowsWrap.appendChild(row);
+            });
+        }
+
+        refreshRows();
+        return block;
+    }
+
+    /* ════════════════════════════════
+       СТАНДАРТНЫЙ UNIT BLOCK
+    ════════════════════════════════ */
+    function buildUnitBlock(loc, pid, idx, label, isCustom, coef, baseUnit) {
+        const s = getStep(label);
+        const block = document.createElement('div');
+        block.className = 'unit-block';
+
+        const bHeader = document.createElement('div');
+        bHeader.className = 'unit-block-header';
+        const nameEl = document.createElement('div');
+        nameEl.className = 'unit-name';
+        nameEl.textContent = isCustom ? `${label} ×${coef}` : label;
         const subEl = document.createElement('div');
         subEl.className = 'unit-subtotal';
         subEl.id = `ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`;
@@ -984,7 +1071,7 @@
                 let cu = getCU(loc, pid);
                 cu.splice(idx, 1);
                 setCU(loc, pid, cu);
-                refreshCard(pid);
+                refreshStdCard(pid, stdProducts.find(p=>p.id===pid), locationRules[loc]?.[pid]||[]);
             };
             bHeader.appendChild(nameEl);
             bHeader.appendChild(delBtn);
@@ -999,135 +1086,53 @@
         block.appendChild(rowsWrap);
 
         function refreshRows() {
-            const data = isCustom
-                ? (getCU(loc, pid)[idx]?.rows || [null])
-                : getRows(loc, pid, idx);
-
+            const data = isCustom ? (getCU(loc, pid)[idx]?.rows || [null]) : getRows(loc, pid, idx);
             rowsWrap.innerHTML = '';
             let subTotal = 0;
 
             data.forEach((val, i) => {
                 const v = val == null || val === '' ? 0 : parseFloat(val);
-                subTotal += isCustom
-                    ? v * coef
-                    : (locationRules[loc]?.[pid]?.[idx]?.toBase(v) || 0);
+                subTotal += isCustom ? v * coef : (locationRules[loc]?.[pid]?.[idx]?.toBase(v) || 0);
 
-                const row = document.createElement('div');
-                row.className = 'row-item';
-
-                const num = document.createElement('span');
-                num.className = 'row-num';
-                num.textContent = i + 1;
-
-                const vc = document.createElement('div');
-                vc.className = 'vc';
-
-                const dec = document.createElement('button');
-                dec.className = 'vc-btn';
-                dec.textContent = '−';
-
-                const inp = document.createElement('input');
-                inp.className = 'vc-input';
-                inp.type = 'number';
-                inp.inputMode = 'decimal';
-                inp.step = s;
-                inp.placeholder = '0';
-                inp.value = val == null || val === '' ? '' : val;
-
-                const inc = document.createElement('button');
-                inc.className = 'vc-btn';
-                inc.textContent = '+';
-
-                vc.appendChild(dec);
-                vc.appendChild(inp);
-                vc.appendChild(inc);
-
-                const acts = document.createElement('div');
-                acts.className = 'row-actions';
-
-                const addRow = document.createElement('button');
-                addRow.className = 'row-action-btn';
-                addRow.textContent = '+';
-
-                const delRow = document.createElement('button');
-                delRow.className = 'row-action-btn del';
-                delRow.textContent = '−';
-
-                acts.appendChild(addRow);
-                acts.appendChild(delRow);
-
-                row.appendChild(num);
-                row.appendChild(vc);
-                row.appendChild(acts);
-                rowsWrap.appendChild(row);
-
-                /* ── save: только обновляет данные и итоги, без перерисовки DOM ── */
-                const save = () => {
-                    let nv = inp.value === '' ? null : rnd(parseFloat(inp.value) || 0, s);
-                    if (nv !== null) inp.value = nv;
-                    if (isCustom) {
-                        let cu = getCU(loc, pid);
-                        if (cu[idx]) { cu[idx].rows[i] = nv; setCU(loc, pid, cu); }
-                    } else {
-                        let r = getRows(loc, pid, idx);
-                        r[i] = nv;
-                        setRows(loc, pid, idx, r);
-                    }
-                    // Обновляем только нужные элементы без перерисовки списка
-                    updateSubtotal(loc, pid, idx, isCustom, coef);
-                    updateCardTotal(pid);
-                    updateNavBadge();
-                    if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
-                };
-
-                inp.addEventListener('change', save);
-                inp.addEventListener('blur', save);
-
-                dec.addEventListener('click', () => {
-                    let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
-                    inp.value = rnd(Math.max(0, v - s), s);
-                    save();
-                });
-                inc.addEventListener('click', () => {
-                    let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
-                    inp.value = rnd(v + s, s);
-                    save();
-                });
-
-                /* ── addRow/delRow: перерисовывает только rowsWrap, не трогает скролл страницы ── */
-                addRow.addEventListener('click', () => {
-                    if (isCustom) {
-                        let cu = getCU(loc, pid);
-                        if (cu[idx]) { cu[idx].rows.push(null); setCU(loc, pid, cu); }
-                    } else {
-                        let r = getRows(loc, pid, idx);
-                        r.push(null);
-                        setRows(loc, pid, idx, r);
-                    }
-                    refreshRows();
-                });
-
-                delRow.addEventListener('click', () => {
-                    if (isCustom) {
-                        let cu = getCU(loc, pid);
-                        if (cu[idx]) {
-                            if (cu[idx].rows.length === 1) cu[idx].rows = [null];
-                            else cu[idx].rows.splice(i, 1);
-                            setCU(loc, pid, cu);
+                const row = makeRowDOM(val, s,
+                    (nv) => {
+                        if (isCustom) {
+                            let cu = getCU(loc, pid); if (cu[idx]) { cu[idx].rows[i] = nv; setCU(loc, pid, cu); }
+                        } else {
+                            let r = getRows(loc, pid, idx); r[i] = nv; setRows(loc, pid, idx, r);
                         }
-                    } else {
-                        let r = getRows(loc, pid, idx);
-                        if (r.length === 1) r = [null]; else r.splice(i, 1);
-                        setRows(loc, pid, idx, r);
-                    }
-                    refreshRows();
-                    updateSubtotal(loc, pid, idx, isCustom, coef);
-                    updateCardTotal(pid);
-                    updateNavBadge();
-                });
+                        updateSubtotal(loc, pid, idx, isCustom, coef);
+                        updateCardTotal(pid, baseUnit);
+                        updateNavBadge();
+                        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+                    },
+                    () => {
+                        if (isCustom) {
+                            let cu = getCU(loc, pid); if (cu[idx]) { cu[idx].rows.push(null); setCU(loc, pid, cu); }
+                        } else {
+                            let r = getRows(loc, pid, idx); r.push(null); setRows(loc, pid, idx, r);
+                        }
+                        refreshRows();
+                    },
+                    () => {
+                        if (isCustom) {
+                            let cu = getCU(loc, pid);
+                            if (cu[idx]) { if (cu[idx].rows.length===1) cu[idx].rows=[null]; else cu[idx].rows.splice(i,1); setCU(loc,pid,cu); }
+                        } else {
+                            let r = getRows(loc, pid, idx);
+                            if (r.length===1) r=[null]; else r.splice(i,1);
+                            setRows(loc, pid, idx, r);
+                        }
+                        refreshRows();
+                        updateSubtotal(loc, pid, idx, isCustom, coef);
+                        updateCardTotal(pid, baseUnit);
+                        updateNavBadge();
+                    },
+                    i
+                );
+                rowsWrap.appendChild(row);
             });
 
-            // Обновляем субтотал после перерисовки строк
             const stEl = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
             if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, 0.1)}` : '';
         }
@@ -1136,45 +1141,130 @@
         return block;
     }
 
-    /* ── Точечное обновление субтотала единицы (без перерисовки DOM) ── */
-    function updateSubtotal(loc, pid, idx, isCustom, coef) {
-        const data = isCustom
-            ? (getCU(loc, pid)[idx]?.rows || [null])
-            : getRows(loc, pid, idx);
-        let subTotal = 0;
-        data.forEach(v => {
-            const n = v == null || v === '' ? 0 : parseFloat(v);
-            subTotal += isCustom ? n * coef : (locationRules[loc]?.[pid]?.[idx]?.toBase(n) || 0);
+    /* ════════════════════════════════
+       ФАБРИКА СТРОКИ ВВОДА
+    ════════════════════════════════ */
+    function makeRowDOM(val, s, onSave, onAdd, onRemove, rowIdx) {
+        const row = document.createElement('div');
+        row.className = 'row-item';
+
+        const num = document.createElement('span');
+        num.className = 'row-num';
+        num.textContent = rowIdx + 1;
+
+        const vc = document.createElement('div');
+        vc.className = 'vc';
+
+        const dec = document.createElement('button');
+        dec.className = 'vc-btn';
+        dec.textContent = '−';
+
+        const inp = document.createElement('input');
+        inp.className = 'vc-input';
+        inp.type = 'number';
+        inp.inputMode = 'decimal';
+        inp.step = s;
+        inp.placeholder = '0';
+        inp.value = val == null || val === '' ? '' : val;
+
+        const inc = document.createElement('button');
+        inc.className = 'vc-btn';
+        inc.textContent = '+';
+
+        vc.appendChild(dec); vc.appendChild(inp); vc.appendChild(inc);
+
+        const acts = document.createElement('div');
+        acts.className = 'row-actions';
+
+        const addRow = document.createElement('button');
+        addRow.className = 'row-action-btn';
+        addRow.textContent = '+';
+
+        const delRow = document.createElement('button');
+        delRow.className = 'row-action-btn del';
+        delRow.textContent = '−';
+
+        acts.appendChild(addRow); acts.appendChild(delRow);
+        row.appendChild(num); row.appendChild(vc); row.appendChild(acts);
+
+        const save = () => {
+            let nv = inp.value === '' ? null : rnd(parseFloat(inp.value) || 0, s);
+            if (nv !== null) inp.value = nv;
+            onSave(nv);
+        };
+        inp.addEventListener('change', save);
+        inp.addEventListener('blur', save);
+        dec.addEventListener('click', () => {
+            let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
+            inp.value = rnd(Math.max(0, v - s), s);
+            save();
         });
-        const stEl = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
-        if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, 0.1)}` : '';
+        inc.addEventListener('click', () => {
+            let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
+            inp.value = rnd(v + s, s);
+            save();
+        });
+        addRow.addEventListener('click', onAdd);
+        delRow.addEventListener('click', onRemove);
+
+        return row;
     }
 
-    /* ── Точечное обновление итога карточки товара (без перерисовки карточки) ── */
-    function updateCardTotal(pid) {
+    /* ════════════════════════════════
+       ОБНОВЛЕНИЕ БЕЗ ПЕРЕРИСОВКИ
+    ════════════════════════════════ */
+    function updateSubtotal(loc, pid, idx, isCustom, coef) {
+        const data = isCustom ? (getCU(loc, pid)[idx]?.rows || [null]) : getRows(loc, pid, idx);
+        let t = 0;
+        data.forEach(v => {
+            const n = v == null || v === '' ? 0 : parseFloat(v);
+            t += isCustom ? n * coef : (locationRules[loc]?.[pid]?.[idx]?.toBase(n) || 0);
+        });
+        const el = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
+        if (el) el.textContent = t > 0 ? `= ${rnd(t, 0.1)}` : '';
+    }
+
+    function updateCardTotal(pid, baseUnit) {
         const el = document.getElementById(`ptotal_${pid}`);
         const card = document.getElementById(`pcard_${pid}`);
         if (!el || !card) return;
-        const product = products.find(p => p.id === pid);
-        const val = fmt(pid, getLocTotal(currentLoc, pid));
+        const val = fmt(baseUnit, getLocTotal(currentLoc, pid));
         el.textContent = val;
         el.className = 'product-total' + (val > 0 ? '' : ' zero');
         card.classList.toggle('has-data', val > 0);
-        card.querySelector('.product-indicator')?.classList.toggle('has-data', val > 0);
-
-        // Точечно обновляем только индикатор на чипе локации — без scrollIntoView
         updateLocChipData(currentLocIdx);
         renderStats();
     }
 
-    /* ── Полная перерисовка карточки (при удалении кастомной единицы) ── */
-    function refreshCard(pid) {
+    function updateCPSubtotal(pid, key, baseUnit) {
+        const cps = getCustomProducts(currentLoc);
+        const cp = cps.find(p => p.id === pid);
+        if (!cp) return;
+        const data = cp.rows || [null];
+        const s = getStep(baseUnit);
+        let t = 0;
+        data.forEach(v => { t += v == null || v === '' ? 0 : parseFloat(v); });
+        const el = document.getElementById(`cpust_${pid}_${key}`);
+        if (el) el.textContent = t > 0 ? `= ${rnd(t, s)}` : '';
+    }
+
+    function updateCPCardTotal(pid, baseUnit) {
+        const el = document.getElementById(`ptotal_${pid}`);
+        const card = document.getElementById(`pcard_${pid}`);
+        if (!el || !card) return;
+        const val = fmt(baseUnit, getLocTotal(currentLoc, pid));
+        el.textContent = val;
+        el.className = 'product-total' + (val > 0 ? '' : ' zero');
+        card.classList.toggle('has-data', val > 0);
+        updateLocChipData(currentLocIdx);
+        renderStats();
+    }
+
+    function refreshStdCard(pid, product, unitRules) {
         const card = document.getElementById(`pcard_${pid}`);
         if (!card) return;
-        const product = products.find(p => p.id === pid);
-        if (!product) return;
         const wasOpen = card.classList.contains('open');
-        const newCard = buildProductCard(product, locationRules[currentLoc]?.[pid] || []);
+        const newCard = buildStdProductCard(product, unitRules);
         if (wasOpen) newCard.classList.add('open');
         card.replaceWith(newCard);
         updateLocChipData(currentLocIdx);
@@ -1183,8 +1273,26 @@
         if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
     }
 
-    /* ── Custom form ── */
-    function toggleCustomForm(body, loc, pid) {
+    function refreshCustomCard(pid) {
+        const card = document.getElementById(`pcard_${pid}`);
+        if (!card) return;
+        const cps = getCustomProducts(currentLoc);
+        const cp = cps.find(p => p.id === pid);
+        if (!cp) return;
+        const wasOpen = card.classList.contains('open');
+        const newCard = buildCustomProductCard(cp);
+        if (wasOpen) newCard.classList.add('open');
+        card.replaceWith(newCard);
+        updateLocChipData(currentLocIdx);
+        renderStats();
+        updateNavBadge();
+        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+    }
+
+    /* ════════════════════════════════
+       ФОРМА ДОБАВЛЕНИЯ СВОЕЙ ЕДИНИЦЫ
+    ════════════════════════════════ */
+    function toggleCustomUnitForm(body, loc, pid, isForCustomProduct) {
         const existing = body.querySelector('.custom-form');
         if (existing) { existing.remove(); return; }
 
@@ -1205,27 +1313,111 @@
             const label = form.querySelector('#cfLabel').value.trim();
             const coef = parseFloat(form.querySelector('#cfCoef').value);
             if (!label || isNaN(coef) || coef <= 0) { toast('⚠️ Введите корректные данные'); return; }
-            let cu = getCU(loc, pid);
-            cu.push({ label, coefficient: coef, rows: [null] });
-            setCU(loc, pid, cu);
-            refreshCard(pid);
+
+            if (isForCustomProduct) {
+                let cps = getCustomProducts(loc);
+                const ci = cps.findIndex(p => p.id === pid);
+                if (ci !== -1) {
+                    if (!cps[ci].customUnits) cps[ci].customUnits = [];
+                    cps[ci].customUnits.push({ label, coefficient: coef, rows: [null] });
+                    setCustomProducts(loc, cps);
+                    refreshCustomCard(pid);
+                }
+            } else {
+                let cu = getCU(loc, pid);
+                cu.push({ label, coefficient: coef, rows: [null] });
+                setCU(loc, pid, cu);
+                const product = stdProducts.find(p => p.id === pid);
+                refreshStdCard(pid, product, locationRules[loc]?.[pid] || []);
+            }
         };
         form.querySelector('#cfCancel').onclick = () => form.remove();
         form.querySelector('#cfLabel').focus();
     }
 
-    /* ── Summary ── */
+    /* ════════════════════════════════
+       ФОРМА ДОБАВЛЕНИЯ НОВОГО ПРОДУКТА
+    ════════════════════════════════ */
+    function showAddProductForm() {
+        const wrap = document.getElementById('addProductFormWrap');
+        if (wrap.querySelector('.add-product-form')) { wrap.innerHTML = ''; return; }
+
+        const form = document.createElement('div');
+        form.className = 'add-product-form';
+        form.innerHTML = `
+            <div class="add-product-form-title">🆕 Новый продукт для «${currentLoc}»</div>
+            <input type="text" placeholder="Название продукта" id="apfName">
+            <select id="apfUnit">
+                <option value="шт">шт — штуки</option>
+                <option value="кг">кг — килограммы</option>
+                <option value="л">л — литры</option>
+                <option value="г">г — граммы</option>
+                <option value="мл">мл — миллилитры</option>
+                <option value="уп">уп — упаковки</option>
+            </select>
+            <div class="add-product-form-btns">
+                <button class="apf-save" id="apfSave">✅ Добавить</button>
+                <button class="apf-cancel" id="apfCancel">Отмена</button>
+            </div>`;
+        wrap.innerHTML = '';
+        wrap.appendChild(form);
+
+        form.querySelector('#apfSave').onclick = () => {
+            const name = form.querySelector('#apfName').value.trim();
+            const baseUnit = form.querySelector('#apfUnit').value;
+            if (!name) { toast('⚠️ Введите название продукта'); return; }
+
+            const newProduct = { id: genId(), name, baseUnit, rows: [null], customUnits: [] };
+            let cps = getCustomProducts(currentLoc);
+            cps.push(newProduct);
+            setCustomProducts(currentLoc, cps);
+
+            wrap.innerHTML = '';
+            renderProducts();
+            renderStats();
+            updateLocChipData(currentLocIdx);
+            updateNavBadge();
+            toast(`✅ Продукт «${name}» добавлен`);
+
+            // Открыть новую карточку
+            setTimeout(() => {
+                const newCard = document.getElementById(`pcard_${newProduct.id}`);
+                if (newCard) {
+                    newCard.classList.add('open');
+                    newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 100);
+        };
+        form.querySelector('#apfCancel').onclick = () => { wrap.innerHTML = ''; };
+        form.querySelector('#apfName').focus();
+    }
+
+    /* ════════════════════════════════
+       SUMMARY
+    ════════════════════════════════ */
     function renderSummary() {
-        const allRows = products.map(p => {
-            const total = getAllTotal(p.id);
-            const display = fmt(p.id, total);
-            const detail = locations
-                .filter(loc => locationRules[loc]?.[p.id])
-                .map(loc => {
-                    const v = fmt(p.id, getLocTotal(loc, p.id));
-                    return v > 0 ? `${loc}: ${v}` : null;
-                }).filter(Boolean).join('\n') || '';
-            return { pid: p.id, name: p.name, unit: p.baseUnit, total: display, detail };
+        const allRows = [];
+
+        // Стандартные продукты
+        stdProducts.forEach(p => {
+            const total = locations.reduce((s, loc) => s + getLocTotal(loc, p.id), 0);
+            const display = fmt(p.baseUnit, total);
+            const detail = locations.filter(loc => locationRules[loc]?.[p.id])
+                .map(loc => { const v = fmt(p.baseUnit, getLocTotal(loc, p.id)); return v > 0 ? `${loc}: ${v}` : null; })
+                .filter(Boolean).join('\n');
+            allRows.push({ pid: p.id, name: p.name, unit: p.baseUnit, total: display, detail, isCustom: false });
+        });
+
+        // Кастомные продукты — собираем уникальные по id (один продукт может быть только в одном помещении)
+        const seenCp = new Set();
+        locations.forEach(loc => {
+            getCustomProducts(loc).forEach(cp => {
+                if (seenCp.has(cp.id)) return;
+                seenCp.add(cp.id);
+                const total = getLocTotal(loc, cp.id);
+                const display = fmt(cp.baseUnit, total);
+                allRows.push({ pid: cp.id, name: cp.name, unit: cp.baseUnit, total: display, detail: loc, isCustom: true });
+            });
         });
 
         const filled = allRows.filter(r => r.total > 0).length;
@@ -1247,10 +1439,10 @@
         }
         rows.forEach(r => {
             const item = document.createElement('div');
-            item.className = 'sum-item' + (r.total === 0 ? ' zero' : '');
+            item.className = 'sum-item' + (r.total===0?' zero':'') + (r.isCustom?' custom':'');
             item.innerHTML = `
                 <div class="sum-item-left">
-                    <div class="sum-item-name">${r.name}</div>
+                    <div class="sum-item-name">${r.name}${r.isCustom?' <span style="font-size:10px;color:var(--orange);background:var(--orange-light);padding:1px 6px;border-radius:10px;font-weight:700;">свой</span>':''}</div>
                     ${r.detail ? `<div class="sum-item-detail">${r.detail.replace(/\n/g,'<br>')}</div>` : ''}
                 </div>
                 <div class="sum-item-right">
@@ -1262,13 +1454,22 @@
     }
 
     function copySummary() {
-        const rows = products.map(p => ({
-            name: p.name, unit: p.baseUnit,
-            total: fmt(p.id, getAllTotal(p.id)),
-            detail: locations.filter(l => locationRules[l]?.[p.id])
-                .map(l => { const v = fmt(p.id, getLocTotal(l, p.id)); return v > 0 ? `${l}: ${v}` : null; })
-                .filter(Boolean).join(', ')
-        }));
+        const rows = [];
+        stdProducts.forEach(p => {
+            const total = fmt(p.baseUnit, locations.reduce((s, loc) => s + getLocTotal(loc, p.id), 0));
+            const detail = locations.filter(loc => locationRules[loc]?.[p.id])
+                .map(loc => { const v = fmt(p.baseUnit, getLocTotal(loc, p.id)); return v>0?`${loc}: ${v}`:null; })
+                .filter(Boolean).join(', ');
+            rows.push({ name: p.name, unit: p.baseUnit, total, detail });
+        });
+        const seenCp = new Set();
+        locations.forEach(loc => {
+            getCustomProducts(loc).forEach(cp => {
+                if (seenCp.has(cp.id)) return;
+                seenCp.add(cp.id);
+                rows.push({ name: cp.name + ' [свой]', unit: cp.baseUnit, total: fmt(cp.baseUnit, getLocTotal(loc, cp.id)), detail: loc });
+            });
+        });
         let tsv = 'Продукт\tЕд. изм.\tИтого\tДетализация\n';
         rows.forEach(r => tsv += `${r.name}\t${r.unit}\t${r.total}\t${r.detail}\n`);
         navigator.clipboard.writeText(tsv)
@@ -1276,7 +1477,9 @@
             .catch(() => toast('❌ Ошибка копирования'));
     }
 
-    /* ── Clear / Reset ── */
+    /* ════════════════════════════════
+       CLEAR / RESET
+    ════════════════════════════════ */
     function clearLocation() {
         if (!confirm(`Очистить все данные для "${currentLoc}"?`)) return;
         const rules = locationRules[currentLoc] || {};
@@ -1284,6 +1487,12 @@
             rules[pid].forEach((_, uIdx) => setRows(currentLoc, pid, uIdx, [null]));
             setCU(currentLoc, pid, []);
         });
+        // Сбрасываем кастомные продукты (очищаем данные, но не удаляем сами продукты)
+        let cps = getCustomProducts(currentLoc);
+        cps.forEach(cp => { cp.rows = [null]; cp.customUnits = []; });
+        setCustomProducts(currentLoc, cps);
+
+        document.getElementById('addProductFormWrap').innerHTML = '';
         renderLocStrip();
         renderStats();
         renderProducts();
@@ -1299,8 +1508,10 @@
                 rules[pid].forEach((_, uIdx) => setRows(loc, pid, uIdx, [null]));
                 setCU(loc, pid, []);
             });
-            products.forEach(p => setCU(loc, p.id, []));
+            stdProducts.forEach(p => setCU(loc, p.id, []));
+            setCustomProducts(loc, []);
         });
+        document.getElementById('addProductFormWrap').innerHTML = '';
         renderLocStrip();
         renderStats();
         renderProducts();
@@ -1309,7 +1520,9 @@
         toast('🗑️ Все данные удалены');
     }
 
-    /* ── Tab switch ── */
+    /* ════════════════════════════════
+       TAB SWITCH
+    ════════════════════════════════ */
     function switchTab(tab) {
         document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -1324,7 +1537,9 @@
         document.getElementById('appBody').scrollTop = 0;
     }
 
-    /* ── Init ── */
+    /* ════════════════════════════════
+       INIT
+    ════════════════════════════════ */
     function init() {
         renderLocStrip();
         renderStats();
@@ -1334,6 +1549,7 @@
         document.getElementById('clearLocBtn').onclick = clearLocation;
         document.getElementById('hardResetBtn').onclick = fullReset;
         document.getElementById('copyBtn').onclick = copySummary;
+        document.getElementById('addProductBtn').onclick = showAddProductForm;
 
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.onclick = () => switchTab(btn.dataset.tab);
