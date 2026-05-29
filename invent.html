@@ -2,982 +2,1491 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Инвентаризация ТМЦ</title>
     <style>
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            margin: 0; padding: 0;
         }
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --primary-dark: #1d4ed8;
+            --green: #16a34a;
+            --green-light: #f0fdf4;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --nav-h: 64px;
+            --header-h: 56px;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #f5f7fb;
-            margin: 0;
-            padding: 0 0 80px 0;
-            color: #1e2a3a;
-        }
-        .header {
-            background: #ffffff;
-            padding: 20px 16px;
-            font-size: 22px;
-            font-weight: 700;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        /* ── HEADER ── */
+        .app-header {
+            height: var(--header-h);
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
             align-items: center;
-            border-bottom: 1px solid #e2e8f0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            letter-spacing: -0.3px;
-            color: #2c7a4d;
-        }
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-        .tabs {
-            display: flex;
+            padding: 0 16px;
             gap: 12px;
-            margin-bottom: 24px;
-            background: #ffffff;
-            border-radius: 60px;
-            padding: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
         }
-        .tab {
+        .app-header .logo {
+            width: 32px; height: 32px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .app-header .header-title {
             flex: 1;
-            text-align: center;
-            padding: 12px 0;
-            border-radius: 40px;
-            font-weight: 600;
-            background: transparent;
-            color: #5a6e7c;
-            cursor: pointer;
-            transition: all 0.2s;
-            touch-action: manipulation;
-        }
-        .tab.active {
-            background: #2c7a4d;
-            color: #fff;
-            box-shadow: 0 2px 6px rgba(44,122,77,0.2);
-        }
-        .location-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-        .location-btn {
-            background: #ffffff;
-            border: 1px solid #d1d9e6;
-            border-radius: 40px;
-            padding: 10px 16px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            text-align: center;
-            flex: 1 0 auto;
-            color: #1e2a3a;
-            transition: all 0.2s;
-            touch-action: manipulation;
-        }
-        .location-btn.active {
-            background: #2c7a4d;
-            border-color: #2c7a4d;
-            color: white;
-        }
-        .product-card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: 0.1s;
-            border: 1px solid #eef2f8;
-        }
-        .product-title {
+            font-size: 17px;
             font-weight: 700;
-            font-size: 20px;
-            margin-bottom: 12px;
+            color: var(--gray-800);
+        }
+        .app-header .header-sub {
+            font-size: 11px;
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+        .header-reset-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            color: var(--gray-400);
+            touch-action: manipulation;
+        }
+        .header-reset-btn:active { background: var(--red-light); color: var(--red); }
+
+        /* ── SCROLL AREA ── */
+        .app-body {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+        }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-nav {
+            height: calc(var(--nav-h) + var(--safe-bottom));
+            padding-bottom: var(--safe-bottom);
+            background: #fff;
+            border-top: 1px solid var(--gray-200);
             display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            border-left: 4px solid #2c7a4d;
-            padding-left: 12px;
+            align-items: stretch;
+            flex-shrink: 0;
+            z-index: 10;
         }
-        .product-unit-note {
-            font-size: 12px;
-            background: #eef2f8;
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: #2c7a4d;
-        }
-        .unit-block {
-            margin: 16px 0 12px;
-            background: #f9fbfe;
-            border-radius: 20px;
-            padding: 12px;
-            border: 1px solid #e6edf4;
-        }
-        .unit-label {
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            touch-action: manipulation;
+            color: var(--gray-400);
+            font-size: 11px;
             font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 10px;
-            color: #2c7a4d;
-            display: inline-block;
-            background: #e9f3ec;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 8px 4px;
+            transition: color 0.15s;
+            position: relative;
         }
-        .rows-container {
+        .nav-btn .nav-icon { font-size: 22px; line-height: 1; }
+        .nav-btn.active { color: var(--primary); }
+        .nav-btn.active::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 20%; right: 20%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 0 0 4px 4px;
+        }
+        .nav-badge {
+            position: absolute;
+            top: 6px; right: calc(50% - 20px);
+            background: var(--green);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px; height: 18px;
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 4px;
+        }
+
+        /* ── TABS: INVENTORY ── */
+        .tab-view { display: none; }
+        .tab-view.active { display: block; }
+
+        /* ── LOCATION STRIP ── */
+        .loc-strip-wrap {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 10px 12px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            gap: 8px;
+            scrollbar-width: none;
+        }
+        .loc-strip-wrap::-webkit-scrollbar { display: none; }
+        .loc-chip {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1.5px solid var(--gray-200);
+            background: #fff;
+            color: var(--gray-500);
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: all 0.15s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .loc-chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+        .loc-chip .loc-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            display: none;
+        }
+        .loc-chip.has-data .loc-dot { display: block; }
+        .loc-chip.active .loc-dot { background: rgba(255,255,255,0.7); }
+
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            padding: 12px 12px 0;
+        }
+        .stat-pill {
+            flex: 1;
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .stat-pill .sp-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-800);
+            line-height: 1;
+        }
+        .stat-pill .sp-val.green { color: var(--green); }
+        .stat-pill .sp-val.blue { color: var(--primary); }
+        .stat-pill .sp-lbl {
+            font-size: 10px;
+            color: var(--gray-400);
+            margin-top: 3px;
+            font-weight: 500;
+        }
+
+        /* ── PRODUCTS ── */
+        .products-list {
+            padding: 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .product-card.has-data {
+            border-color: #bfdbfe;
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 14px 14px 16px;
+            gap: 10px;
+            cursor: pointer;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        .product-indicator {
+            width: 4px;
+            align-self: stretch;
+            border-radius: 4px;
+            background: var(--gray-200);
+            flex-shrink: 0;
+            margin-left: -4px;
+        }
+        .product-card.has-data .product-indicator { background: var(--primary); }
+
+        .product-name {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-800);
+            line-height: 1.3;
+        }
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
+        }
+        .product-total {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .product-total.zero { color: var(--gray-300); }
+        .product-unit-tag {
+            font-size: 11px;
+            color: var(--gray-400);
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .product-chevron {
+            font-size: 18px;
+            color: var(--gray-300);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .product-card.open .product-chevron { transform: rotate(180deg); }
+
+        .product-body {
+            display: none;
+            border-top: 1px solid var(--gray-100);
+            padding: 12px;
+            background: var(--gray-50);
+        }
+        .product-card.open .product-body { display: block; }
+
+        /* ── UNIT BLOCK ── */
+        .unit-block {
+            margin-bottom: 10px;
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .unit-block:last-of-type { margin-bottom: 0; }
+
+        .unit-block-header {
+            padding: 8px 12px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .unit-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .unit-subtotal {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .unit-rows { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+
         .row-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            background: #ffffff;
-            padding: 6px 12px;
-            border-radius: 60px;
-            border: 1px solid #e2e8f0;
-        }
-        .value-controls {
-            display: flex;
-            align-items: center;
-            background: #f1f5f9;
-            border-radius: 60px;
-            overflow: hidden;
-        }
-        .value-controls button {
-            background: #e2e8f0;
-            border: none;
-            width: 44px;
-            height: 44px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #1e2a3a;
-            transition: all 0.1s;
-            touch-action: manipulation;
-        }
-        .value-controls button:active {
-            background: #2c7a4d;
-            color: white;
-        }
-        .value-controls input {
-            width: 85px;
-            text-align: center;
-            font-size: 18px;
-            background: #ffffff;
-            border: none;
-            color: #1e2a3a;
-            padding: 10px 0;
-            font-weight: 500;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            margin-left: auto;
-        }
-        .action-buttons button {
-            background: #eef2f8;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 40px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.1s;
-            color: #2c7a4d;
-            touch-action: manipulation;
-        }
-        .action-buttons button:active {
-            background: #2c7a4d;
-            color: white;
-        }
-        .action-buttons button.remove-row {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-        .add-row-btn, .add-custom-unit-btn {
-            background: #eef2f8;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #2c7a4d;
-            margin-top: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
             gap: 6px;
-            touch-action: manipulation;
         }
-        .custom-unit-form {
-            margin-top: 12px;
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            border: 1px solid #d1d9e6;
+        .row-num {
+            width: 20px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--gray-400);
+            font-weight: 600;
+            flex-shrink: 0;
         }
-        .custom-unit-form input {
-            background: #f9fbfe;
-            border: 1px solid #d1d9e6;
-            padding: 10px;
-            border-radius: 30px;
-            color: #1e2a3a;
+
+        /* ── VALUE CONTROL ── */
+        .vc {
             flex: 1;
-            min-width: 100px;
+            display: flex;
+            align-items: center;
+            background: var(--gray-100);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            height: 48px;
         }
-        .custom-unit-form button {
-            background: #2c7a4d;
+        .vc-btn {
+            width: 48px; height: 48px;
+            flex-shrink: 0;
+            background: transparent;
             border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            color: white;
+            font-size: 26px;
+            font-weight: 300;
+            color: var(--gray-600);
             cursor: pointer;
             touch-action: manipulation;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.1s;
         }
-        .save-btn, .reset-all-btn, .copy-btn {
-            background: #2c7a4d;
-            color: white;
+        .vc-btn:active { background: var(--primary); color: white; }
+        .vc-input {
+            flex: 1;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            background: #fff;
             border: none;
-            border-radius: 60px;
-            padding: 14px 24px;
+            color: var(--gray-800);
+            padding: 0 4px;
+            height: 100%;
+            min-width: 0;
+        }
+        .vc-input:focus { outline: none; }
+        .vc-input::placeholder { color: var(--gray-300); font-weight: 400; }
+
+        .row-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .row-action-btn {
+            width: 40px; height: 48px;
+            border-radius: 10px;
+            border: 1px solid var(--gray-200);
+            background: #fff;
             font-size: 18px;
             font-weight: bold;
-            width: 100%;
-            margin-top: 20px;
             cursor: pointer;
+            touch-action: manipulation;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gray-500);
+            transition: all 0.1s;
+        }
+        .row-action-btn:active { background: var(--gray-200); }
+        .row-action-btn.del { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+        .row-action-btn.del:active { background: #fecaca; }
+
+        /* ── PRODUCT FOOTER ── */
+        .product-footer {
+            padding: 10px 12px 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .add-custom-btn, .clear-product-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1.5px dashed var(--gray-300);
+            background: transparent;
+            color: var(--gray-500);
+            cursor: pointer;
+            touch-action: manipulation;
             text-align: center;
+        }
+        .add-custom-btn:active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); border-style: solid; }
+        .clear-product-btn { border-color: #fecaca; color: var(--red); }
+        .clear-product-btn:active { background: var(--red-light); }
+
+        /* ── CUSTOM FORM ── */
+        .custom-form {
+            margin: 0 12px 12px;
+            background: var(--primary-light);
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .custom-form-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+        .custom-form input {
+            background: #fff;
+            border: 1px solid #bfdbfe;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--gray-800);
+            font-size: 14px;
+            width: 100%;
+        }
+        .custom-form input:focus { outline: 2px solid var(--primary); }
+        .custom-form-btns {
+            display: flex;
+            gap: 8px;
+        }
+        .custom-form-btns button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
             touch-action: manipulation;
         }
-        .reset-btn { background: #b91c1c; margin-top: 10px; }
-        .reset-all-btn { background: #6c757d; }
-        .copy-btn { background: #2c7a4d; }
-        .table-wrapper {
-            overflow-x: auto;
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 12px;
-            border: 1px solid #eef2f8;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        th, td {
-            text-align: left;
-            padding: 12px 8px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        th {
-            background: #f1f5f9;
-            color: #2c7a4d;
-        }
-        .footer-note {
+        .cf-save { background: var(--primary); color: white; }
+        .cf-cancel { background: var(--gray-100); color: var(--gray-600); }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
             text-align: center;
-            font-size: 12px;
-            color: #6c757d;
-            margin-top: 20px;
+            padding: 48px 24px;
+            color: var(--gray-400);
         }
-        /* Кнопка наверх всегда видна */
-        .scroll-top-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #2c7a4d;
+        .empty-state .ei { font-size: 52px; margin-bottom: 12px; }
+        .empty-state p { font-size: 15px; }
+
+        /* ── CLEAR LOCATION BTN ── */
+        .clear-loc-btn {
+            margin: 12px;
+            width: calc(100% - 24px);
+            padding: 14px;
+            background: var(--red-light);
+            border: 1.5px solid #fecaca;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--red);
+            cursor: pointer;
+            touch-action: manipulation;
+            text-align: center;
+        }
+        .clear-loc-btn:active { background: #fecaca; }
+
+        /* ══════════════════════════════════
+           SUMMARY TAB
+        ══════════════════════════════════ */
+        .summary-header {
+            padding: 16px 16px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .summary-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+        .summary-header p {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 2px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 0 16px 16px;
+        }
+        .ss-card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .ss-card .ss-val {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gray-800);
+            line-height: 1;
+        }
+        .ss-card .ss-val.green { color: var(--green); }
+        .ss-card .ss-val.blue { color: var(--primary); }
+        .ss-card .ss-lbl {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Search */
+        .search-wrap {
+            padding: 0 16px 12px;
+            position: relative;
+        }
+        .search-wrap input {
+            width: 100%;
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 12px 16px 12px 40px;
+            font-size: 15px;
+            color: var(--gray-800);
+        }
+        .search-wrap input:focus { outline: none; border-color: var(--primary); }
+        .search-icon {
+            position: absolute;
+            left: 28px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: var(--gray-400);
+            pointer-events: none;
+        }
+
+        /* Filter */
+        .filter-row {
+            padding: 0 16px 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .filter-chip {
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1.5px solid var(--gray-200);
+            background: #fff;
+            color: var(--gray-500);
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: all 0.15s;
+        }
+        .filter-chip.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Summary list */
+        .summary-list {
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sum-item {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .sum-item.zero { opacity: 0.5; }
+        .sum-item-left { flex: 1; }
+        .sum-item-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+        }
+        .sum-item-detail {
+            font-size: 11px;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+        .sum-item-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .sum-item-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .sum-item-val.zero { color: var(--gray-300); }
+        .sum-item-unit {
+            font-size: 11px;
+            color: var(--gray-400);
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* Copy btn */
+        .copy-block {
+            padding: 16px;
+        }
+        .copy-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 50px;
-            width: 50px;
-            height: 50px;
-            font-size: 28px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            touch-action: manipulation;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+        }
+        .copy-btn:active { background: var(--primary-dark); }
+        .copy-hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 8px;
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--gray-800);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
             z-index: 1000;
-            transition: all 0.2s;
-            touch-action: manipulation;
+            white-space: nowrap;
+            pointer-events: none;
         }
-        .scroll-top-btn:hover {
-            background: #1f5a3a;
-        }
-        @media (max-width: 550px) {
-            .row-item { flex-wrap: wrap; }
-            .action-buttons { margin-left: 0; width: 100%; justify-content: flex-end; margin-top: 6px; }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
 <body>
-<div class="header">
-    <h1>📦 Инвентаризация</h1>
-    <button id="hardResetBtn" style="background: none; border: none; color: #6c757d; font-size: 22px; cursor: pointer; touch-action: manipulation;">🗑️</button>
-</div>
-<div class="container">
-    <div class="tabs">
-        <div class="tab active" data-tab="inventory">📝 Подсчёт</div>
-        <div class="tab" data-tab="summary">📊 Итоги</div>
+
+<!-- HEADER -->
+<header class="app-header">
+    <div class="logo">📦</div>
+    <div style="flex:1;">
+        <div class="header-title">Инвентаризация</div>
     </div>
-    <div id="inventoryTab">
-        <div id="locationButtons" class="location-grid"></div>
-        <div id="productsContainer"></div>
-        <button class="save-btn reset-btn" id="clearLocationBtn">🧹 Очистить всё помещение</button>
-    </div>
-    <div id="summaryTab" style="display: none;">
-        <div class="table-wrapper">
-            <table id="summaryTable">
-                <thead><tr><th>Продукт</th><th>Ед. изм</th><th>Итого</th></tr></thead>
-                <tbody></tbody>
-            </table>
+    <button class="header-reset-btn" id="hardResetBtn" title="Сбросить все данные">🗑️</button>
+</header>
+
+<!-- BODY -->
+<div class="app-body" id="appBody">
+
+    <!-- ═══ TAB: INVENTORY ═══ -->
+    <div class="tab-view active" id="tabInventory">
+        <!-- Location strip -->
+        <div class="loc-strip-wrap" id="locStrip"></div>
+        <!-- Stats -->
+        <div class="stats-row" id="statsRow">
+            <div class="stat-pill">
+                <div class="sp-val" id="stTotal">—</div>
+                <div class="sp-lbl">Позиций</div>
+            </div>
+            <div class="stat-pill">
+                <div class="sp-val green" id="stFilled">—</div>
+                <div class="sp-lbl">Заполнено</div>
+            </div>
+            <div class="stat-pill">
+                <div class="sp-val blue" id="stPct">—</div>
+                <div class="sp-lbl">Готовность</div>
+            </div>
         </div>
-        <button class="copy-btn" id="copySummaryBtn">📋 Копировать таблицу</button>
-        <button class="reset-all-btn" id="fullResetBtn">⚠️ Сбросить ВСЕ данные</button>
-        <div class="footer-note">Вставьте скопированные данные в Excel (Ctrl+V)</div>
+        <!-- Products -->
+        <div class="products-list" id="productsList"></div>
+        <!-- Clear location -->
+        <button class="clear-loc-btn" id="clearLocBtn">🧹 Очистить помещение</button>
     </div>
+
+    <!-- ═══ TAB: SUMMARY ═══ -->
+    <div class="tab-view" id="tabSummary">
+        <div class="summary-header">
+            <div>
+                <h2>Итоги</h2>
+                <p>По всем помещениям</p>
+            </div>
+        </div>
+        <div class="summary-stats" id="summaryStats"></div>
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Поиск продукта...">
+        </div>
+        <div class="filter-row">
+            <button class="filter-chip" id="filterAllBtn">Все</button>
+            <button class="filter-chip active" id="filterFilledBtn">Только заполненные</button>
+        </div>
+        <div class="summary-list" id="summaryList"></div>
+        <div class="copy-block">
+            <button class="copy-btn" id="copyBtn">📋 Копировать в Excel</button>
+            <div class="copy-hint">Вставьте скопированные данные в таблицу (Ctrl+V)</div>
+        </div>
+    </div>
+
 </div>
-<button id="scrollTopBtn" class="scroll-top-btn" title="Наверх">↑</button>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+    <button class="nav-btn active" id="navInventory" data-tab="inventory">
+        <span class="nav-icon">📝</span>
+        Подсчёт
+    </button>
+    <button class="nav-btn" id="navSummary" data-tab="summary">
+        <span class="nav-icon">📊</span>
+        Итоги
+        <span class="nav-badge" id="navBadge" style="display:none;"></span>
+    </button>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-    (function() {
-        const products = [
-            { id: "p1", name: "Голень", baseUnit: "шт" },
-            { id: "p2", name: "Крылья", baseUnit: "шт" },
-            { id: "p3", name: "Байтсы", baseUnit: "кг" },
-            { id: "p4", name: "Филе Классик", baseUnit: "шт" },
-            { id: "p5", name: "Филе Зингер", baseUnit: "шт" },
-            { id: "p6", name: "Филе куриное малое", baseUnit: "шт" },
-            { id: "p7", name: "Филе куриное малое острое", baseUnit: "шт" },
-            { id: "p8", name: "Наггетсы", baseUnit: "шт" },
-            { id: "p9", name: "Креветки", baseUnit: "кг" },
-            { id: "p10", name: "Картофель фри", baseUnit: "кг" },
-            { id: "p11", name: "Картофельные дольки", baseUnit: "кг" },
-            { id: "p12", name: "Смесь для мороженого", baseUnit: "кг" },
-            { id: "p13", name: "Смесь для коктейля", baseUnit: "кг" },
-            { id: "p14", name: "Молоко", baseUnit: "л" },
-            { id: "p15", name: "Сыр Хохланд", baseUnit: "шт" },
-            { id: "p16", name: "Кофе", baseUnit: "кг" },
-            { id: "p17", name: "Мука", baseUnit: "кг" },
-            { id: "p18", name: "Пиво Бад бочковое", baseUnit: "л" },
-            { id: "p19", name: "Пиво RED FINCH В КЕГЕ", baseUnit: "л" },
-            { id: "p20", name: "Баллон СО2 Пепси 20 мл", baseUnit: "шт" },
-            { id: "p21", name: "Баллон газовый СО2 ПИВО", baseUnit: "шт" },
-            { id: "p22", name: "Кега мал пиво 20 л", baseUnit: "шт" },
-            { id: "p23", name: "Кега бол пиво 30 л", baseUnit: "шт" },
-            { id: "p24", name: "КОТЛЕТА КУРИНАЯ", baseUnit: "кг" },
-            { id: "p25", name: "КОТЛЕТА СЫРНАЯ", baseUnit: "кг" },
-            { id: "p26", name: "БЕКОН НАРЕЗАННЫЙ", baseUnit: "кг" },
-            { id: "p27", name: "Масло фритюрное", baseUnit: "кг" }
-        ];
+(function () {
+    /* ══════════════════════════════════════
+       DATA
+    ══════════════════════════════════════ */
+    const products = [
+        { id:"p1",  name:"Голень",                    baseUnit:"шт" },
+        { id:"p2",  name:"Крылья",                    baseUnit:"шт" },
+        { id:"p3",  name:"Байтсы",                    baseUnit:"кг" },
+        { id:"p4",  name:"Филе Классик",              baseUnit:"шт" },
+        { id:"p5",  name:"Филе Зингер",               baseUnit:"шт" },
+        { id:"p6",  name:"Филе куриное малое",        baseUnit:"шт" },
+        { id:"p7",  name:"Филе куриное малое острое", baseUnit:"шт" },
+        { id:"p8",  name:"Наггетсы",                  baseUnit:"шт" },
+        { id:"p9",  name:"Креветки",                  baseUnit:"кг" },
+        { id:"p10", name:"Картофель фри",             baseUnit:"кг" },
+        { id:"p11", name:"Картофельные дольки",       baseUnit:"кг" },
+        { id:"p12", name:"Смесь для мороженого",      baseUnit:"кг" },
+        { id:"p13", name:"Смесь для коктейля",        baseUnit:"кг" },
+        { id:"p14", name:"Молоко",                    baseUnit:"л"  },
+        { id:"p15", name:"Сыр Хохланд",               baseUnit:"шт" },
+        { id:"p16", name:"Кофе",                      baseUnit:"кг" },
+        { id:"p17", name:"Мука",                      baseUnit:"кг" },
+        { id:"p18", name:"Пиво Бад бочковое",         baseUnit:"л"  },
+        { id:"p19", name:"Пиво RED FINCH В КЕГЕ",     baseUnit:"л"  },
+        { id:"p20", name:"Баллон СО₂ Пепси 20 мл",   baseUnit:"шт" },
+        { id:"p21", name:"Баллон газовый СО₂ ПИВО",  baseUnit:"шт" },
+        { id:"p22", name:"Кега мал пиво 20 л",        baseUnit:"шт" },
+        { id:"p23", name:"Кега бол пиво 30 л",        baseUnit:"шт" },
+        { id:"p24", name:"Котлета куриная",            baseUnit:"кг" },
+        { id:"p25", name:"Котлета сырная",             baseUnit:"кг" },
+        { id:"p26", name:"Бекон нарезанный",           baseUnit:"кг" },
+        { id:"p27", name:"Масло фритюрное",            baseUnit:"кг" }
+    ];
 
-        function makeUnit(label, toBaseFunc) {
-            return { label, toBase: toBaseFunc };
+    function mu(label, fn) { return { label, toBase: fn }; }
+
+    const RM = {1:22.31,2:20.09,3:17.87,4:15.65,5:13.43,6:11.21,7:8.99,8:6.77};
+    const RC = {1:25.38,2:23.22,3:21.06,4:18.9,5:16.74,6:14.58,7:12.42,8:10.26};
+
+    const locationRules = {
+        "На станции": {
+            p1:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18)],
+            p2:  [mu("шт",q=>q), mu("пакет (50 шт)",q=>q*50), mu("пакет (60 шт)",q=>q*60)],
+            p3:  [mu("кг",q=>q), mu("пакет (2 кг)",q=>q*2)],
+            p4:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18)],
+            p5:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18)],
+            p6:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36)],
+            p7:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36)],
+            p8:  [mu("шт",q=>q), mu("кг",q=>q/0.019), mu("пакет (100 шт)",q=>q*100)],
+            p9:  [mu("кг",q=>q), mu("пакет (1 кг)",q=>q)],
+            p10: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
+            p11: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
+            p12: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1),
+                  mu("Уровень Ризки (1-8)", l=>{ let v=Math.round(l); return (v>=1&&v<=8)?RM[v]:0; })],
+            p13: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1),
+                  mu("Уровень Ризки (1-8)", l=>{ let v=Math.round(l); return (v>=1&&v<=8)?RC[v]:0; })],
+            p14: [mu("л",q=>q), mu("упаковка (1 л)",q=>q), mu("коробка (12 л)",q=>q*12)],
+            p15: [mu("шт",q=>q), mu("пачка (32 шт)",q=>q*32), mu("брикет (160 шт)",q=>q*160), mu("коробка (960 шт)",q=>q*960)],
+            p16: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q)],
+            p17: [mu("кг",q=>q), mu("упаковка (11,34 кг)",q=>q*11.34)],
+            p18: [mu("л",q=>q), mu("кега 20 л",q=>q*20), mu("кега 30 л",q=>q*30)],
+            p19: [mu("л",q=>q), mu("кега 20 л",q=>q*20), mu("кега 30 л",q=>q*30)],
+            p20: [mu("шт",q=>q)], p21:[mu("шт",q=>q)], p22:[mu("шт",q=>q)], p23:[mu("шт",q=>q)],
+            p24: [mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2)],
+            p25: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q)],
+            p26: [mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25)],
+            p27: [mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+        },
+        "Морозный ларь": {
+            p8:  [mu("шт",q=>q), mu("кг",q=>q/0.019), mu("пакет (100 шт)",q=>q*100)],
+            p9:  [mu("кг",q=>q), mu("пакет (1 кг)",q=>q)],
+            p10: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
+            p11: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
+            p24: [mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
+            p25: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)]
+        },
+        "Морозильная камера": {
+            p1:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (6 пак.)",q=>q*108), mu("коробка (8 пак.)",q=>q*144)],
+            p2:  [mu("шт",q=>q), mu("пакет (50 шт)",q=>q*50), mu("пакет (60 шт)",q=>q*60), mu("коробка (6 пак.)",q=>q*300), mu("коробка (8 пак.)",q=>q*400)],
+            p3:  [mu("кг",q=>q), mu("пакет (2 кг)",q=>q*2), mu("коробка (6 пак.)",q=>q*12), mu("коробка (8 пак.)",q=>q*16)],
+            p4:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
+            p5:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
+            p6:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
+            p7:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
+            p8:  [mu("шт",q=>q), mu("пакет (100 шт)",q=>q*100), mu("коробка (7 пак.)",q=>q*700)],
+            p9:  [mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (10 пак.)",q=>q*10)],
+            p10: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
+            p11: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
+            p24: [mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
+            p25: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)],
+            p26: [mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25), mu("коробка (2,5 кг)",q=>q*2.5), mu("коробка (5 кг)",q=>q*5), mu("коробка (2,4 кг)",q=>q*2.4)]
+        },
+        "Холодильная камера": {
+            p12: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
+            p13: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
+            p14: [mu("л",q=>q), mu("упаковка (1 л)",q=>q), mu("коробка (12 л)",q=>q*12)],
+            p15: [mu("шт",q=>q), mu("брикет (160 шт)",q=>q*160), mu("коробка (960 шт)",q=>q*960)],
+            p27: [mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+        },
+        "Сухой склад": {
+            p16: [mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (8 кг)",q=>q*8), mu("коробка (4 кг)",q=>q*4)],
+            p17: [mu("пакет (11,34 кг)",q=>q*11.34)],
+            p27: [mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+        }
+    };
+
+    const locations = ["На станции","Морозный ларь","Морозильная камера","Холодильная камера","Сухой склад"];
+    let currentLocIdx = 0;
+    let currentLoc = locations[0];
+    let filterOnlyFilled = true;
+    let searchQ = '';
+
+    /* ══════════════════════════════════════
+       STORAGE
+    ══════════════════════════════════════ */
+    function getRows(loc, pid, uIdx) {
+        const raw = localStorage.getItem(`inv_${loc}_${pid}_${uIdx}`);
+        return raw ? JSON.parse(raw) : [null];
+    }
+    function setRows(loc, pid, uIdx, rows) {
+        localStorage.setItem(`inv_${loc}_${pid}_${uIdx}`, JSON.stringify(rows));
+    }
+    function getCU(loc, pid) {
+        const raw = localStorage.getItem(`cu_${loc}_${pid}`);
+        return raw ? JSON.parse(raw) : [];
+    }
+    function setCU(loc, pid, cu) {
+        localStorage.setItem(`cu_${loc}_${pid}`, JSON.stringify(cu));
+    }
+
+    /* ══════════════════════════════════════
+       CALC
+    ══════════════════════════════════════ */
+    function getLocTotal(loc, pid) {
+        let t = 0;
+        const rules = locationRules[loc]?.[pid];
+        if (rules) rules.forEach((u, i) => getRows(loc, pid, i).forEach(v => {
+            t += u.toBase(v == null || v === '' ? 0 : parseFloat(v));
+        }));
+        getCU(loc, pid).forEach(cu => cu.rows.forEach(v => {
+            t += (v == null || v === '' ? 0 : parseFloat(v)) * cu.coefficient;
+        }));
+        return t;
+    }
+    function getAllTotal(pid) {
+        return locations.reduce((s, loc) => s + getLocTotal(loc, pid), 0);
+    }
+    function fmt(pid, val) {
+        const p = products.find(x => x.id === pid);
+        return p?.baseUnit === 'шт' ? Math.round(val) : Math.round(val * 1000) / 1000;
+    }
+    function step(label) {
+        const l = label.toLowerCase();
+        return l === 'кг' || l === 'л' ? 0.1 : 1;
+    }
+    function rnd(v, s) { return s === 0.1 ? Math.round(v * 10) / 10 : Math.round(v); }
+
+    /* ══════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════ */
+    function toast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    /* ══════════════════════════════════════
+       LOCATION STRIP
+    ══════════════════════════════════════ */
+    function renderLocStrip() {
+        const c = document.getElementById('locStrip');
+        c.innerHTML = '';
+        locations.forEach((loc, i) => {
+            const chip = document.createElement('div');
+            chip.className = 'loc-chip' + (i === currentLocIdx ? ' active' : '');
+            const hasData = Object.keys(locationRules[loc] || {}).some(pid => getLocTotal(loc, pid) > 0);
+            if (hasData) chip.classList.add('has-data');
+            chip.innerHTML = `<span class="loc-dot"></span>${loc}`;
+            chip.onclick = () => {
+                currentLocIdx = i;
+                currentLoc = locations[i];
+                renderLocStrip();
+                renderStats();
+                renderProducts();
+            };
+            c.appendChild(chip);
+        });
+        // Scroll active into view
+        const active = c.querySelector('.active');
+        if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+    }
+
+    /* ══════════════════════════════════════
+       STATS
+    ══════════════════════════════════════ */
+    function renderStats() {
+        const rules = locationRules[currentLoc] || {};
+        const pids = Object.keys(rules);
+        const total = pids.length;
+        const filled = pids.filter(pid => getLocTotal(currentLoc, pid) > 0).length;
+        const pct = total > 0 ? Math.round(filled / total * 100) : 0;
+        document.getElementById('stTotal').textContent = total;
+        document.getElementById('stFilled').textContent = filled;
+        document.getElementById('stPct').textContent = pct + '%';
+
+        // Nav badge
+        const totalFilled = products.filter(p => getAllTotal(p.id) > 0).length;
+        const badge = document.getElementById('navBadge');
+        badge.style.display = totalFilled > 0 ? 'flex' : 'none';
+        badge.textContent = totalFilled;
+    }
+
+    /* ══════════════════════════════════════
+       PRODUCTS
+    ══════════════════════════════════════ */
+    function renderProducts() {
+        const container = document.getElementById('productsList');
+        container.innerHTML = '';
+        const rules = locationRules[currentLoc] || {};
+        let pids = new Set(Object.keys(rules));
+        products.forEach(p => { if (getCU(currentLoc, p.id).length > 0) pids.add(p.id); });
+
+        if (pids.size === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="ei">📭</div><p>Нет позиций для этого помещения</p></div>`;
+            return;
         }
 
-        const rizkaMilk = { 1:22.31, 2:20.09, 3:17.87, 4:15.65, 5:13.43, 6:11.21, 7:8.99, 8:6.77 };
-        const rizkaCocktail = { 1:25.38, 2:23.22, 3:21.06, 4:18.9, 5:16.74, 6:14.58, 7:12.42, 8:10.26 };
+        pids.forEach(pid => {
+            const product = products.find(p => p.id === pid);
+            if (!product) return;
+            container.appendChild(buildProductCard(product, rules[pid] || []));
+        });
+    }
 
-        const locationRules = {
-            "На станции": {
-                p1: [ makeUnit("шт", q=>q), makeUnit("пакет (18 шт)", q=>q*18) ],
-                p2: [ makeUnit("шт", q=>q), makeUnit("пакет (50 шт)", q=>q*50), makeUnit("пакет (60 шт)", q=>q*60) ],
-                p3: [ makeUnit("кг", q=>q), makeUnit("пакет (2 кг)", q=>q*2) ],
-                p4: [ makeUnit("шт", q=>q), makeUnit("пакет (18 шт)", q=>q*18) ],
-                p5: [ makeUnit("шт", q=>q), makeUnit("пакет (18 шт)", q=>q*18) ],
-                p6: [ makeUnit("шт", q=>q), makeUnit("пакет (36 шт)", q=>q*36) ],
-                p7: [ makeUnit("шт", q=>q), makeUnit("пакет (36 шт)", q=>q*36) ],
-                p8: [ makeUnit("шт", q=>q), makeUnit("кг", q=>q/0.019), makeUnit("пакет (100 шт)", q=>q*100) ],
-                p9: [ makeUnit("кг", q=>q), makeUnit("пакет (1 кг)", q=>q*1) ],
-                p10: [ makeUnit("кг", q=>q), makeUnit("пакет (2,5 кг)", q=>q*2.5) ],
-                p11: [ makeUnit("кг", q=>q), makeUnit("пакет (2,5 кг)", q=>q*2.5) ],
-                p12: [ 
-                    makeUnit("кг", q=>q), 
-                    makeUnit("пакет (1,1 кг)", q=>q*1.1), 
-                    makeUnit("коробка (11,1 кг)", q=>q*11.1),
-                    makeUnit("Уровень Ризки (1-8)", (level) => {
-                        let lvl = Math.round(level);
-                        if (lvl >= 1 && lvl <= 8) return rizkaMilk[lvl];
-                        return 0;
-                    })
-                ],
-                p13: [ 
-                    makeUnit("кг", q=>q), 
-                    makeUnit("пакет (1,1 кг)", q=>q*1.1), 
-                    makeUnit("коробка (11,1 кг)", q=>q*11.1),
-                    makeUnit("Уровень Ризки (1-8)", (level) => {
-                        let lvl = Math.round(level);
-                        if (lvl >= 1 && lvl <= 8) return rizkaCocktail[lvl];
-                        return 0;
-                    })
-                ],
-                p14: [ makeUnit("л", q=>q), makeUnit("упаковка (1 л)", q=>q*1), makeUnit("коробка (12 л)", q=>q*12) ],
-                p15: [ makeUnit("шт", q=>q), makeUnit("пачка (32 шт)", q=>q*32), makeUnit("брикет (160 шт)", q=>q*160), makeUnit("коробка (960 шт)", q=>q*960) ],
-                p16: [ makeUnit("кг", q=>q), makeUnit("упаковка (1 кг)", q=>q*1) ],
-                p17: [ makeUnit("кг", q=>q), makeUnit("упаковка (11,34 кг)", q=>q*11.34) ],
-                p18: [ makeUnit("л", q=>q), makeUnit("кега 20 л", q=>q*20), makeUnit("кега 30 л", q=>q*30) ],
-                p19: [ makeUnit("л", q=>q), makeUnit("кега 20 л", q=>q*20), makeUnit("кега 30 л", q=>q*30) ],
-                p20: [ makeUnit("шт", q=>q) ], p21: [ makeUnit("шт", q=>q) ], p22: [ makeUnit("шт", q=>q) ], p23: [ makeUnit("шт", q=>q) ],
-                p24: [ makeUnit("кг", q=>q), makeUnit("упаковка (2 кг)", q=>q*2) ],
-                p25: [ makeUnit("кг", q=>q), makeUnit("упаковка (1 кг)", q=>q*1) ],
-                p26: [ makeUnit("кг", q=>q), makeUnit("упаковка (0,25 кг)", q=>q*0.25) ],
-                p27: [ makeUnit("кг", q=>q), makeUnit("бутылка (6,9 кг)", q=>q*6.9), makeUnit("коробка (13,8 кг)", q=>q*13.8) ]
-            },
-            "Морозный ларь": {
-                p8: [ makeUnit("шт", q=>q), makeUnit("кг", q=>q/0.019), makeUnit("пакет (100 шт)", q=>q*100) ],
-                p9: [ makeUnit("кг", q=>q), makeUnit("пакет (1 кг)", q=>q*1) ],
-                p10: [ makeUnit("кг", q=>q), makeUnit("пакет (2,5 кг)", q=>q*2.5) ],
-                p11: [ makeUnit("кг", q=>q), makeUnit("пакет (2,5 кг)", q=>q*2.5) ],
-                p24: [ makeUnit("кг", q=>q), makeUnit("упаковка (2 кг)", q=>q*2), makeUnit("коробка (12 кг)", q=>q*12) ],
-                p25: [ makeUnit("кг", q=>q), makeUnit("упаковка (1 кг)", q=>q*1), makeUnit("коробка (10 кг)", q=>q*10) ]
-            },
-            "Морозильная камера": {
-                p1: [
-                    makeUnit("шт", q=>q),
-                    makeUnit("пакет (18 шт)", q=>q*18),
-                    makeUnit("коробка (6 пакетов)", q=>q*6*18),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*18)
-                ],
-                p2: [
-                    makeUnit("шт", q=>q),
-                    makeUnit("пакет (50 шт)", q=>q*50),
-                    makeUnit("пакет (60 шт)", q=>q*60),
-                    makeUnit("коробка (6 пакетов)", q=>q*6*50),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*50)
-                ],
-                p3: [
-                    makeUnit("кг", q=>q),
-                    makeUnit("пакет (2 кг)", q=>q*2),
-                    makeUnit("коробка (6 пакетов)", q=>q*6*2),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*2)
-                ],
-                p4: [
-                    makeUnit("шт", q=>q),
-                    makeUnit("пакет (18 шт)", q=>q*18),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*18),
-                    makeUnit("коробка (10 пакетов)", q=>q*10*18)
-                ],
-                p5: [
-                    makeUnit("шт", q=>q),
-                    makeUnit("пакет (18 шт)", q=>q*18),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*18),
-                    makeUnit("коробка (10 пакетов)", q=>q*10*18)
-                ],
-                p6: [
-                    makeUnit("шт", q=>q),
-                    makeUnit("пакет (36 шт)", q=>q*36),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*36),
-                    makeUnit("коробка (10 пакетов)", q=>q*10*36)
-                ],
-                p7: [
-                    makeUnit("шт", q=>q),
-                    makeUnit("пакет (36 шт)", q=>q*36),
-                    makeUnit("коробка (8 пакетов)", q=>q*8*36),
-                    makeUnit("коробка (10 пакетов)", q=>q*10*36)
-                ],
-                p8: [ makeUnit("шт", q=>q), makeUnit("пакет (100 шт)", q=>q*100), makeUnit("коробка (7 пакетов)", q=>q*700) ],
-                p9: [ makeUnit("кг", q=>q), makeUnit("пакет (1 кг)", q=>q*1), makeUnit("коробка (10 пакетов)", q=>q*10) ],
-                p10: [ makeUnit("кг", q=>q), makeUnit("пакет (2,5 кг)", q=>q*2.5), makeUnit("коробка (5 пакетов)", q=>q*12.5) ],
-                p11: [ makeUnit("кг", q=>q), makeUnit("пакет (2,5 кг)", q=>q*2.5), makeUnit("коробка (5 пакетов)", q=>q*12.5) ],
-                p24: [ makeUnit("кг", q=>q), makeUnit("упаковка (2 кг)", q=>q*2), makeUnit("коробка (12 кг)", q=>q*12) ],
-                p25: [ makeUnit("кг", q=>q), makeUnit("упаковка (1 кг)", q=>q*1), makeUnit("коробка (10 кг)", q=>q*10) ],
-                p26: [ makeUnit("кг", q=>q), makeUnit("упаковка (0,25 кг)", q=>q*0.25), makeUnit("коробка (2,5 кг)", q=>q*2.5), makeUnit("коробка (5 кг)", q=>q*5), makeUnit("коробка (2,4 кг)", q=>q*2.4) ]
-            },
-            "Холодильная камера": {
-                p12: [ makeUnit("кг", q=>q), makeUnit("пакет (1,1 кг)", q=>q*1.1), makeUnit("коробка (11,1 кг)", q=>q*11.1) ],
-                p13: [ makeUnit("кг", q=>q), makeUnit("пакет (1,1 кг)", q=>q*1.1), makeUnit("коробка (11,1 кг)", q=>q*11.1) ],
-                p14: [ makeUnit("л", q=>q), makeUnit("упаковка (1 л)", q=>q*1), makeUnit("коробка (12 л)", q=>q*12) ],
-                p15: [ makeUnit("шт", q=>q), makeUnit("брикет (160 шт)", q=>q*160), makeUnit("коробка (960 шт)", q=>q*960) ],
-                p27: [ makeUnit("кг", q=>q), makeUnit("бутылка (6,9 кг)", q=>q*6.9), makeUnit("коробка (13,8 кг)", q=>q*13.8) ]
-            },
-            "Сухой склад": {
-                p16: [ makeUnit("кг", q=>q), makeUnit("пакет (1 кг)", q=>q*1), makeUnit("коробка (8 кг)", q=>q*8), makeUnit("коробка (4 кг)", q=>q*4) ],
-                p17: [ makeUnit("пакет (11,34 кг)", q=>q*11.34) ],
-                p27: [ makeUnit("кг", q=>q), makeUnit("бутылка (6,9 кг)", q=>q*6.9), makeUnit("коробка (13,8 кг)", q=>q*13.8) ]
-            }
+    function buildProductCard(product, unitRules) {
+        const pid = product.id;
+        const totalVal = fmt(pid, getLocTotal(currentLoc, pid));
+        const hasData = totalVal > 0;
+
+        const card = document.createElement('div');
+        card.className = 'product-card' + (hasData ? ' has-data' : '');
+        card.id = `pcard_${pid}`;
+
+        /* Header */
+        const header = document.createElement('div');
+        header.className = 'product-header';
+        header.innerHTML = `
+            <div class="product-indicator"></div>
+            <div class="product-name">${product.name}</div>
+            <div class="product-meta">
+                <div class="product-total ${hasData ? '' : 'zero'}" id="ptotal_${pid}">${totalVal}</div>
+                <div class="product-unit-tag">${product.baseUnit}</div>
+            </div>
+            <div class="product-chevron">⌄</div>`;
+        header.onclick = () => {
+            card.classList.toggle('open');
+        };
+        card.appendChild(header);
+
+        /* Body */
+        const body = document.createElement('div');
+        body.className = 'product-body';
+
+        unitRules.forEach((unit, uIdx) => {
+            body.appendChild(buildUnitBlock(currentLoc, pid, uIdx, unit.label, false));
+        });
+
+        getCU(currentLoc, pid).forEach((cu, cuIdx) => {
+            body.appendChild(buildUnitBlock(currentLoc, pid, cuIdx, cu.label, true, cu.coefficient));
+        });
+
+        /* Footer */
+        const footer = document.createElement('div');
+        footer.className = 'product-footer';
+
+        const addBtn = document.createElement('button');
+        addBtn.className = 'add-custom-btn';
+        addBtn.textContent = '➕ Своя единица';
+        addBtn.onclick = () => toggleCustomForm(body, currentLoc, pid);
+
+        const clrBtn = document.createElement('button');
+        clrBtn.className = 'clear-product-btn';
+        clrBtn.textContent = '🗑 Очистить';
+        clrBtn.onclick = () => {
+            if (!confirm(`Очистить "${product.name}"?`)) return;
+            unitRules.forEach((_, uIdx) => setRows(currentLoc, pid, uIdx, [null]));
+            setCU(currentLoc, pid, []);
+            refreshCard(pid);
         };
 
-        const locations = ["На станции", "Морозный ларь", "Морозильная камера", "Холодильная камера", "Сухой склад"];
-        let currentLocationIndex = 0;
-        let currentLocation = locations[currentLocationIndex];
+        footer.appendChild(addBtn);
+        footer.appendChild(clrBtn);
+        body.appendChild(footer);
+        card.appendChild(body);
 
-        function getUnitRows(location, productId, unitIndex) {
-            const key = `inv_${location}_${productId}_${unitIndex}`;
-            const raw = localStorage.getItem(key);
-            if (raw) return JSON.parse(raw);
-            // Возвращаем массив с пустой строкой (null) вместо 0
-            return [null];
-        }
-        function setUnitRows(location, productId, unitIndex, rows) {
-            const key = `inv_${location}_${productId}_${unitIndex}`;
-            localStorage.setItem(key, JSON.stringify(rows));
-        }
-        function getCustomUnits(location, productId) {
-            const key = `custom_${location}_${productId}`;
-            const raw = localStorage.getItem(key);
-            if (raw) return JSON.parse(raw);
-            return [];
-        }
-        function setCustomUnits(location, productId, customUnits) {
-            const key = `custom_${location}_${productId}`;
-            localStorage.setItem(key, JSON.stringify(customUnits));
-        }
+        return card;
+    }
 
-        function getTotalBaseForProduct(location, productId) {
-            const rules = locationRules[location]?.[productId];
-            let total = 0;
-            if (rules) {
-                for (let uIdx = 0; uIdx < rules.length; uIdx++) {
-                    const rows = getUnitRows(location, productId, uIdx);
-                    const converter = rules[uIdx].toBase;
-                    rows.forEach(v => {
-                        let val = (v === null || v === undefined || v === '') ? 0 : parseFloat(v);
-                        total += converter(val);
-                    });
-                }
-            }
-            const custom = getCustomUnits(location, productId);
-            custom.forEach(cu => {
-                cu.rows.forEach(v => {
-                    let val = (v === null || v === undefined || v === '') ? 0 : parseFloat(v);
-                    total += val * cu.coefficient;
-                });
-            });
-            return total;
-        }
-        function getTotalForProductAll(productId) {
-            let sum = 0;
-            for (let loc of locations) {
-                if (locationRules[loc]?.[productId] || getCustomUnits(loc, productId).length) {
-                    sum += getTotalBaseForProduct(loc, productId);
-                }
-            }
-            return sum;
-        }
+    /* ── Unit block ── */
+    function buildUnitBlock(loc, pid, idx, label, isCustom, coef) {
+        const s = step(label);
+        const block = document.createElement('div');
+        block.className = 'unit-block';
+        block.id = `ub_${loc}_${pid}_${idx}_${isCustom ? 'c' : 's'}`;
 
-        function getStepForUnit(label) {
-            const packageKeywords = ['пакет', 'коробка', 'упаковка', 'брикет', 'кега', 'бутылка', 'пачка'];
-            const lowerLabel = label.toLowerCase();
-            for (let kw of packageKeywords) {
-                if (lowerLabel.includes(kw)) return 1;
-            }
-            if (lowerLabel === 'кг' || lowerLabel === 'л') return 0.1;
-            if (lowerLabel.includes('уровень ризки')) return 1;
-            return 1;
-        }
+        const bHeader = document.createElement('div');
+        bHeader.className = 'unit-block-header';
 
-        function roundValue(value, step) {
-            if (step === 0.1) {
-                return Math.round(value * 10) / 10;
-            }
-            return Math.round(value);
-        }
+        const nameEl = document.createElement('div');
+        nameEl.className = 'unit-name';
+        nameEl.textContent = isCustom ? `${label} ×${coef}` : label;
 
-        function renderLocationButtons() {
-            const container = document.getElementById('locationButtons');
-            container.innerHTML = '';
-            locations.forEach((loc, idx) => {
-                const btn = document.createElement('div');
-                btn.className = 'location-btn' + (idx === currentLocationIndex ? ' active' : '');
-                btn.textContent = loc;
-                btn.addEventListener('click', () => {
-                    if (idx === currentLocationIndex) return;
-                    currentLocationIndex = idx;
-                    currentLocation = locations[currentLocationIndex];
-                    renderLocationButtons();
-                    renderProductsForLocation();
-                });
-                container.appendChild(btn);
-            });
-        }
+        const subEl = document.createElement('div');
+        subEl.className = 'unit-subtotal';
+        subEl.id = `ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`;
 
-        function renderProductsForLocation() {
-            const container = document.getElementById('productsContainer');
-            if (!container) return;
-            const rulesForLoc = locationRules[currentLocation];
-            let productIds = new Set();
-            if (rulesForLoc) Object.keys(rulesForLoc).forEach(id => productIds.add(id));
-            products.forEach(p => {
-                if (getCustomUnits(currentLocation, p.id).length > 0) productIds.add(p.id);
-            });
-            container.innerHTML = '';
-            for (let pid of productIds) {
-                const product = products.find(p => p.id === pid);
-                if (!product) continue;
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `<div class="product-title"><span>${product.name}</span><span class="product-unit-note">базовая: ${product.baseUnit}</span></div>`;
-                
-                const stdUnits = rulesForLoc?.[pid];
-                if (stdUnits) {
-                    for (let uIdx = 0; uIdx < stdUnits.length; uIdx++) {
-                        const unit = stdUnits[uIdx];
-                        const block = createUnitBlock(currentLocation, pid, uIdx, unit.label);
-                        card.appendChild(block);
-                    }
-                }
-                const customUnits = getCustomUnits(currentLocation, pid);
-                customUnits.forEach((cu, cuIdx) => {
-                    const block = createCustomUnitBlock(currentLocation, pid, cuIdx, cu.label, cu.coefficient);
-                    card.appendChild(block);
-                });
-                const addCustomBtn = document.createElement('button');
-                addCustomBtn.className = 'add-custom-unit-btn';
-                addCustomBtn.innerHTML = '➕ Добавить свою единицу';
-                addCustomBtn.onclick = () => showCustomUnitForm(card, currentLocation, pid);
-                card.appendChild(addCustomBtn);
-                container.appendChild(card);
-            }
-        }
-
-        function createUnitBlock(location, productId, unitIndex, label) {
-            const block = document.createElement('div');
-            block.className = 'unit-block';
-            const labelSpan = document.createElement('div');
-            labelSpan.className = 'unit-label';
-            labelSpan.textContent = label;
-            block.appendChild(labelSpan);
-            const rowsContainer = document.createElement('div');
-            rowsContainer.className = 'rows-container';
-            
-            function refreshRows() {
-                const rows = getUnitRows(location, productId, unitIndex);
-                rowsContainer.innerHTML = '';
-                rows.forEach((val, i) => {
-                    const rowDiv = document.createElement('div');
-                    rowDiv.className = 'row-item';
-                    const valueControls = document.createElement('div');
-                    valueControls.className = 'value-controls';
-                    const decBtn = document.createElement('button');
-                    decBtn.textContent = '−';
-                    const input = document.createElement('input');
-                    input.type = 'number';
-                    // Если значение null или undefined или пустая строка, показываем пустое поле
-                    input.value = (val === null || val === undefined || val === '') ? '' : val;
-                    const step = getStepForUnit(label);
-                    input.step = step;
-                    const incBtn = document.createElement('button');
-                    incBtn.textContent = '+';
-                    valueControls.appendChild(decBtn);
-                    valueControls.appendChild(input);
-                    valueControls.appendChild(incBtn);
-                    
-                    const actionBtns = document.createElement('div');
-                    actionBtns.className = 'action-buttons';
-                    const addRowBtn = document.createElement('button');
-                    addRowBtn.textContent = '+';
-                    addRowBtn.title = 'Добавить строку';
-                    const delRowBtn = document.createElement('button');
-                    delRowBtn.textContent = '−';
-                    delRowBtn.className = 'remove-row';
-                    delRowBtn.title = 'Удалить строку';
-                    actionBtns.appendChild(addRowBtn);
-                    actionBtns.appendChild(delRowBtn);
-                    rowDiv.appendChild(valueControls);
-                    rowDiv.appendChild(actionBtns);
-                    rowsContainer.appendChild(rowDiv);
-                    
-                    const update = () => {
-                        let rawVal = input.value;
-                        let newVal = (rawVal === '' || rawVal === null) ? 0 : parseFloat(rawVal);
-                        const rounded = roundValue(newVal, step);
-                        if (rounded !== newVal) input.value = rounded;
-                        const newRows = [...getUnitRows(location, productId, unitIndex)];
-                        newRows[i] = rounded;
-                        setUnitRows(location, productId, unitIndex, newRows);
-                        if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-                    };
-                    input.addEventListener('change', update);
-                    decBtn.addEventListener('click', () => {
-                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
-                        let newVal = currentVal - step;
-                        if (newVal < 0) newVal = 0;
-                        const rounded = roundValue(newVal, step);
-                        input.value = rounded;
-                        update();
-                    });
-                    incBtn.addEventListener('click', () => {
-                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
-                        let newVal = currentVal + step;
-                        const rounded = roundValue(newVal, step);
-                        input.value = rounded;
-                        update();
-                    });
-                    addRowBtn.addEventListener('click', () => {
-                        const newRows = [...getUnitRows(location, productId, unitIndex), null];
-                        setUnitRows(location, productId, unitIndex, newRows);
-                        refreshRows();
-                        if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-                    });
-                    delRowBtn.addEventListener('click', () => {
-                        let newRows = [...getUnitRows(location, productId, unitIndex)];
-                        if (newRows.length === 1) newRows = [null];
-                        else newRows.splice(i, 1);
-                        setUnitRows(location, productId, unitIndex, newRows);
-                        refreshRows();
-                        if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-                    });
-                });
-            }
-            refreshRows();
-            block.appendChild(rowsContainer);
-            return block;
-        }
-
-        function createCustomUnitBlock(location, productId, cuIdx, label, coefficient) {
-            const block = document.createElement('div');
-            block.className = 'unit-block';
-            const header = document.createElement('div');
-            header.style.display = 'flex';
-            header.style.justifyContent = 'space-between';
-            header.style.alignItems = 'center';
-            const labelSpan = document.createElement('div');
-            labelSpan.className = 'unit-label';
-            labelSpan.textContent = label;
-            const delCustomBtn = document.createElement('button');
-            delCustomBtn.textContent = '✖';
-            delCustomBtn.style.background = '#fee2e2';
-            delCustomBtn.style.border = 'none';
-            delCustomBtn.style.color = '#b91c1c';
-            delCustomBtn.style.borderRadius = '20px';
-            delCustomBtn.style.padding = '4px 12px';
-            delCustomBtn.style.cursor = 'pointer';
-            delCustomBtn.onclick = () => {
-                let customs = getCustomUnits(location, productId);
-                customs.splice(cuIdx, 1);
-                setCustomUnits(location, productId, customs);
-                renderProductsForLocation();
-                if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
+        if (isCustom) {
+            const delBtn = document.createElement('button');
+            delBtn.style.cssText = 'background:var(--red-light);border:none;color:var(--red);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;';
+            delBtn.textContent = '✖';
+            delBtn.onclick = () => {
+                let cu = getCU(loc, pid);
+                cu.splice(idx, 1);
+                setCU(loc, pid, cu);
+                refreshCard(pid);
             };
-            header.appendChild(labelSpan);
-            header.appendChild(delCustomBtn);
-            block.appendChild(header);
-            const rowsContainer = document.createElement('div');
-            rowsContainer.className = 'rows-container';
-            function refreshCustomRows() {
-                const customs = getCustomUnits(location, productId);
-                const cu = customs[cuIdx];
-                if (!cu) return;
-                rowsContainer.innerHTML = '';
-                cu.rows.forEach((val, i) => {
-                    const rowDiv = document.createElement('div');
-                    rowDiv.className = 'row-item';
-                    const valueControls = document.createElement('div');
-                    valueControls.className = 'value-controls';
-                    const decBtn = document.createElement('button');
-                    decBtn.textContent = '−';
-                    const input = document.createElement('input');
-                    input.type = 'number';
-                    input.value = (val === null || val === undefined || val === '') ? '' : val;
-                    const step = 1;
-                    input.step = step;
-                    const incBtn = document.createElement('button');
-                    incBtn.textContent = '+';
-                    valueControls.appendChild(decBtn);
-                    valueControls.appendChild(input);
-                    valueControls.appendChild(incBtn);
-                    const actionBtns = document.createElement('div');
-                    actionBtns.className = 'action-buttons';
-                    const addRowBtn = document.createElement('button');
-                    addRowBtn.textContent = '+';
-                    const delRowBtn = document.createElement('button');
-                    delRowBtn.textContent = '−';
-                    delRowBtn.className = 'remove-row';
-                    actionBtns.appendChild(addRowBtn);
-                    actionBtns.appendChild(delRowBtn);
-                    rowDiv.appendChild(valueControls);
-                    rowDiv.appendChild(actionBtns);
-                    rowsContainer.appendChild(rowDiv);
-                    
-                    const update = () => {
-                        let rawVal = input.value;
-                        let newVal = (rawVal === '' || rawVal === null) ? 0 : parseFloat(rawVal);
-                        const rounded = Math.round(newVal);
-                        if (rounded !== newVal) input.value = rounded;
-                        let customsUpd = getCustomUnits(location, productId);
-                        customsUpd[cuIdx].rows[i] = rounded;
-                        setCustomUnits(location, productId, customsUpd);
-                        if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-                    };
-                    input.addEventListener('change', update);
-                    decBtn.addEventListener('click', () => {
-                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
-                        let newVal = currentVal - step;
-                        if (newVal < 0) newVal = 0;
-                        const rounded = Math.round(newVal);
-                        input.value = rounded;
-                        update();
-                    });
-                    incBtn.addEventListener('click', () => {
-                        let currentVal = (input.value === '' || input.value === null) ? 0 : parseFloat(input.value);
-                        let newVal = currentVal + step;
-                        const rounded = Math.round(newVal);
-                        input.value = rounded;
-                        update();
-                    });
-                    addRowBtn.addEventListener('click', () => {
-                        let customsUpd = getCustomUnits(location, productId);
-                        customsUpd[cuIdx].rows.push(null);
-                        setCustomUnits(location, productId, customsUpd);
-                        refreshCustomRows();
-                        if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-                    });
-                    delRowBtn.addEventListener('click', () => {
-                        let customsUpd = getCustomUnits(location, productId);
-                        if (customsUpd[cuIdx].rows.length === 1) customsUpd[cuIdx].rows = [null];
-                        else customsUpd[cuIdx].rows.splice(i, 1);
-                        setCustomUnits(location, productId, customsUpd);
-                        refreshCustomRows();
-                        if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-                    });
-                });
-            }
-            refreshCustomRows();
-            block.appendChild(rowsContainer);
-            return block;
+            bHeader.appendChild(nameEl);
+            bHeader.appendChild(delBtn);
+        } else {
+            bHeader.appendChild(nameEl);
+            bHeader.appendChild(subEl);
         }
+        block.appendChild(bHeader);
 
-        function showCustomUnitForm(card, location, productId) {
-            const existing = card.querySelector('.custom-unit-form');
-            if (existing) existing.remove();
-            const formDiv = document.createElement('div');
-            formDiv.className = 'custom-unit-form';
-            formDiv.innerHTML = `
-                <input type="text" placeholder="Название (напр. коробка 10,8 кг)" id="customLabel">
-                <input type="number" step="any" placeholder="Коэффициент (сколько базовых ед.)" id="customCoef">
-                <button id="saveCustomBtn">Сохранить</button>
-                <button id="cancelCustomBtn">Отмена</button>
-            `;
-            card.appendChild(formDiv);
-            formDiv.querySelector('#saveCustomBtn').onclick = () => {
-                const label = formDiv.querySelector('#customLabel').value.trim();
-                let coef = parseFloat(formDiv.querySelector('#customCoef').value);
-                if (!label || isNaN(coef) || coef <= 0) {
-                    alert('Введите корректное название и коэффициент');
-                    return;
-                }
-                let customs = getCustomUnits(location, productId);
-                customs.push({ label: label, coefficient: coef, rows: [null] });
-                setCustomUnits(location, productId, customs);
-                renderProductsForLocation();
-                if (document.getElementById('summaryTab').style.display !== 'none') renderSummaryTable();
-            };
-            formDiv.querySelector('#cancelCustomBtn').onclick = () => formDiv.remove();
-        }
+        const rowsWrap = document.createElement('div');
+        rowsWrap.className = 'unit-rows';
+        rowsWrap.id = `rows_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`;
+        block.appendChild(rowsWrap);
 
-        function clearCurrentLocation() {
-            if (!confirm(`Удалить все остатки для "${currentLocation}"?`)) return;
-            const rules = locationRules[currentLocation];
-            if (rules) {
-                for (let pid of Object.keys(rules)) {
-                    for (let uIdx = 0; uIdx < rules[pid].length; uIdx++) {
-                        setUnitRows(currentLocation, pid, uIdx, [null]);
+        function refreshRows() {
+            const data = isCustom
+                ? (getCU(loc, pid)[idx]?.rows || [null])
+                : getRows(loc, pid, idx);
+            rowsWrap.innerHTML = '';
+
+            let subTotal = 0;
+            data.forEach((val, i) => {
+                const v = val == null || val === '' ? 0 : parseFloat(val);
+                subTotal += isCustom ? v * coef : locationRules[loc]?.[pid]?.[idx]?.toBase(v) || 0;
+
+                const row = document.createElement('div');
+                row.className = 'row-item';
+
+                const num = document.createElement('span');
+                num.className = 'row-num';
+                num.textContent = i + 1;
+
+                const vc = document.createElement('div');
+                vc.className = 'vc';
+
+                const dec = document.createElement('button');
+                dec.className = 'vc-btn';
+                dec.textContent = '−';
+
+                const inp = document.createElement('input');
+                inp.className = 'vc-input';
+                inp.type = 'number';
+                inp.inputMode = 'decimal';
+                inp.step = s;
+                inp.placeholder = '0';
+                inp.value = val == null || val === '' ? '' : val;
+
+                const inc = document.createElement('button');
+                inc.className = 'vc-btn';
+                inc.textContent = '+';
+
+                vc.appendChild(dec);
+                vc.appendChild(inp);
+                vc.appendChild(inc);
+
+                const acts = document.createElement('div');
+                acts.className = 'row-actions';
+
+                const addRow = document.createElement('button');
+                addRow.className = 'row-action-btn';
+                addRow.textContent = '+';
+                addRow.title = 'Добавить строку';
+
+                const delRow = document.createElement('button');
+                delRow.className = 'row-action-btn del';
+                delRow.textContent = '−';
+                delRow.title = 'Удалить строку';
+
+                acts.appendChild(addRow);
+                acts.appendChild(delRow);
+
+                row.appendChild(num);
+                row.appendChild(vc);
+                row.appendChild(acts);
+                rowsWrap.appendChild(row);
+
+                /* Events */
+                const save = () => {
+                    let nv = inp.value === '' ? null : rnd(parseFloat(inp.value) || 0, s);
+                    inp.value = nv == null ? '' : nv;
+                    if (isCustom) {
+                        let cu = getCU(loc, pid);
+                        if (cu[idx]) { cu[idx].rows[i] = nv; setCU(loc, pid, cu); }
+                    } else {
+                        let r = getRows(loc, pid, idx);
+                        r[i] = nv;
+                        setRows(loc, pid, idx, r);
                     }
-                }
-            }
-            for (let product of products) {
-                setCustomUnits(currentLocation, product.id, []);
-            }
-            renderProductsForLocation();
-            alert(`Помещение "${currentLocation}" очищено`);
-        }
-
-        function fullReset() {
-            if (!confirm('⚠️ Удалить ВСЕ остатки по всем помещениям?')) return;
-            for (let loc of locations) {
-                const rules = locationRules[loc];
-                if (rules) {
-                    for (let pid of Object.keys(rules)) {
-                        for (let uIdx = 0; uIdx < rules[pid].length; uIdx++) {
-                            setUnitRows(loc, pid, uIdx, [null]);
-                        }
-                    }
-                }
-                for (let product of products) {
-                    setCustomUnits(loc, product.id, []);
-                }
-            }
-            renderProductsForLocation();
-            alert('Все данные удалены');
-        }
-
-        function buildSummary() {
-            const rows = [];
-            for (let product of products) {
-                let total = getTotalForProductAll(product.id);
-                let display = (product.baseUnit === 'шт') ? Math.round(total) : Math.round(total * 1000) / 1000;
-                rows.push({ name: product.name, unit: product.baseUnit, total: display });
-            }
-            return rows;
-        }
-        function renderSummaryTable() {
-            const tbody = document.querySelector('#summaryTable tbody');
-            if (!tbody) return;
-            const rows = buildSummary();
-            tbody.innerHTML = '';
-            rows.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${r.name}</td><td>${r.unit}</td><td>${r.total}</td>`;
-                tbody.appendChild(tr);
-            });
-        }
-        function copySummaryToClipboard() {
-            const rows = buildSummary();
-            let tsv = 'Продукт\tЕд. изм\tИтого\n';
-            rows.forEach(r => tsv += `${r.name}\t${r.unit}\t${r.total}\n`);
-            navigator.clipboard.writeText(tsv).then(() => alert('Таблица скопирована!')).catch(() => alert('Ошибка копирования'));
-        }
-        function switchTab(tabId) {
-            const inv = document.getElementById('inventoryTab');
-            const sum = document.getElementById('summaryTab');
-            if (tabId === 'inventory') {
-                inv.style.display = 'block';
-                sum.style.display = 'none';
-                renderProductsForLocation();
-            } else {
-                inv.style.display = 'none';
-                sum.style.display = 'block';
-                renderSummaryTable();
-            }
-        }
-        function init() {
-            renderLocationButtons();
-            renderProductsForLocation();
-            document.getElementById('clearLocationBtn').onclick = clearCurrentLocation;
-            document.getElementById('fullResetBtn').onclick = fullReset;
-            document.getElementById('copySummaryBtn').onclick = copySummaryToClipboard;
-            document.getElementById('hardResetBtn').onclick = fullReset;
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.onclick = () => {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    switchTab(tab.dataset.tab);
+                    refreshRows();
+                    refreshCardTotal(pid);
                 };
+                inp.addEventListener('change', save);
+                inp.addEventListener('blur', save);
+                dec.addEventListener('click', () => {
+                    let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
+                    inp.value = rnd(Math.max(0, v - s), s);
+                    save();
+                });
+                inc.addEventListener('click', () => {
+                    let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
+                    inp.value = rnd(v + s, s);
+                    save();
+                });
+                addRow.addEventListener('click', () => {
+                    if (isCustom) {
+                        let cu = getCU(loc, pid);
+                        if (cu[idx]) { cu[idx].rows.push(null); setCU(loc, pid, cu); }
+                    } else {
+                        let r = getRows(loc, pid, idx);
+                        r.push(null);
+                        setRows(loc, pid, idx, r);
+                    }
+                    refreshRows();
+                });
+                delRow.addEventListener('click', () => {
+                    if (isCustom) {
+                        let cu = getCU(loc, pid);
+                        if (cu[idx]) {
+                            if (cu[idx].rows.length === 1) cu[idx].rows = [null];
+                            else cu[idx].rows.splice(i, 1);
+                            setCU(loc, pid, cu);
+                        }
+                    } else {
+                        let r = getRows(loc, pid, idx);
+                        if (r.length === 1) r = [null]; else r.splice(i, 1);
+                        setRows(loc, pid, idx, r);
+                    }
+                    refreshRows();
+                    refreshCardTotal(pid);
+                });
             });
-            document.getElementById('scrollTopBtn').addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+
+            // Update subtotal label
+            const stEl = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
+            if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, 0.1)}` : '';
         }
-        init();
-    })();
+
+        refreshRows();
+        return block;
+    }
+
+    /* ── Custom form ── */
+    function toggleCustomForm(body, loc, pid) {
+        const existing = body.querySelector('.custom-form');
+        if (existing) { existing.remove(); return; }
+
+        const form = document.createElement('div');
+        form.className = 'custom-form';
+        form.innerHTML = `
+            <div class="custom-form-title">➕ Новая единица</div>
+            <input type="text" placeholder="Название (напр. коробка 10 кг)" id="cfLabel">
+            <input type="number" step="any" inputmode="decimal" placeholder="Сколько базовых единиц" id="cfCoef">
+            <div class="custom-form-btns">
+                <button class="cf-save" id="cfSave">💾 Сохранить</button>
+                <button class="cf-cancel" id="cfCancel">Отмена</button>
+            </div>`;
+        // Insert before footer
+        const footer = body.querySelector('.product-footer');
+        body.insertBefore(form, footer);
+
+        form.querySelector('#cfSave').onclick = () => {
+            const label = form.querySelector('#cfLabel').value.trim();
+            const coef = parseFloat(form.querySelector('#cfCoef').value);
+            if (!label || isNaN(coef) || coef <= 0) { toast('⚠️ Введите корректные данные'); return; }
+            let cu = getCU(loc, pid);
+            cu.push({ label, coefficient: coef, rows: [null] });
+            setCU(loc, pid, cu);
+            refreshCard(pid);
+        };
+        form.querySelector('#cfCancel').onclick = () => form.remove();
+        form.querySelector('#cfLabel').focus();
+    }
+
+    /* ── Refresh card ── */
+    function refreshCard(pid) {
+        const card = document.getElementById(`pcard_${pid}`);
+        if (!card) return;
+        const product = products.find(p => p.id === pid);
+        if (!product) return;
+
+        const wasOpen = card.classList.contains('open');
+        const newCard = buildProductCard(product, locationRules[currentLoc]?.[pid] || []);
+        if (wasOpen) newCard.classList.add('open');
+        card.replaceWith(newCard);
+
+        renderStats();
+        renderLocStrip();
+        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+    }
+
+    function refreshCardTotal(pid) {
+        const el = document.getElementById(`ptotal_${pid}`);
+        const card = document.getElementById(`pcard_${pid}`);
+        if (!el || !card) return;
+        const product = products.find(p => p.id === pid);
+        const val = fmt(pid, getLocTotal(currentLoc, pid));
+        el.textContent = val;
+        el.className = 'product-total' + (val > 0 ? '' : ' zero');
+        if (val > 0) card.classList.add('has-data');
+        else card.classList.remove('has-data');
+        renderStats();
+        renderLocStrip();
+        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+    }
+
+    /* ══════════════════════════════════════
+       SUMMARY
+    ══════════════════════════════════════ */
+    function renderSummary() {
+        const allRows = products.map(p => {
+            const total = getAllTotal(p.id);
+            const display = fmt(p.id, total);
+            const detail = locations
+                .filter(loc => locationRules[loc]?.[p.id])
+                .map(loc => {
+                    const v = fmt(p.id, getLocTotal(loc, p.id));
+                    return v > 0 ? `${loc}: ${v}` : null;
+                }).filter(Boolean).join('\n') || '';
+            return { pid: p.id, name: p.name, unit: p.baseUnit, total: display, detail };
+        });
+
+        // Stats
+        const filled = allRows.filter(r => r.total > 0).length;
+        const sc = document.getElementById('summaryStats');
+        sc.innerHTML = `
+            <div class="ss-card">
+                <div class="ss-val">${allRows.length}</div>
+                <div class="ss-lbl">Всего позиций</div>
+            </div>
+            <div class="ss-card">
+                <div class="ss-val green">${filled}</div>
+                <div class="ss-lbl">Заполнено</div>
+            </div>
+            <div class="ss-card">
+                <div class="ss-val blue">${Math.round(filled / allRows.length * 100)}%</div>
+                <div class="ss-lbl">Готовность</div>
+            </div>
+            <div class="ss-card">
+                <div class="ss-val">${allRows.length - filled}</div>
+                <div class="ss-lbl">Пустых</div>
+            </div>`;
+
+        // List
+        let rows = allRows;
+        if (searchQ) rows = rows.filter(r => r.name.toLowerCase().includes(searchQ.toLowerCase()));
+        if (filterOnlyFilled) rows = rows.filter(r => r.total > 0);
+
+        const list = document.getElementById('summaryList');
+        list.innerHTML = '';
+        if (rows.length === 0) {
+            list.innerHTML = `<div class="empty-state"><div class="ei">🔍</div><p>Ничего не найдено</p></div>`;
+            return;
+        }
+        rows.forEach(r => {
+            const item = document.createElement('div');
+            item.className = 'sum-item' + (r.total === 0 ? ' zero' : '');
+            item.innerHTML = `
+                <div class="sum-item-left">
+                    <div class="sum-item-name">${r.name}</div>
+                    ${r.detail ? `<div class="sum-item-detail">${r.detail.replace(/\n/g,'<br>')}</div>` : ''}
+                </div>
+                <div class="sum-item-right">
+                    <div class="sum-item-val ${r.total === 0 ? 'zero' : ''}">${r.total}</div>
+                    <div class="sum-item-unit">${r.unit}</div>
+                </div>`;
+            list.appendChild(item);
+        });
+    }
+
+    function copySummary() {
+        const rows = products.map(p => ({
+            name: p.name, unit: p.baseUnit,
+            total: fmt(p.id, getAllTotal(p.id)),
+            detail: locations.filter(l => locationRules[l]?.[p.id])
+                .map(l => { const v = fmt(p.id, getLocTotal(l, p.id)); return v > 0 ? `${l}: ${v}` : null; })
+                .filter(Boolean).join(', ')
+        }));
+        let tsv = 'Продукт\tЕд. изм.\tИтого\tДетализация\n';
+        rows.forEach(r => tsv += `${r.name}\t${r.unit}\t${r.total}\t${r.detail}\n`);
+        navigator.clipboard.writeText(tsv)
+            .then(() => toast('✅ Скопировано в буфер обмена'))
+            .catch(() => toast('❌ Ошибка копирования'));
+    }
+
+    /* ══════════════════════════════════════
+       CLEAR / RESET
+    ══════════════════════════════════════ */
+    function clearLocation() {
+        if (!confirm(`Очистить все данные для "${currentLoc}"?`)) return;
+        const rules = locationRules[currentLoc] || {};
+        Object.keys(rules).forEach(pid => {
+            rules[pid].forEach((_, uIdx) => setRows(currentLoc, pid, uIdx, [null]));
+            setCU(currentLoc, pid, []);
+        });
+        renderLocStrip();
+        renderStats();
+        renderProducts();
+        toast('🧹 Помещение очищено');
+    }
+
+    function fullReset() {
+        if (!confirm('⚠️ Удалить ВСЕ данные по всем помещениям?')) return;
+        locations.forEach(loc => {
+            const rules = locationRules[loc] || {};
+            Object.keys(rules).forEach(pid => {
+                rules[pid].forEach((_, uIdx) => setRows(loc, pid, uIdx, [null]));
+                setCU(loc, pid, []);
+            });
+            products.forEach(p => setCU(loc, p.id, []));
+        });
+        renderLocStrip();
+        renderStats();
+        renderProducts();
+        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+        toast('🗑️ Все данные удалены');
+    }
+
+    /* ══════════════════════════════════════
+       TAB SWITCH
+    ══════════════════════════════════════ */
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+        if (tab === 'inventory') {
+            document.getElementById('tabInventory').classList.add('active');
+            document.getElementById('navInventory').classList.add('active');
+        } else {
+            document.getElementById('tabSummary').classList.add('active');
+            document.getElementById('navSummary').classList.add('active');
+            renderSummary();
+        }
+        document.getElementById('appBody').scrollTop = 0;
+    }
+
+    /* ══════════════════════════════════════
+       INIT
+    ══════════════════════════════════════ */
+    function init() {
+        renderLocStrip();
+        renderStats();
+        renderProducts();
+
+        document.getElementById('clearLocBtn').onclick = clearLocation;
+        document.getElementById('hardResetBtn').onclick = fullReset;
+        document.getElementById('copyBtn').onclick = copySummary;
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.onclick = () => switchTab(btn.dataset.tab);
+        });
+
+        document.getElementById('searchInput').oninput = e => {
+            searchQ = e.target.value;
+            renderSummary();
+        };
+
+        const btnAll = document.getElementById('filterAllBtn');
+        const btnFilled = document.getElementById('filterFilledBtn');
+        btnAll.onclick = () => {
+            filterOnlyFilled = false;
+            btnAll.classList.add('active');
+            btnFilled.classList.remove('active');
+            renderSummary();
+        };
+        btnFilled.onclick = () => {
+            filterOnlyFilled = true;
+            btnFilled.classList.add('active');
+            btnAll.classList.remove('active');
+            renderSummary();
+        };
+    }
+
+    init();
+})();
 </script>
 </body>
 </html>
