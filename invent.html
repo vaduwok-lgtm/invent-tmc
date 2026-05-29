@@ -45,7 +45,6 @@
             flex-direction: column;
         }
 
-        /* ── HEADER ── */
         .app-header {
             height: var(--header-h);
             background: #fff;
@@ -72,11 +71,6 @@
             font-weight: 700;
             color: var(--gray-800);
         }
-        .app-header .header-sub {
-            font-size: 11px;
-            color: var(--gray-400);
-            font-weight: 400;
-        }
         .header-reset-btn {
             background: none;
             border: none;
@@ -89,7 +83,6 @@
         }
         .header-reset-btn:active { background: var(--red-light); color: var(--red); }
 
-        /* ── SCROLL AREA ── */
         .app-body {
             flex: 1;
             overflow-y: auto;
@@ -98,7 +91,6 @@
             padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
         }
 
-        /* ── BOTTOM NAV ── */
         .bottom-nav {
             height: calc(var(--nav-h) + var(--safe-bottom));
             padding-bottom: var(--safe-bottom);
@@ -150,11 +142,9 @@
             padding: 0 4px;
         }
 
-        /* ── TABS: INVENTORY ── */
         .tab-view { display: none; }
         .tab-view.active { display: block; }
 
-        /* ── LOCATION STRIP ── */
         .loc-strip-wrap {
             background: #fff;
             border-bottom: 1px solid var(--gray-200);
@@ -197,7 +187,6 @@
         .loc-chip.has-data .loc-dot { display: block; }
         .loc-chip.active .loc-dot { background: rgba(255,255,255,0.7); }
 
-        /* ── STATS ROW ── */
         .stats-row {
             display: flex;
             gap: 10px;
@@ -226,7 +215,6 @@
             font-weight: 500;
         }
 
-        /* ── PRODUCTS ── */
         .products-list {
             padding: 12px;
             display: flex;
@@ -240,9 +228,7 @@
             border-radius: 16px;
             overflow: hidden;
         }
-        .product-card.has-data {
-            border-color: #bfdbfe;
-        }
+        .product-card.has-data { border-color: #bfdbfe; }
 
         .product-header {
             display: flex;
@@ -276,11 +262,7 @@
             align-items: flex-end;
             gap: 3px;
         }
-        .product-total {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-        }
+        .product-total { font-size: 16px; font-weight: 700; color: var(--primary); }
         .product-total.zero { color: var(--gray-300); }
         .product-unit-tag {
             font-size: 11px;
@@ -306,7 +288,6 @@
         }
         .product-card.open .product-body { display: block; }
 
-        /* ── UNIT BLOCK ── */
         .unit-block {
             margin-bottom: 10px;
             background: #fff;
@@ -332,11 +313,7 @@
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
-        .unit-subtotal {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--primary);
-        }
+        .unit-subtotal { font-size: 12px; font-weight: 600; color: var(--primary); }
 
         .unit-rows { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
 
@@ -354,7 +331,6 @@
             flex-shrink: 0;
         }
 
-        /* ── VALUE CONTROL ── */
         .vc {
             flex: 1;
             display: flex;
@@ -394,11 +370,7 @@
         .vc-input:focus { outline: none; }
         .vc-input::placeholder { color: var(--gray-300); font-weight: 400; }
 
-        .row-actions {
-            display: flex;
-            gap: 4px;
-            flex-shrink: 0;
-        }
+        .row-actions { display: flex; gap: 4px; flex-shrink: 0; }
         .row-action-btn {
             width: 40px; height: 48px;
             border-radius: 10px;
@@ -416,7 +388,6 @@
         .row-action-btn.del { background: var(--red-light); color: var(--red); border-color: #fecaca; }
         .row-action-btn.del:active { background: #fecaca; }
 
-        /* ── PRODUCT FOOTER ── */
         .product-footer {
             padding: 10px 12px 12px;
             display: flex;
@@ -440,7 +411,6 @@
         .clear-product-btn { border-color: #fecaca; color: var(--red); }
         .clear-product-btn:active { background: var(--red-light); }
 
-        /* ── CUSTOM FORM ── */
         .custom-form {
             margin: 0 12px 12px;
             background: var(--primary-light);
@@ -451,12 +421,7 @@
             flex-direction: column;
             gap: 8px;
         }
-        .custom-form-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 2px;
-        }
+        .custom-form-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
         .custom-form input {
             background: #fff;
             border: 1px solid #bfdbfe;
@@ -467,10 +432,7 @@
             width: 100%;
         }
         .custom-form input:focus { outline: 2px solid var(--primary); }
-        .custom-form-btns {
-            display: flex;
-            gap: 8px;
-        }
+        .custom-form-btns { display: flex; gap: 8px; }
         .custom-form-btns button {
             flex: 1;
             padding: 10px;
@@ -484,7 +446,6 @@
         .cf-save { background: var(--primary); color: white; }
         .cf-cancel { background: var(--gray-100); color: var(--gray-600); }
 
-        /* ── EMPTY STATE ── */
         .empty-state {
             text-align: center;
             padding: 48px 24px;
@@ -493,7 +454,6 @@
         .empty-state .ei { font-size: 52px; margin-bottom: 12px; }
         .empty-state p { font-size: 15px; }
 
-        /* ── CLEAR LOCATION BTN ── */
         .clear-loc-btn {
             margin: 12px;
             width: calc(100% - 24px);
@@ -510,9 +470,6 @@
         }
         .clear-loc-btn:active { background: #fecaca; }
 
-        /* ══════════════════════════════════
-           SUMMARY TAB
-        ══════════════════════════════════ */
         .summary-header {
             padding: 16px 16px 12px;
             display: flex;
@@ -520,16 +477,8 @@
             justify-content: space-between;
             gap: 10px;
         }
-        .summary-header h2 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--gray-800);
-        }
-        .summary-header p {
-            font-size: 12px;
-            color: var(--gray-400);
-            margin-top: 2px;
-        }
+        .summary-header h2 { font-size: 18px; font-weight: 700; color: var(--gray-800); }
+        .summary-header p { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
 
         .summary-stats {
             display: grid;
@@ -543,26 +492,12 @@
             border-radius: 14px;
             padding: 14px;
         }
-        .ss-card .ss-val {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--gray-800);
-            line-height: 1;
-        }
+        .ss-card .ss-val { font-size: 26px; font-weight: 700; color: var(--gray-800); line-height: 1; }
         .ss-card .ss-val.green { color: var(--green); }
         .ss-card .ss-val.blue { color: var(--primary); }
-        .ss-card .ss-lbl {
-            font-size: 12px;
-            color: var(--gray-400);
-            margin-top: 4px;
-            font-weight: 500;
-        }
+        .ss-card .ss-lbl { font-size: 12px; color: var(--gray-400); margin-top: 4px; font-weight: 500; }
 
-        /* Search */
-        .search-wrap {
-            padding: 0 16px 12px;
-            position: relative;
-        }
+        .search-wrap { padding: 0 16px 12px; position: relative; }
         .search-wrap input {
             width: 100%;
             background: #fff;
@@ -582,12 +517,7 @@
             pointer-events: none;
         }
 
-        /* Filter */
-        .filter-row {
-            padding: 0 16px 12px;
-            display: flex;
-            gap: 8px;
-        }
+        .filter-row { padding: 0 16px 12px; display: flex; gap: 8px; }
         .filter-chip {
             padding: 7px 14px;
             border-radius: 20px;
@@ -600,19 +530,9 @@
             touch-action: manipulation;
             transition: all 0.15s;
         }
-        .filter-chip.active {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+        .filter-chip.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
 
-        /* Summary list */
-        .summary-list {
-            padding: 0 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .summary-list { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
         .sum-item {
             background: #fff;
             border: 1px solid var(--gray-200);
@@ -624,39 +544,14 @@
         }
         .sum-item.zero { opacity: 0.5; }
         .sum-item-left { flex: 1; }
-        .sum-item-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--gray-800);
-            margin-bottom: 4px;
-        }
-        .sum-item-detail {
-            font-size: 11px;
-            color: var(--gray-400);
-            line-height: 1.5;
-        }
-        .sum-item-right {
-            text-align: right;
-            flex-shrink: 0;
-        }
-        .sum-item-val {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1;
-        }
+        .sum-item-name { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+        .sum-item-detail { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+        .sum-item-right { text-align: right; flex-shrink: 0; }
+        .sum-item-val { font-size: 20px; font-weight: 700; color: var(--primary); line-height: 1; }
         .sum-item-val.zero { color: var(--gray-300); }
-        .sum-item-unit {
-            font-size: 11px;
-            color: var(--gray-400);
-            font-weight: 600;
-            margin-top: 3px;
-        }
+        .sum-item-unit { font-size: 11px; color: var(--gray-400); font-weight: 600; margin-top: 3px; }
 
-        /* Copy btn */
-        .copy-block {
-            padding: 16px;
-        }
+        .copy-block { padding: 16px; }
         .copy-btn {
             width: 100%;
             padding: 16px;
@@ -674,14 +569,8 @@
             gap: 8px;
         }
         .copy-btn:active { background: var(--primary-dark); }
-        .copy-hint {
-            text-align: center;
-            font-size: 12px;
-            color: var(--gray-400);
-            margin-top: 8px;
-        }
+        .copy-hint { text-align: center; font-size: 12px; color: var(--gray-400); margin-top: 8px; }
 
-        /* ── TOAST ── */
         .toast {
             position: fixed;
             bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
@@ -699,32 +588,24 @@
             white-space: nowrap;
             pointer-events: none;
         }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="app-header">
     <div class="logo">📦</div>
     <div style="flex:1;">
         <div class="header-title">Инвентаризация</div>
     </div>
-    <button class="header-reset-btn" id="hardResetBtn" title="Сбросить все данные">🗑️</button>
+    <button class="header-reset-btn" id="hardResetBtn">🗑️</button>
 </header>
 
-<!-- BODY -->
 <div class="app-body" id="appBody">
 
-    <!-- ═══ TAB: INVENTORY ═══ -->
     <div class="tab-view active" id="tabInventory">
-        <!-- Location strip -->
         <div class="loc-strip-wrap" id="locStrip"></div>
-        <!-- Stats -->
-        <div class="stats-row" id="statsRow">
+        <div class="stats-row">
             <div class="stat-pill">
                 <div class="sp-val" id="stTotal">—</div>
                 <div class="sp-lbl">Позиций</div>
@@ -738,13 +619,10 @@
                 <div class="sp-lbl">Готовность</div>
             </div>
         </div>
-        <!-- Products -->
         <div class="products-list" id="productsList"></div>
-        <!-- Clear location -->
         <button class="clear-loc-btn" id="clearLocBtn">🧹 Очистить помещение</button>
     </div>
 
-    <!-- ═══ TAB: SUMMARY ═══ -->
     <div class="tab-view" id="tabSummary">
         <div class="summary-header">
             <div>
@@ -770,7 +648,6 @@
 
 </div>
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
     <button class="nav-btn active" id="navInventory" data-tab="inventory">
         <span class="nav-icon">📝</span>
@@ -783,14 +660,10 @@
     </button>
 </nav>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 (function () {
-    /* ══════════════════════════════════════
-       DATA
-    ══════════════════════════════════════ */
     const products = [
         { id:"p1",  name:"Голень",                    baseUnit:"шт" },
         { id:"p2",  name:"Крылья",                    baseUnit:"шт" },
@@ -899,9 +772,7 @@
     let filterOnlyFilled = true;
     let searchQ = '';
 
-    /* ══════════════════════════════════════
-       STORAGE
-    ══════════════════════════════════════ */
+    /* ── Storage ── */
     function getRows(loc, pid, uIdx) {
         const raw = localStorage.getItem(`inv_${loc}_${pid}_${uIdx}`);
         return raw ? JSON.parse(raw) : [null];
@@ -917,9 +788,7 @@
         localStorage.setItem(`cu_${loc}_${pid}`, JSON.stringify(cu));
     }
 
-    /* ══════════════════════════════════════
-       CALC
-    ══════════════════════════════════════ */
+    /* ── Calc ── */
     function getLocTotal(loc, pid) {
         let t = 0;
         const rules = locationRules[loc]?.[pid];
@@ -938,15 +807,13 @@
         const p = products.find(x => x.id === pid);
         return p?.baseUnit === 'шт' ? Math.round(val) : Math.round(val * 1000) / 1000;
     }
-    function step(label) {
+    function getStep(label) {
         const l = label.toLowerCase();
         return l === 'кг' || l === 'л' ? 0.1 : 1;
     }
     function rnd(v, s) { return s === 0.1 ? Math.round(v * 10) / 10 : Math.round(v); }
 
-    /* ══════════════════════════════════════
-       TOAST
-    ══════════════════════════════════════ */
+    /* ── Toast ── */
     function toast(msg) {
         const t = document.getElementById('toast');
         t.textContent = msg;
@@ -954,35 +821,45 @@
         setTimeout(() => t.classList.remove('show'), 2200);
     }
 
-    /* ══════════════════════════════════════
-       LOCATION STRIP
-    ══════════════════════════════════════ */
+    /* ── Nav badge ── */
+    function updateNavBadge() {
+        const totalFilled = products.filter(p => getAllTotal(p.id) > 0).length;
+        const badge = document.getElementById('navBadge');
+        badge.style.display = totalFilled > 0 ? 'flex' : 'none';
+        badge.textContent = totalFilled;
+    }
+
+    /* ── Location strip
+         ИСПРАВЛЕНИЕ: renderLocStrip только рисует чипы,
+         scrollIntoView вызывается отдельно только при смене локации
+    ── */
     function renderLocStrip() {
         const c = document.getElementById('locStrip');
         c.innerHTML = '';
         locations.forEach((loc, i) => {
             const chip = document.createElement('div');
             chip.className = 'loc-chip' + (i === currentLocIdx ? ' active' : '');
-            const hasData = Object.keys(locationRules[loc] || {}).some(pid => getLocTotal(loc, pid) > 0);
+            chip.id = `locchip_${i}`;
+            const hasData = Object.keys(locationRules[loc] || {})
+                .some(pid => getLocTotal(loc, pid) > 0);
             if (hasData) chip.classList.add('has-data');
             chip.innerHTML = `<span class="loc-dot"></span>${loc}`;
-            chip.onclick = () => {
-                currentLocIdx = i;
-                currentLoc = locations[i];
-                renderLocStrip();
-                renderStats();
-                renderProducts();
-            };
+            chip.onclick = () => switchLocation(i);
             c.appendChild(chip);
         });
-        // Scroll active into view
-        const active = c.querySelector('.active');
-        if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
     }
 
-    /* ══════════════════════════════════════
-       STATS
-    ══════════════════════════════════════ */
+    /* ── Точечное обновление has-data у чипа (без перерисовки и без scrollIntoView) ── */
+    function updateLocChipData(locIdx) {
+        const chip = document.getElementById(`locchip_${locIdx}`);
+        if (!chip) return;
+        const loc = locations[locIdx];
+        const hasData = Object.keys(locationRules[loc] || {})
+            .some(pid => getLocTotal(loc, pid) > 0);
+        chip.classList.toggle('has-data', hasData);
+    }
+
+    /* ── Stats (только текстовые счётчики, без перерисовки локаций) ── */
     function renderStats() {
         const rules = locationRules[currentLoc] || {};
         const pids = Object.keys(rules);
@@ -992,29 +869,32 @@
         document.getElementById('stTotal').textContent = total;
         document.getElementById('stFilled').textContent = filled;
         document.getElementById('stPct').textContent = pct + '%';
-
-        // Nav badge
-        const totalFilled = products.filter(p => getAllTotal(p.id) > 0).length;
-        const badge = document.getElementById('navBadge');
-        badge.style.display = totalFilled > 0 ? 'flex' : 'none';
-        badge.textContent = totalFilled;
     }
 
-    /* ══════════════════════════════════════
-       PRODUCTS
-    ══════════════════════════════════════ */
+    /* ── Switch location ── */
+    function switchLocation(idx) {
+        currentLocIdx = idx;
+        currentLoc = locations[idx];
+        renderLocStrip();
+        // scrollIntoView только здесь — при явной смене помещения
+        const active = document.getElementById(`locchip_${idx}`);
+        if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+        renderStats();
+        renderProducts();
+    }
+
+    /* ── Products ── */
     function renderProducts() {
         const container = document.getElementById('productsList');
         container.innerHTML = '';
         const rules = locationRules[currentLoc] || {};
-        let pids = new Set(Object.keys(rules));
+        const pids = new Set(Object.keys(rules));
         products.forEach(p => { if (getCU(currentLoc, p.id).length > 0) pids.add(p.id); });
 
         if (pids.size === 0) {
             container.innerHTML = `<div class="empty-state"><div class="ei">📭</div><p>Нет позиций для этого помещения</p></div>`;
             return;
         }
-
         pids.forEach(pid => {
             const product = products.find(p => p.id === pid);
             if (!product) return;
@@ -1031,35 +911,29 @@
         card.className = 'product-card' + (hasData ? ' has-data' : '');
         card.id = `pcard_${pid}`;
 
-        /* Header */
         const header = document.createElement('div');
         header.className = 'product-header';
         header.innerHTML = `
             <div class="product-indicator"></div>
             <div class="product-name">${product.name}</div>
             <div class="product-meta">
-                <div class="product-total ${hasData ? '' : 'zero'}" id="ptotal_${pid}">${totalVal}</div>
+                <div class="product-total ${hasData?'':'zero'}" id="ptotal_${pid}">${totalVal}</div>
                 <div class="product-unit-tag">${product.baseUnit}</div>
             </div>
             <div class="product-chevron">⌄</div>`;
-        header.onclick = () => {
-            card.classList.toggle('open');
-        };
+        header.onclick = () => card.classList.toggle('open');
         card.appendChild(header);
 
-        /* Body */
         const body = document.createElement('div');
         body.className = 'product-body';
 
         unitRules.forEach((unit, uIdx) => {
             body.appendChild(buildUnitBlock(currentLoc, pid, uIdx, unit.label, false));
         });
-
         getCU(currentLoc, pid).forEach((cu, cuIdx) => {
             body.appendChild(buildUnitBlock(currentLoc, pid, cuIdx, cu.label, true, cu.coefficient));
         });
 
-        /* Footer */
         const footer = document.createElement('div');
         footer.className = 'product-footer';
 
@@ -1082,16 +956,14 @@
         footer.appendChild(clrBtn);
         body.appendChild(footer);
         card.appendChild(body);
-
         return card;
     }
 
     /* ── Unit block ── */
     function buildUnitBlock(loc, pid, idx, label, isCustom, coef) {
-        const s = step(label);
+        const s = getStep(label);
         const block = document.createElement('div');
         block.className = 'unit-block';
-        block.id = `ub_${loc}_${pid}_${idx}_${isCustom ? 'c' : 's'}`;
 
         const bHeader = document.createElement('div');
         bHeader.className = 'unit-block-header';
@@ -1124,19 +996,21 @@
 
         const rowsWrap = document.createElement('div');
         rowsWrap.className = 'unit-rows';
-        rowsWrap.id = `rows_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`;
         block.appendChild(rowsWrap);
 
         function refreshRows() {
             const data = isCustom
                 ? (getCU(loc, pid)[idx]?.rows || [null])
                 : getRows(loc, pid, idx);
-            rowsWrap.innerHTML = '';
 
+            rowsWrap.innerHTML = '';
             let subTotal = 0;
+
             data.forEach((val, i) => {
                 const v = val == null || val === '' ? 0 : parseFloat(val);
-                subTotal += isCustom ? v * coef : locationRules[loc]?.[pid]?.[idx]?.toBase(v) || 0;
+                subTotal += isCustom
+                    ? v * coef
+                    : (locationRules[loc]?.[pid]?.[idx]?.toBase(v) || 0);
 
                 const row = document.createElement('div');
                 row.className = 'row-item';
@@ -1174,12 +1048,10 @@
                 const addRow = document.createElement('button');
                 addRow.className = 'row-action-btn';
                 addRow.textContent = '+';
-                addRow.title = 'Добавить строку';
 
                 const delRow = document.createElement('button');
                 delRow.className = 'row-action-btn del';
                 delRow.textContent = '−';
-                delRow.title = 'Удалить строку';
 
                 acts.appendChild(addRow);
                 acts.appendChild(delRow);
@@ -1189,10 +1061,10 @@
                 row.appendChild(acts);
                 rowsWrap.appendChild(row);
 
-                /* Events */
+                /* ── save: только обновляет данные и итоги, без перерисовки DOM ── */
                 const save = () => {
                     let nv = inp.value === '' ? null : rnd(parseFloat(inp.value) || 0, s);
-                    inp.value = nv == null ? '' : nv;
+                    if (nv !== null) inp.value = nv;
                     if (isCustom) {
                         let cu = getCU(loc, pid);
                         if (cu[idx]) { cu[idx].rows[i] = nv; setCU(loc, pid, cu); }
@@ -1201,11 +1073,16 @@
                         r[i] = nv;
                         setRows(loc, pid, idx, r);
                     }
-                    refreshRows();
-                    refreshCardTotal(pid);
+                    // Обновляем только нужные элементы без перерисовки списка
+                    updateSubtotal(loc, pid, idx, isCustom, coef);
+                    updateCardTotal(pid);
+                    updateNavBadge();
+                    if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
                 };
+
                 inp.addEventListener('change', save);
                 inp.addEventListener('blur', save);
+
                 dec.addEventListener('click', () => {
                     let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
                     inp.value = rnd(Math.max(0, v - s), s);
@@ -1216,6 +1093,8 @@
                     inp.value = rnd(v + s, s);
                     save();
                 });
+
+                /* ── addRow/delRow: перерисовывает только rowsWrap, не трогает скролл страницы ── */
                 addRow.addEventListener('click', () => {
                     if (isCustom) {
                         let cu = getCU(loc, pid);
@@ -1227,6 +1106,7 @@
                     }
                     refreshRows();
                 });
+
                 delRow.addEventListener('click', () => {
                     if (isCustom) {
                         let cu = getCU(loc, pid);
@@ -1241,17 +1121,66 @@
                         setRows(loc, pid, idx, r);
                     }
                     refreshRows();
-                    refreshCardTotal(pid);
+                    updateSubtotal(loc, pid, idx, isCustom, coef);
+                    updateCardTotal(pid);
+                    updateNavBadge();
                 });
             });
 
-            // Update subtotal label
+            // Обновляем субтотал после перерисовки строк
             const stEl = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
             if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, 0.1)}` : '';
         }
 
         refreshRows();
         return block;
+    }
+
+    /* ── Точечное обновление субтотала единицы (без перерисовки DOM) ── */
+    function updateSubtotal(loc, pid, idx, isCustom, coef) {
+        const data = isCustom
+            ? (getCU(loc, pid)[idx]?.rows || [null])
+            : getRows(loc, pid, idx);
+        let subTotal = 0;
+        data.forEach(v => {
+            const n = v == null || v === '' ? 0 : parseFloat(v);
+            subTotal += isCustom ? n * coef : (locationRules[loc]?.[pid]?.[idx]?.toBase(n) || 0);
+        });
+        const stEl = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
+        if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, 0.1)}` : '';
+    }
+
+    /* ── Точечное обновление итога карточки товара (без перерисовки карточки) ── */
+    function updateCardTotal(pid) {
+        const el = document.getElementById(`ptotal_${pid}`);
+        const card = document.getElementById(`pcard_${pid}`);
+        if (!el || !card) return;
+        const product = products.find(p => p.id === pid);
+        const val = fmt(pid, getLocTotal(currentLoc, pid));
+        el.textContent = val;
+        el.className = 'product-total' + (val > 0 ? '' : ' zero');
+        card.classList.toggle('has-data', val > 0);
+        card.querySelector('.product-indicator')?.classList.toggle('has-data', val > 0);
+
+        // Точечно обновляем только индикатор на чипе локации — без scrollIntoView
+        updateLocChipData(currentLocIdx);
+        renderStats();
+    }
+
+    /* ── Полная перерисовка карточки (при удалении кастомной единицы) ── */
+    function refreshCard(pid) {
+        const card = document.getElementById(`pcard_${pid}`);
+        if (!card) return;
+        const product = products.find(p => p.id === pid);
+        if (!product) return;
+        const wasOpen = card.classList.contains('open');
+        const newCard = buildProductCard(product, locationRules[currentLoc]?.[pid] || []);
+        if (wasOpen) newCard.classList.add('open');
+        card.replaceWith(newCard);
+        updateLocChipData(currentLocIdx);
+        renderStats();
+        updateNavBadge();
+        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
     }
 
     /* ── Custom form ── */
@@ -1269,7 +1198,6 @@
                 <button class="cf-save" id="cfSave">💾 Сохранить</button>
                 <button class="cf-cancel" id="cfCancel">Отмена</button>
             </div>`;
-        // Insert before footer
         const footer = body.querySelector('.product-footer');
         body.insertBefore(form, footer);
 
@@ -1286,41 +1214,7 @@
         form.querySelector('#cfLabel').focus();
     }
 
-    /* ── Refresh card ── */
-    function refreshCard(pid) {
-        const card = document.getElementById(`pcard_${pid}`);
-        if (!card) return;
-        const product = products.find(p => p.id === pid);
-        if (!product) return;
-
-        const wasOpen = card.classList.contains('open');
-        const newCard = buildProductCard(product, locationRules[currentLoc]?.[pid] || []);
-        if (wasOpen) newCard.classList.add('open');
-        card.replaceWith(newCard);
-
-        renderStats();
-        renderLocStrip();
-        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
-    }
-
-    function refreshCardTotal(pid) {
-        const el = document.getElementById(`ptotal_${pid}`);
-        const card = document.getElementById(`pcard_${pid}`);
-        if (!el || !card) return;
-        const product = products.find(p => p.id === pid);
-        const val = fmt(pid, getLocTotal(currentLoc, pid));
-        el.textContent = val;
-        el.className = 'product-total' + (val > 0 ? '' : ' zero');
-        if (val > 0) card.classList.add('has-data');
-        else card.classList.remove('has-data');
-        renderStats();
-        renderLocStrip();
-        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
-    }
-
-    /* ══════════════════════════════════════
-       SUMMARY
-    ══════════════════════════════════════ */
+    /* ── Summary ── */
     function renderSummary() {
         const allRows = products.map(p => {
             const total = getAllTotal(p.id);
@@ -1334,28 +1228,13 @@
             return { pid: p.id, name: p.name, unit: p.baseUnit, total: display, detail };
         });
 
-        // Stats
         const filled = allRows.filter(r => r.total > 0).length;
-        const sc = document.getElementById('summaryStats');
-        sc.innerHTML = `
-            <div class="ss-card">
-                <div class="ss-val">${allRows.length}</div>
-                <div class="ss-lbl">Всего позиций</div>
-            </div>
-            <div class="ss-card">
-                <div class="ss-val green">${filled}</div>
-                <div class="ss-lbl">Заполнено</div>
-            </div>
-            <div class="ss-card">
-                <div class="ss-val blue">${Math.round(filled / allRows.length * 100)}%</div>
-                <div class="ss-lbl">Готовность</div>
-            </div>
-            <div class="ss-card">
-                <div class="ss-val">${allRows.length - filled}</div>
-                <div class="ss-lbl">Пустых</div>
-            </div>`;
+        document.getElementById('summaryStats').innerHTML = `
+            <div class="ss-card"><div class="ss-val">${allRows.length}</div><div class="ss-lbl">Всего позиций</div></div>
+            <div class="ss-card"><div class="ss-val green">${filled}</div><div class="ss-lbl">Заполнено</div></div>
+            <div class="ss-card"><div class="ss-val blue">${Math.round(filled/allRows.length*100)}%</div><div class="ss-lbl">Готовность</div></div>
+            <div class="ss-card"><div class="ss-val">${allRows.length - filled}</div><div class="ss-lbl">Пустых</div></div>`;
 
-        // List
         let rows = allRows;
         if (searchQ) rows = rows.filter(r => r.name.toLowerCase().includes(searchQ.toLowerCase()));
         if (filterOnlyFilled) rows = rows.filter(r => r.total > 0);
@@ -1375,7 +1254,7 @@
                     ${r.detail ? `<div class="sum-item-detail">${r.detail.replace(/\n/g,'<br>')}</div>` : ''}
                 </div>
                 <div class="sum-item-right">
-                    <div class="sum-item-val ${r.total === 0 ? 'zero' : ''}">${r.total}</div>
+                    <div class="sum-item-val ${r.total===0?'zero':''}">${r.total}</div>
                     <div class="sum-item-unit">${r.unit}</div>
                 </div>`;
             list.appendChild(item);
@@ -1397,9 +1276,7 @@
             .catch(() => toast('❌ Ошибка копирования'));
     }
 
-    /* ══════════════════════════════════════
-       CLEAR / RESET
-    ══════════════════════════════════════ */
+    /* ── Clear / Reset ── */
     function clearLocation() {
         if (!confirm(`Очистить все данные для "${currentLoc}"?`)) return;
         const rules = locationRules[currentLoc] || {};
@@ -1410,6 +1287,7 @@
         renderLocStrip();
         renderStats();
         renderProducts();
+        updateNavBadge();
         toast('🧹 Помещение очищено');
     }
 
@@ -1426,17 +1304,15 @@
         renderLocStrip();
         renderStats();
         renderProducts();
+        updateNavBadge();
         if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
         toast('🗑️ Все данные удалены');
     }
 
-    /* ══════════════════════════════════════
-       TAB SWITCH
-    ══════════════════════════════════════ */
+    /* ── Tab switch ── */
     function switchTab(tab) {
         document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
         if (tab === 'inventory') {
             document.getElementById('tabInventory').classList.add('active');
             document.getElementById('navInventory').classList.add('active');
@@ -1448,13 +1324,12 @@
         document.getElementById('appBody').scrollTop = 0;
     }
 
-    /* ══════════════════════════════════════
-       INIT
-    ══════════════════════════════════════ */
+    /* ── Init ── */
     function init() {
         renderLocStrip();
         renderStats();
         renderProducts();
+        updateNavBadge();
 
         document.getElementById('clearLocBtn').onclick = clearLocation;
         document.getElementById('hardResetBtn').onclick = fullReset;
