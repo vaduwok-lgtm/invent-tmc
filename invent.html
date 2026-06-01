@@ -20,6 +20,9 @@
             --red-light: #fef2f2;
             --orange: #ea580c;
             --orange-light: #fff7ed;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --purple-dark: #6d28d9;
             --gray-50: #f8fafc;
             --gray-100: #f1f5f9;
             --gray-200: #e2e8f0;
@@ -35,41 +38,29 @@
         }
 
         html, body { height: 100%; overflow: hidden; }
-
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             background: var(--gray-50);
             color: var(--gray-800);
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
 
         /* ── HEADER ── */
         .app-header {
-            height: var(--header-h);
-            background: #fff;
+            height: var(--header-h); background: #fff;
             border-bottom: 1px solid var(--gray-200);
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            gap: 12px;
-            z-index: 10;
-            flex-shrink: 0;
+            display: flex; align-items: center; padding: 0 16px; gap: 12px;
+            z-index: 10; flex-shrink: 0;
         }
-        .app-header .logo {
-            width: 32px; height: 32px;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; flex-shrink: 0;
+        .logo {
+            width: 32px; height: 32px; background: var(--primary);
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; font-size: 16px; flex-shrink: 0;
         }
-        .app-header .header-title {
-            flex: 1; font-size: 17px; font-weight: 700; color: var(--gray-800);
-        }
+        .header-title { flex: 1; font-size: 17px; font-weight: 700; color: var(--gray-800); }
         .header-reset-btn {
             background: none; border: none; font-size: 22px; cursor: pointer;
-            padding: 6px; border-radius: 8px; color: var(--gray-400);
-            touch-action: manipulation;
+            padding: 6px; border-radius: 8px; color: var(--gray-400); touch-action: manipulation;
         }
         .header-reset-btn:active { background: var(--red-light); color: var(--red); }
 
@@ -112,7 +103,9 @@
         .tab-view { display: none; }
         .tab-view.active { display: block; }
 
-        /* ── LOCATION STRIP ── */
+        /* ══════════════════════════════════
+           INVENTORY TAB
+        ══════════════════════════════════ */
         .loc-strip-wrap {
             background: #fff; border-bottom: 1px solid var(--gray-200);
             padding: 10px 12px; overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -127,14 +120,10 @@
             white-space: nowrap; display: flex; align-items: center; gap: 6px;
         }
         .loc-chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-        .loc-chip .loc-dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--green); display: none;
-        }
+        .loc-chip .loc-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: none; }
         .loc-chip.has-data .loc-dot { display: block; }
         .loc-chip.active .loc-dot { background: rgba(255,255,255,0.7); }
 
-        /* ── STATS ── */
         .stats-row { display: flex; gap: 10px; padding: 12px 12px 0; }
         .stat-pill {
             flex: 1; background: #fff; border: 1px solid var(--gray-200);
@@ -145,10 +134,8 @@
         .stat-pill .sp-val.blue { color: var(--primary); }
         .stat-pill .sp-lbl { font-size: 10px; color: var(--gray-400); margin-top: 3px; font-weight: 500; }
 
-        /* ── PRODUCTS LIST ── */
         .products-list { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 
-        /* ── PRODUCT CARD ── */
         .product-card {
             background: #fff; border: 1px solid var(--gray-200);
             border-radius: 16px; overflow: hidden;
@@ -158,9 +145,8 @@
         .product-card.custom-product.has-data { border-color: #fb923c; }
 
         .product-header {
-            display: flex; align-items: center;
-            padding: 14px 14px 14px 16px; gap: 10px;
-            cursor: pointer; touch-action: manipulation; user-select: none;
+            display: flex; align-items: center; padding: 14px 14px 14px 16px;
+            gap: 10px; cursor: pointer; touch-action: manipulation; user-select: none;
         }
         .product-indicator {
             width: 4px; align-self: stretch; border-radius: 4px;
@@ -191,7 +177,6 @@
         }
         .product-card.open .product-body { display: block; }
 
-        /* ── UNIT BLOCK ── */
         .unit-block {
             margin-bottom: 10px; background: #fff;
             border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden;
@@ -206,11 +191,9 @@
         .unit-subtotal { font-size: 12px; font-weight: 600; color: var(--primary); }
         .unit-rows { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
 
-        /* ── ROW ITEM ── */
         .row-item { display: flex; align-items: center; gap: 6px; }
         .row-num { width: 20px; text-align: center; font-size: 11px; color: var(--gray-400); font-weight: 600; flex-shrink: 0; }
 
-        /* ── VALUE CONTROL ── */
         .vc {
             flex: 1; display: flex; align-items: center; background: var(--gray-100);
             border-radius: 10px; overflow: hidden; border: 1px solid var(--gray-200); height: 48px;
@@ -241,7 +224,6 @@
         .row-action-btn.del { background: var(--red-light); color: var(--red); border-color: #fecaca; }
         .row-action-btn.del:active { background: #fecaca; }
 
-        /* ── PRODUCT FOOTER ── */
         .product-footer { padding: 10px 12px 12px; display: flex; gap: 8px; flex-wrap: wrap; }
         .add-custom-btn, .clear-product-btn, .delete-product-btn {
             flex: 1; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 600;
@@ -254,13 +236,12 @@
         .delete-product-btn { border-color: #fed7aa; color: var(--orange); border-style: solid; background: var(--orange-light); }
         .delete-product-btn:active { background: #fed7aa; }
 
-        /* ── CUSTOM UNIT FORM ── */
         .custom-form {
             margin: 0 12px 12px; background: var(--primary-light);
             border: 1px solid #bfdbfe; border-radius: 12px;
             padding: 12px; display: flex; flex-direction: column; gap: 8px;
         }
-        .custom-form-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .custom-form-title { font-size: 13px; font-weight: 700; color: var(--primary); }
         .custom-form input {
             background: #fff; border: 1px solid #bfdbfe; padding: 10px 12px;
             border-radius: 10px; color: var(--gray-800); font-size: 14px; width: 100%;
@@ -274,22 +255,17 @@
         .cf-save { background: var(--primary); color: white; }
         .cf-cancel { background: var(--gray-100); color: var(--gray-600); }
 
-        /* ── ADD NEW PRODUCT FORM ── */
         .add-product-form {
             margin: 0 12px 12px; background: var(--orange-light);
             border: 1px solid #fed7aa; border-radius: 16px;
             padding: 14px; display: flex; flex-direction: column; gap: 10px;
         }
-        .add-product-form-title {
-            font-size: 14px; font-weight: 700; color: var(--orange);
-        }
-        .add-product-form input,
-        .add-product-form select {
+        .add-product-form-title { font-size: 14px; font-weight: 700; color: var(--orange); }
+        .add-product-form input, .add-product-form select {
             background: #fff; border: 1px solid #fed7aa; padding: 12px;
             border-radius: 10px; color: var(--gray-800); font-size: 15px; width: 100%;
         }
-        .add-product-form input:focus,
-        .add-product-form select:focus { outline: 2px solid var(--orange); border-color: var(--orange); }
+        .add-product-form input:focus, .add-product-form select:focus { outline: 2px solid var(--orange); }
         .add-product-form-btns { display: flex; gap: 8px; }
         .add-product-form-btns button {
             flex: 1; padding: 12px; border-radius: 10px; font-size: 14px;
@@ -298,18 +274,15 @@
         .apf-save { background: var(--orange); color: white; }
         .apf-cancel { background: var(--gray-100); color: var(--gray-600); }
 
-        /* ── ADD PRODUCT BUTTON ── */
         .add-product-btn {
             margin: 0 12px 4px; padding: 14px; border-radius: 14px;
-            font-size: 14px; font-weight: 700;
-            border: 2px dashed #fed7aa; background: var(--orange-light);
-            color: var(--orange); cursor: pointer; touch-action: manipulation;
-            text-align: center; width: calc(100% - 24px);
+            font-size: 14px; font-weight: 700; border: 2px dashed #fed7aa;
+            background: var(--orange-light); color: var(--orange); cursor: pointer;
+            touch-action: manipulation; text-align: center; width: calc(100% - 24px);
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .add-product-btn:active { background: #fed7aa; }
 
-        /* ── CLEAR LOCATION ── */
         .clear-loc-btn {
             margin: 8px 12px 12px; width: calc(100% - 24px); padding: 14px;
             background: var(--red-light); border: 1.5px solid #fecaca;
@@ -318,36 +291,29 @@
         }
         .clear-loc-btn:active { background: #fecaca; }
 
-        /* ── EMPTY STATE ── */
         .empty-state { text-align: center; padding: 48px 24px; color: var(--gray-400); }
         .empty-state .ei { font-size: 52px; margin-bottom: 12px; }
         .empty-state p { font-size: 15px; }
 
-        /* ══════════════════════
+        /* ══════════════════════════════════
            SUMMARY TAB
-        ══════════════════════ */
+        ══════════════════════════════════ */
         .summary-header { padding: 16px 16px 12px; }
-        .summary-header h2 { font-size: 18px; font-weight: 700; color: var(--gray-800); }
+        .summary-header h2 { font-size: 18px; font-weight: 700; }
         .summary-header p { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
-
         .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
         .ss-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 14px; }
         .ss-card .ss-val { font-size: 26px; font-weight: 700; color: var(--gray-800); line-height: 1; }
         .ss-card .ss-val.green { color: var(--green); }
         .ss-card .ss-val.blue { color: var(--primary); }
         .ss-card .ss-lbl { font-size: 12px; color: var(--gray-400); margin-top: 4px; font-weight: 500; }
-
         .search-wrap { padding: 0 16px 12px; position: relative; }
         .search-wrap input {
             width: 100%; background: #fff; border: 1.5px solid var(--gray-200);
             border-radius: 12px; padding: 12px 16px 12px 40px; font-size: 15px; color: var(--gray-800);
         }
         .search-wrap input:focus { outline: none; border-color: var(--primary); }
-        .search-icon {
-            position: absolute; left: 28px; top: 50%; transform: translateY(-50%);
-            font-size: 16px; color: var(--gray-400); pointer-events: none;
-        }
-
+        .search-icon { position: absolute; left: 28px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--gray-400); pointer-events: none; }
         .filter-row { padding: 0 16px 12px; display: flex; gap: 8px; }
         .filter-chip {
             padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
@@ -355,12 +321,10 @@
             cursor: pointer; touch-action: manipulation; transition: all 0.15s;
         }
         .filter-chip.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
-
         .summary-list { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
         .sum-item {
-            background: #fff; border: 1px solid var(--gray-200);
-            border-radius: 14px; padding: 14px;
-            display: flex; align-items: flex-start; gap: 10px;
+            background: #fff; border: 1px solid var(--gray-200); border-radius: 14px;
+            padding: 14px; display: flex; align-items: flex-start; gap: 10px;
         }
         .sum-item.zero { opacity: 0.5; }
         .sum-item.custom { border-color: #fed7aa; }
@@ -372,15 +336,190 @@
         .sum-item-val.zero { color: var(--gray-300); }
         .sum-item-unit { font-size: 11px; color: var(--gray-400); font-weight: 600; margin-top: 3px; }
 
-        .copy-block { padding: 16px; }
-        .copy-btn {
-            width: 100%; padding: 16px; background: var(--primary); color: white;
-            border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
-            cursor: pointer; touch-action: manipulation;
+        /* ══════════════════════════════════
+           DS TAB
+        ══════════════════════════════════ */
+        .ds-content { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+
+        /* Секция */
+        .ds-section {
+            background: #fff; border: 1px solid var(--gray-200);
+            border-radius: 16px; overflow: hidden;
+        }
+        .ds-section-header {
+            padding: 14px 16px; background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .ds-section-title {
+            font-size: 15px; font-weight: 700; color: var(--gray-800);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .ds-section-total {
+            font-size: 16px; font-weight: 700; color: var(--purple);
+        }
+
+        /* Номиналы сейфа */
+        .safe-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+        .nominal-row {
+            background: var(--gray-50); border: 1px solid var(--gray-200);
+            border-radius: 12px; overflow: hidden;
+        }
+        .nominal-header {
+            padding: 8px 12px; display: flex; align-items: center;
+            justify-content: space-between; gap: 8px;
+            cursor: pointer; touch-action: manipulation; user-select: none;
+        }
+        .nominal-label {
+            font-size: 14px; font-weight: 700; color: var(--gray-700);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .nominal-badge {
+            background: var(--purple-light); color: var(--purple);
+            font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+        }
+        .nominal-sum {
+            font-size: 14px; font-weight: 700; color: var(--purple);
+        }
+        .nominal-sum.zero { color: var(--gray-300); }
+        .nominal-chevron { font-size: 16px; color: var(--gray-300); transition: transform 0.2s; }
+        .nominal-row.open .nominal-chevron { transform: rotate(180deg); }
+        .nominal-rows-wrap {
+            display: none; padding: 0 8px 8px;
+        }
+        .nominal-row.open .nominal-rows-wrap { display: block; }
+
+        /* Строки номинала */
+        .nominal-input-rows { display: flex; flex-direction: column; gap: 6px; }
+        .nom-row-item { display: flex; align-items: center; gap: 6px; }
+        .nom-row-num { width: 20px; text-align: center; font-size: 11px; color: var(--gray-400); font-weight: 600; flex-shrink: 0; }
+
+        .nom-vc {
+            flex: 1; display: flex; align-items: center; background: var(--gray-100);
+            border-radius: 10px; overflow: hidden; border: 1px solid var(--gray-200); height: 48px;
+        }
+        .nom-vc-btn {
+            width: 48px; height: 48px; flex-shrink: 0; background: transparent; border: none;
+            font-size: 26px; font-weight: 300; color: var(--gray-600); cursor: pointer;
+            touch-action: manipulation; display: flex; align-items: center; justify-content: center;
+            transition: background 0.1s;
+        }
+        .nom-vc-btn:active { background: var(--purple); color: white; }
+        .nom-vc-input {
+            flex: 1; text-align: center; font-size: 18px; font-weight: 700;
+            background: #fff; border: none; color: var(--gray-800);
+            padding: 0 4px; height: 100%; min-width: 0;
+        }
+        .nom-vc-input:focus { outline: none; }
+        .nom-vc-input::placeholder { color: var(--gray-300); font-weight: 400; }
+
+        .nom-row-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .nom-row-btn {
+            width: 40px; height: 48px; border-radius: 10px; border: 1px solid var(--gray-200);
+            background: #fff; font-size: 18px; font-weight: bold; cursor: pointer;
+            touch-action: manipulation; display: flex; align-items: center; justify-content: center;
+            color: var(--gray-500);
+        }
+        .nom-row-btn:active { background: var(--gray-200); }
+        .nom-row-btn.del { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+        .nom-row-btn.del:active { background: #fecaca; }
+
+        /* Итого сейфа */
+        .safe-total-row {
+            margin: 4px 12px 12px; padding: 14px 16px;
+            background: var(--purple-light); border: 1.5px solid #ddd6fe;
+            border-radius: 12px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .safe-total-label { font-size: 14px; font-weight: 700; color: var(--purple); }
+        .safe-total-val { font-size: 22px; font-weight: 700; color: var(--purple); }
+
+        /* Касса / Авто карточка */
+        .cash-card {
+            background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden;
+        }
+        .cash-card-header {
+            padding: 12px 16px; background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        }
+        .cash-card-title { font-size: 15px; font-weight: 700; color: var(--gray-800); display: flex; align-items: center; gap: 8px; }
+        .cash-card-result {
+            font-size: 15px; font-weight: 700;
+        }
+        .cash-card-result.positive { color: var(--green); }
+        .cash-card-result.negative { color: var(--red); }
+        .cash-card-result.zero { color: var(--gray-300); }
+
+        .cash-card-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+        .cash-field {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--gray-50); border: 1px solid var(--gray-200);
+            border-radius: 12px; padding: 10px 14px;
+        }
+        .cash-field-label { font-size: 13px; font-weight: 600; color: var(--gray-500); flex: 1; }
+        .cash-field-input {
+            background: #fff; border: 1.5px solid var(--gray-200);
+            border-radius: 10px; padding: 10px 14px; font-size: 17px; font-weight: 700;
+            color: var(--gray-800); text-align: right; width: 160px;
+        }
+        .cash-field-input:focus { outline: none; border-color: var(--purple); }
+        .cash-field-input::placeholder { color: var(--gray-300); font-weight: 400; }
+
+        .cash-result-row {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--purple-light); border: 1.5px solid #ddd6fe;
+            border-radius: 12px; padding: 12px 14px;
+        }
+        .cash-result-label { font-size: 13px; font-weight: 700; color: var(--purple); flex: 1; }
+        .cash-result-val { font-size: 20px; font-weight: 700; }
+        .cash-result-val.positive { color: var(--green); }
+        .cash-result-val.negative { color: var(--red); }
+        .cash-result-val.zero { color: var(--gray-300); }
+
+        .cash-card-footer { padding: 0 12px 12px; }
+        .delete-cash-btn {
+            width: 100%; padding: 10px; border-radius: 10px;
+            background: var(--red-light); border: 1px solid #fecaca;
+            color: var(--red); font-size: 13px; font-weight: 700;
+            cursor: pointer; touch-action: manipulation; text-align: center;
+        }
+        .delete-cash-btn:active { background: #fecaca; }
+
+        /* Кнопки добавления */
+        .add-cash-btn {
+            width: 100%; padding: 14px; border-radius: 14px;
+            font-size: 14px; font-weight: 700;
+            border: 2px dashed #ddd6fe; background: var(--purple-light);
+            color: var(--purple); cursor: pointer; touch-action: manipulation;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .copy-btn:active { background: var(--primary-dark); }
-        .copy-hint { text-align: center; font-size: 12px; color: var(--gray-400); margin-top: 8px; }
+        .add-cash-btn:active { background: #ddd6fe; }
+
+        /* Общий итог ДС */
+        .ds-grand-total {
+            background: var(--gray-800); border-radius: 16px;
+            padding: 20px; margin: 0;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .ds-grand-title { font-size: 13px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; }
+        .ds-grand-breakdown { display: flex; flex-direction: column; gap: 6px; }
+        .ds-grand-line { display: flex; justify-content: space-between; align-items: center; }
+        .ds-grand-line-label { font-size: 13px; color: var(--gray-400); }
+        .ds-grand-line-val { font-size: 14px; font-weight: 600; color: var(--gray-200); }
+        .ds-grand-divider { height: 1px; background: var(--gray-600); margin: 4px 0; }
+        .ds-grand-sum-row { display: flex; justify-content: space-between; align-items: center; }
+        .ds-grand-sum-label { font-size: 16px; font-weight: 700; color: white; }
+        .ds-grand-sum-val { font-size: 28px; font-weight: 700; color: #a5f3fc; }
+
+        /* Кнопка очистки ДС */
+        .ds-clear-btn {
+            width: 100%; padding: 14px; background: var(--red-light);
+            border: 1.5px solid #fecaca; border-radius: 12px;
+            font-size: 14px; font-weight: 700; color: var(--red);
+            cursor: pointer; touch-action: manipulation; text-align: center;
+        }
+        .ds-clear-btn:active { background: #fecaca; }
 
         /* ── TOAST ── */
         .toast {
@@ -431,9 +570,61 @@
             <button class="filter-chip active" id="filterFilledBtn">Только заполненные</button>
         </div>
         <div class="summary-list" id="summaryList"></div>
-        <div class="copy-block">
-            <button class="copy-btn" id="copyBtn">📋 Копировать в Excel</button>
-            <div class="copy-hint">Вставьте скопированные данные в таблицу (Ctrl+V)</div>
+    </div>
+
+    <!-- ══ TAB: DS ══ -->
+    <div class="tab-view" id="tabDs">
+        <div class="ds-content">
+
+            <!-- СЕЙФ -->
+            <div class="ds-section">
+                <div class="ds-section-header">
+                    <div class="ds-section-title">🏦 Сейф</div>
+                    <div class="ds-section-total" id="safeTotalHeader">0 ₽</div>
+                </div>
+                <div class="safe-body" id="safeBody"></div>
+                <div class="safe-total-row">
+                    <div class="safe-total-label">ИТОГО по сейфу</div>
+                    <div class="safe-total-val" id="safeTotal">0 ₽</div>
+                </div>
+            </div>
+
+            <!-- КАССЫ -->
+            <div class="ds-section">
+                <div class="ds-section-header">
+                    <div class="ds-section-title">💵 Кассы</div>
+                    <div class="ds-section-total" id="kassaTotalHeader">0 ₽</div>
+                </div>
+                <div style="padding:10px 12px; display:flex; flex-direction:column; gap:10px;">
+                    <div id="kassaList"></div>
+                    <button class="add-cash-btn" id="addKassaBtn">➕ Добавить кассу</button>
+                </div>
+            </div>
+
+            <!-- АВТО -->
+            <div class="ds-section">
+                <div class="ds-section-header">
+                    <div class="ds-section-title">🚗 Авто кассы</div>
+                    <div class="ds-section-total" id="avtoTotalHeader">0 ₽</div>
+                </div>
+                <div style="padding:10px 12px; display:flex; flex-direction:column; gap:10px;">
+                    <div id="avtoList"></div>
+                    <button class="add-cash-btn" id="addAvtoBtn">➕ Добавить авто кассу</button>
+                </div>
+            </div>
+
+            <!-- ОБЩИЙ ИТОГ -->
+            <div class="ds-grand-total" id="dsGrandTotal">
+                <div class="ds-grand-title">Общий итог ДС</div>
+                <div class="ds-grand-breakdown" id="dsGrandBreakdown"></div>
+                <div class="ds-grand-divider"></div>
+                <div class="ds-grand-sum-row">
+                    <div class="ds-grand-sum-label">ИТОГО</div>
+                    <div class="ds-grand-sum-val" id="dsGrandSum">0 ₽</div>
+                </div>
+            </div>
+
+            <button class="ds-clear-btn" id="dsClearBtn">🧹 Очистить все данные ДС</button>
         </div>
     </div>
 
@@ -446,6 +637,9 @@
     <button class="nav-btn" id="navSummary" data-tab="summary">
         <span class="nav-icon">📊</span>Итоги
         <span class="nav-badge" id="navBadge" style="display:none;"></span>
+    </button>
+    <button class="nav-btn" id="navDs" data-tab="ds">
+        <span class="nav-icon">💰</span>ДС
     </button>
 </nav>
 
@@ -493,68 +687,68 @@
 
     const locationRules = {
         "На станции": {
-            p1:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18)],
-            p2:  [mu("шт",q=>q), mu("пакет (50 шт)",q=>q*50), mu("пакет (60 шт)",q=>q*60)],
-            p3:  [mu("кг",q=>q), mu("пакет (2 кг)",q=>q*2)],
-            p4:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18)],
-            p5:  [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18)],
-            p6:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36)],
-            p7:  [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36)],
-            p8:  [mu("шт",q=>q), mu("кг",q=>q/0.019), mu("пакет (100 шт)",q=>q*100)],
-            p9:  [mu("кг",q=>q), mu("пакет (1 кг)",q=>q)],
-            p10: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
-            p11: [mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
-            p12: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1),
-                  mu("Уровень Ризки (1-8)", l=>{ let v=Math.round(l); return (v>=1&&v<=8)?RM[v]:0; })],
-            p13: [mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1),
-                  mu("Уровень Ризки (1-8)", l=>{ let v=Math.round(l); return (v>=1&&v<=8)?RC[v]:0; })],
-            p14: [mu("л",q=>q), mu("упаковка (1 л)",q=>q), mu("коробка (12 л)",q=>q*12)],
-            p15: [mu("шт",q=>q), mu("пачка (32 шт)",q=>q*32), mu("брикет (160 шт)",q=>q*160), mu("коробка (960 шт)",q=>q*960)],
-            p16: [mu("кг",q=>q), mu("упаковка (1 кг)",q=>q)],
-            p17: [mu("кг",q=>q), mu("упаковка (11,34 кг)",q=>q*11.34)],
-            p18: [mu("л",q=>q), mu("кега 20 л",q=>q*20), mu("кега 30 л",q=>q*30)],
-            p19: [mu("л",q=>q), mu("кега 20 л",q=>q*20), mu("кега 30 л",q=>q*30)],
-            p20:[mu("шт",q=>q)], p21:[mu("шт",q=>q)], p22:[mu("шт",q=>q)], p23:[mu("шт",q=>q)],
-            p24:[mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2)],
-            p25:[mu("кг",q=>q), mu("упаковка (1 кг)",q=>q)],
-            p26:[mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25)],
-            p27:[mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+            p1:[mu("шт",q=>q),mu("пакет (18 шт)",q=>q*18)],
+            p2:[mu("шт",q=>q),mu("пакет (50 шт)",q=>q*50),mu("пакет (60 шт)",q=>q*60)],
+            p3:[mu("кг",q=>q),mu("пакет (2 кг)",q=>q*2)],
+            p4:[mu("шт",q=>q),mu("пакет (18 шт)",q=>q*18)],
+            p5:[mu("шт",q=>q),mu("пакет (18 шт)",q=>q*18)],
+            p6:[mu("шт",q=>q),mu("пакет (36 шт)",q=>q*36)],
+            p7:[mu("шт",q=>q),mu("пакет (36 шт)",q=>q*36)],
+            p8:[mu("шт",q=>q),mu("кг",q=>q/0.019),mu("пакет (100 шт)",q=>q*100)],
+            p9:[mu("кг",q=>q),mu("пакет (1 кг)",q=>q)],
+            p10:[mu("кг",q=>q),mu("пакет (2,5 кг)",q=>q*2.5)],
+            p11:[mu("кг",q=>q),mu("пакет (2,5 кг)",q=>q*2.5)],
+            p12:[mu("кг",q=>q),mu("пакет (1,1 кг)",q=>q*1.1),mu("коробка (11,1 кг)",q=>q*11.1),
+                 mu("Уровень Ризки (1-8)",l=>{let v=Math.round(l);return(v>=1&&v<=8)?RM[v]:0;})],
+            p13:[mu("кг",q=>q),mu("пакет (1,1 кг)",q=>q*1.1),mu("коробка (11,1 кг)",q=>q*11.1),
+                 mu("Уровень Ризки (1-8)",l=>{let v=Math.round(l);return(v>=1&&v<=8)?RC[v]:0;})],
+            p14:[mu("л",q=>q),mu("упаковка (1 л)",q=>q),mu("коробка (12 л)",q=>q*12)],
+            p15:[mu("шт",q=>q),mu("пачка (32 шт)",q=>q*32),mu("брикет (160 шт)",q=>q*160),mu("коробка (960 шт)",q=>q*960)],
+            p16:[mu("кг",q=>q),mu("упаковка (1 кг)",q=>q)],
+            p17:[mu("кг",q=>q),mu("упаковка (11,34 кг)",q=>q*11.34)],
+            p18:[mu("л",q=>q),mu("кега 20 л",q=>q*20),mu("кега 30 л",q=>q*30)],
+            p19:[mu("л",q=>q),mu("кега 20 л",q=>q*20),mu("кега 30 л",q=>q*30)],
+            p20:[mu("шт",q=>q)],p21:[mu("шт",q=>q)],p22:[mu("шт",q=>q)],p23:[mu("шт",q=>q)],
+            p24:[mu("кг",q=>q),mu("упаковка (2 кг)",q=>q*2)],
+            p25:[mu("кг",q=>q),mu("упаковка (1 кг)",q=>q)],
+            p26:[mu("кг",q=>q),mu("упаковка (0,25 кг)",q=>q*0.25)],
+            p27:[mu("кг",q=>q),mu("бутылка (6,9 кг)",q=>q*6.9),mu("коробка (13,8 кг)",q=>q*13.8)]
         },
         "Морозный ларь": {
-            p8: [mu("шт",q=>q), mu("кг",q=>q/0.019), mu("пакет (100 шт)",q=>q*100)],
-            p9: [mu("кг",q=>q), mu("пакет (1 кг)",q=>q)],
-            p10:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
-            p11:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5)],
-            p24:[mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
-            p25:[mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)]
+            p8:[mu("шт",q=>q),mu("кг",q=>q/0.019),mu("пакет (100 шт)",q=>q*100)],
+            p9:[mu("кг",q=>q),mu("пакет (1 кг)",q=>q)],
+            p10:[mu("кг",q=>q),mu("пакет (2,5 кг)",q=>q*2.5)],
+            p11:[mu("кг",q=>q),mu("пакет (2,5 кг)",q=>q*2.5)],
+            p24:[mu("кг",q=>q),mu("упаковка (2 кг)",q=>q*2),mu("коробка (12 кг)",q=>q*12)],
+            p25:[mu("кг",q=>q),mu("упаковка (1 кг)",q=>q),mu("коробка (10 кг)",q=>q*10)]
         },
         "Морозильная камера": {
-            p1: [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (6 пак.)",q=>q*108), mu("коробка (8 пак.)",q=>q*144)],
-            p2: [mu("шт",q=>q), mu("пакет (50 шт)",q=>q*50), mu("пакет (60 шт)",q=>q*60), mu("коробка (6 пак.)",q=>q*300), mu("коробка (8 пак.)",q=>q*400)],
-            p3: [mu("кг",q=>q), mu("пакет (2 кг)",q=>q*2), mu("коробка (6 пак.)",q=>q*12), mu("коробка (8 пак.)",q=>q*16)],
-            p4: [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
-            p5: [mu("шт",q=>q), mu("пакет (18 шт)",q=>q*18), mu("коробка (8 пак.)",q=>q*144), mu("коробка (10 пак.)",q=>q*180)],
-            p6: [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
-            p7: [mu("шт",q=>q), mu("пакет (36 шт)",q=>q*36), mu("коробка (8 пак.)",q=>q*288), mu("коробка (10 пак.)",q=>q*360)],
-            p8: [mu("шт",q=>q), mu("пакет (100 шт)",q=>q*100), mu("коробка (7 пак.)",q=>q*700)],
-            p9: [mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (10 пак.)",q=>q*10)],
-            p10:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
-            p11:[mu("кг",q=>q), mu("пакет (2,5 кг)",q=>q*2.5), mu("коробка (5 пак.)",q=>q*12.5)],
-            p24:[mu("кг",q=>q), mu("упаковка (2 кг)",q=>q*2), mu("коробка (12 кг)",q=>q*12)],
-            p25:[mu("кг",q=>q), mu("упаковка (1 кг)",q=>q), mu("коробка (10 кг)",q=>q*10)],
-            p26:[mu("кг",q=>q), mu("упаковка (0,25 кг)",q=>q*0.25), mu("коробка (2,5 кг)",q=>q*2.5), mu("коробка (5 кг)",q=>q*5), mu("коробка (2,4 кг)",q=>q*2.4)]
+            p1:[mu("шт",q=>q),mu("пакет (18 шт)",q=>q*18),mu("коробка (6 пак.)",q=>q*108),mu("коробка (8 пак.)",q=>q*144)],
+            p2:[mu("шт",q=>q),mu("пакет (50 шт)",q=>q*50),mu("пакет (60 шт)",q=>q*60),mu("коробка (6 пак.)",q=>q*300),mu("коробка (8 пак.)",q=>q*400)],
+            p3:[mu("кг",q=>q),mu("пакет (2 кг)",q=>q*2),mu("коробка (6 пак.)",q=>q*12),mu("коробка (8 пак.)",q=>q*16)],
+            p4:[mu("шт",q=>q),mu("пакет (18 шт)",q=>q*18),mu("коробка (8 пак.)",q=>q*144),mu("коробка (10 пак.)",q=>q*180)],
+            p5:[mu("шт",q=>q),mu("пакет (18 шт)",q=>q*18),mu("коробка (8 пак.)",q=>q*144),mu("коробка (10 пак.)",q=>q*180)],
+            p6:[mu("шт",q=>q),mu("пакет (36 шт)",q=>q*36),mu("коробка (8 пак.)",q=>q*288),mu("коробка (10 пак.)",q=>q*360)],
+            p7:[mu("шт",q=>q),mu("пакет (36 шт)",q=>q*36),mu("коробка (8 пак.)",q=>q*288),mu("коробка (10 пак.)",q=>q*360)],
+            p8:[mu("шт",q=>q),mu("пакет (100 шт)",q=>q*100),mu("коробка (7 пак.)",q=>q*700)],
+            p9:[mu("кг",q=>q),mu("пакет (1 кг)",q=>q),mu("коробка (10 пак.)",q=>q*10)],
+            p10:[mu("кг",q=>q),mu("пакет (2,5 кг)",q=>q*2.5),mu("коробка (5 пак.)",q=>q*12.5)],
+            p11:[mu("кг",q=>q),mu("пакет (2,5 кг)",q=>q*2.5),mu("коробка (5 пак.)",q=>q*12.5)],
+            p24:[mu("кг",q=>q),mu("упаковка (2 кг)",q=>q*2),mu("коробка (12 кг)",q=>q*12)],
+            p25:[mu("кг",q=>q),mu("упаковка (1 кг)",q=>q),mu("коробка (10 кг)",q=>q*10)],
+            p26:[mu("кг",q=>q),mu("упаковка (0,25 кг)",q=>q*0.25),mu("коробка (2,5 кг)",q=>q*2.5),mu("коробка (5 кг)",q=>q*5),mu("коробка (2,4 кг)",q=>q*2.4)]
         },
         "Холодильная камера": {
-            p12:[mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
-            p13:[mu("кг",q=>q), mu("пакет (1,1 кг)",q=>q*1.1), mu("коробка (11,1 кг)",q=>q*11.1)],
-            p14:[mu("л",q=>q), mu("упаковка (1 л)",q=>q), mu("коробка (12 л)",q=>q*12)],
-            p15:[mu("шт",q=>q), mu("брикет (160 шт)",q=>q*160), mu("коробка (960 шт)",q=>q*960)],
-            p27:[mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+            p12:[mu("кг",q=>q),mu("пакет (1,1 кг)",q=>q*1.1),mu("коробка (11,1 кг)",q=>q*11.1)],
+            p13:[mu("кг",q=>q),mu("пакет (1,1 кг)",q=>q*1.1),mu("коробка (11,1 кг)",q=>q*11.1)],
+            p14:[mu("л",q=>q),mu("упаковка (1 л)",q=>q),mu("коробка (12 л)",q=>q*12)],
+            p15:[mu("шт",q=>q),mu("брикет (160 шт)",q=>q*160),mu("коробка (960 шт)",q=>q*960)],
+            p27:[mu("кг",q=>q),mu("бутылка (6,9 кг)",q=>q*6.9),mu("коробка (13,8 кг)",q=>q*13.8)]
         },
         "Сухой склад": {
-            p16:[mu("кг",q=>q), mu("пакет (1 кг)",q=>q), mu("коробка (8 кг)",q=>q*8), mu("коробка (4 кг)",q=>q*4)],
+            p16:[mu("кг",q=>q),mu("пакет (1 кг)",q=>q),mu("коробка (8 кг)",q=>q*8),mu("коробка (4 кг)",q=>q*4)],
             p17:[mu("пакет (11,34 кг)",q=>q*11.34)],
-            p27:[mu("кг",q=>q), mu("бутылка (6,9 кг)",q=>q*6.9), mu("коробка (13,8 кг)",q=>q*13.8)]
+            p27:[mu("кг",q=>q),mu("бутылка (6,9 кг)",q=>q*6.9),mu("коробка (13,8 кг)",q=>q*13.8)]
         }
     };
 
@@ -565,211 +759,203 @@
     let searchQ = '';
 
     /* ════════════════════════════════
-       STORAGE — стандартные данные
+       STORAGE — инвентаризация
     ════════════════════════════════ */
-    function getRows(loc, pid, uIdx) {
-        const raw = localStorage.getItem(`inv_${loc}_${pid}_${uIdx}`);
-        return raw ? JSON.parse(raw) : [null];
-    }
-    function setRows(loc, pid, uIdx, rows) {
-        localStorage.setItem(`inv_${loc}_${pid}_${uIdx}`, JSON.stringify(rows));
-    }
-    function getCU(loc, pid) {
-        const raw = localStorage.getItem(`cu_${loc}_${pid}`);
-        return raw ? JSON.parse(raw) : [];
-    }
-    function setCU(loc, pid, cu) {
-        localStorage.setItem(`cu_${loc}_${pid}`, JSON.stringify(cu));
-    }
+    function getRows(loc,pid,uIdx){const r=localStorage.getItem(`inv_${loc}_${pid}_${uIdx}`);return r?JSON.parse(r):[null];}
+    function setRows(loc,pid,uIdx,rows){localStorage.setItem(`inv_${loc}_${pid}_${uIdx}`,JSON.stringify(rows));}
+    function getCU(loc,pid){const r=localStorage.getItem(`cu_${loc}_${pid}`);return r?JSON.parse(r):[];}
+    function setCU(loc,pid,cu){localStorage.setItem(`cu_${loc}_${pid}`,JSON.stringify(cu));}
+    function getCustomProducts(loc){const r=localStorage.getItem(`cprods_${loc}`);return r?JSON.parse(r):[];}
+    function setCustomProducts(loc,arr){localStorage.setItem(`cprods_${loc}`,JSON.stringify(arr));}
+    function genId(){return 'cp_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);}
 
     /* ════════════════════════════════
-       STORAGE — кастомные продукты
-       Структура: [{ id, name, baseUnit, rows: [null], customUnits: [] }, ...]
+       STORAGE — ДС
     ════════════════════════════════ */
-    function getCustomProducts(loc) {
-        const raw = localStorage.getItem(`cprods_${loc}`);
-        return raw ? JSON.parse(raw) : [];
+    const NOMINALS = [5000,2000,1000,500,200,100,50,10,5,2,1];
+
+    function getDsData() {
+        const r = localStorage.getItem('ds_data');
+        if (r) return JSON.parse(r);
+        return {
+            safe: NOMINALS.reduce((acc,n)=>{ acc[n]=[null]; return acc; },{}),
+            kassas: [
+                { id:'k1', name:'Касса 1', vsego:'', vyruchka:'' },
+                { id:'k2', name:'Касса 2', vsego:'', vyruchka:'' }
+            ],
+            avtos: [
+                { id:'a1', name:'Авто 1', vsego:'', vyruchka:'' }
+            ]
+        };
     }
-    function setCustomProducts(loc, arr) {
-        localStorage.setItem(`cprods_${loc}`, JSON.stringify(arr));
-    }
-    function genId() {
-        return 'cp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-    }
+    function saveDsData(data){ localStorage.setItem('ds_data', JSON.stringify(data)); }
 
     /* ════════════════════════════════
-       CALC
+       CALC — инвентаризация
     ════════════════════════════════ */
-    function getLocTotal(loc, pid) {
-        // Кастомный продукт?
-        const cps = getCustomProducts(loc);
-        const cp = cps.find(p => p.id === pid);
-        if (cp) {
-            let t = 0;
-            (cp.rows || [null]).forEach(v => {
-                t += v == null || v === '' ? 0 : parseFloat(v);
-            });
-            (cp.customUnits || []).forEach(cu => {
-                (cu.rows || [null]).forEach(v => {
-                    t += (v == null || v === '' ? 0 : parseFloat(v)) * cu.coefficient;
-                });
-            });
+    function getLocTotal(loc,pid){
+        const cps=getCustomProducts(loc);
+        const cp=cps.find(p=>p.id===pid);
+        if(cp){
+            let t=0;
+            (cp.rows||[null]).forEach(v=>{t+=v==null||v===''?0:parseFloat(v);});
+            (cp.customUnits||[]).forEach(cu=>{(cu.rows||[null]).forEach(v=>{t+=(v==null||v===''?0:parseFloat(v))*cu.coefficient;});});
             return t;
         }
-        // Стандартный
-        let t = 0;
-        const rules = locationRules[loc]?.[pid];
-        if (rules) rules.forEach((u, i) => getRows(loc, pid, i).forEach(v => {
-            t += u.toBase(v == null || v === '' ? 0 : parseFloat(v));
-        }));
-        getCU(loc, pid).forEach(cu => cu.rows.forEach(v => {
-            t += (v == null || v === '' ? 0 : parseFloat(v)) * cu.coefficient;
-        }));
+        let t=0;
+        const rules=locationRules[loc]?.[pid];
+        if(rules)rules.forEach((u,i)=>getRows(loc,pid,i).forEach(v=>{t+=u.toBase(v==null||v===''?0:parseFloat(v));}));
+        getCU(loc,pid).forEach(cu=>cu.rows.forEach(v=>{t+=(v==null||v===''?0:parseFloat(v))*cu.coefficient;}));
         return t;
     }
+    function getAllTotal(pid){return locations.reduce((s,loc)=>s+getLocTotal(loc,pid),0);}
+    function fmt(baseUnit,val){return baseUnit==='шт'?Math.round(val):Math.round(val*1000)/1000;}
+    function getStep(label){const l=label.toLowerCase();return l==='кг'||l==='л'?0.1:1;}
+    function rnd(v,s){return s===0.1?Math.round(v*10)/10:Math.round(v);}
 
-    function getAllTotal(pid) {
-        return locations.reduce((s, loc) => s + getLocTotal(loc, pid), 0);
+    /* ════════════════════════════════
+       CALC — ДС
+    ════════════════════════════════ */
+    function fmtMoney(v){
+        if(v===0||v==='')return '0 ₽';
+        return v.toLocaleString('ru-RU')+ ' ₽';
+    }
+    function parseMoney(v){
+        if(v===''||v===null||v===undefined)return 0;
+        return parseFloat(String(v).replace(/\s/g,'').replace(',','.'))||0;
     }
 
-    function getCustomProductAllTotal(pid) {
-        return locations.reduce((s, loc) => {
-            const cp = getCustomProducts(loc).find(p => p.id === pid);
-            if (!cp) return s;
-            return s + getLocTotal(loc, pid);
-        }, 0);
+    function calcSafeTotal(){
+        const ds=getDsData();
+        let total=0;
+        NOMINALS.forEach(n=>{
+            const rows=ds.safe[n]||[null];
+            rows.forEach(v=>{total+=n*(v==null||v===''?0:parseInt(v)||0);});
+        });
+        return total;
     }
-
-    function fmt(baseUnit, val) {
-        return baseUnit === 'шт' ? Math.round(val) : Math.round(val * 1000) / 1000;
+    function calcCashItem(item){
+        const vsego=parseMoney(item.vsego);
+        const vyruchka=parseMoney(item.vyruchka);
+        return vsego - vyruchka;
     }
-    function getStep(label) {
-        const l = label.toLowerCase();
-        return l === 'кг' || l === 'л' ? 0.1 : 1;
+    function calcKassasTotal(){
+        const ds=getDsData();
+        return ds.kassas.reduce((s,k)=>s+calcCashItem(k),0);
     }
-    function rnd(v, s) { return s === 0.1 ? Math.round(v * 10) / 10 : Math.round(v); }
+    function calcAvtosTotal(){
+        const ds=getDsData();
+        return ds.avtos.reduce((s,a)=>s+calcCashItem(a),0);
+    }
+    function calcGrandTotal(){
+        return calcSafeTotal()+calcKassasTotal()+calcAvtosTotal();
+    }
 
     /* ════════════════════════════════
        TOAST
     ════════════════════════════════ */
-    function toast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2200);
+    function toast(msg){
+        const t=document.getElementById('toast');
+        t.textContent=msg; t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),2200);
     }
 
     /* ════════════════════════════════
        NAV BADGE
     ════════════════════════════════ */
-    function updateNavBadge() {
-        const stdFilled = stdProducts.filter(p => locations.some(loc => getLocTotal(loc, p.id) > 0)).length;
-        const cpFilled = locations.reduce((s, loc) => {
-            return s + getCustomProducts(loc).filter(cp => getLocTotal(loc, cp.id) > 0).length;
-        }, 0);
-        const total = stdFilled + cpFilled;
-        const badge = document.getElementById('navBadge');
-        badge.style.display = total > 0 ? 'flex' : 'none';
-        badge.textContent = total;
+    function updateNavBadge(){
+        const stdF=stdProducts.filter(p=>locations.some(loc=>getLocTotal(loc,p.id)>0)).length;
+        const cpF=locations.reduce((s,loc)=>s+getCustomProducts(loc).filter(cp=>getLocTotal(loc,cp.id)>0).length,0);
+        const total=stdF+cpF;
+        const badge=document.getElementById('navBadge');
+        badge.style.display=total>0?'flex':'none';
+        badge.textContent=total;
     }
 
     /* ════════════════════════════════
        LOCATION STRIP
     ════════════════════════════════ */
-    function renderLocStrip() {
-        const c = document.getElementById('locStrip');
-        c.innerHTML = '';
-        locations.forEach((loc, i) => {
-            const chip = document.createElement('div');
-            chip.className = 'loc-chip' + (i === currentLocIdx ? ' active' : '');
-            chip.id = `locchip_${i}`;
-            const stdHas = Object.keys(locationRules[loc] || {}).some(pid => getLocTotal(loc, pid) > 0);
-            const cpHas = getCustomProducts(loc).some(cp => getLocTotal(loc, cp.id) > 0);
-            if (stdHas || cpHas) chip.classList.add('has-data');
-            chip.innerHTML = `<span class="loc-dot"></span>${loc}`;
-            chip.onclick = () => switchLocation(i);
+    function renderLocStrip(){
+        const c=document.getElementById('locStrip');
+        c.innerHTML='';
+        locations.forEach((loc,i)=>{
+            const chip=document.createElement('div');
+            chip.className='loc-chip'+(i===currentLocIdx?' active':'');
+            chip.id=`locchip_${i}`;
+            const sH=Object.keys(locationRules[loc]||{}).some(pid=>getLocTotal(loc,pid)>0);
+            const cH=getCustomProducts(loc).some(cp=>getLocTotal(loc,cp.id)>0);
+            if(sH||cH)chip.classList.add('has-data');
+            chip.innerHTML=`<span class="loc-dot"></span>${loc}`;
+            chip.onclick=()=>switchLocation(i);
             c.appendChild(chip);
         });
     }
-
-    function updateLocChipData(locIdx) {
-        const chip = document.getElementById(`locchip_${locIdx}`);
-        if (!chip) return;
-        const loc = locations[locIdx];
-        const stdHas = Object.keys(locationRules[loc] || {}).some(pid => getLocTotal(loc, pid) > 0);
-        const cpHas = getCustomProducts(loc).some(cp => getLocTotal(loc, cp.id) > 0);
-        chip.classList.toggle('has-data', stdHas || cpHas);
+    function updateLocChipData(locIdx){
+        const chip=document.getElementById(`locchip_${locIdx}`);
+        if(!chip)return;
+        const loc=locations[locIdx];
+        const sH=Object.keys(locationRules[loc]||{}).some(pid=>getLocTotal(loc,pid)>0);
+        const cH=getCustomProducts(loc).some(cp=>getLocTotal(loc,cp.id)>0);
+        chip.classList.toggle('has-data',sH||cH);
     }
 
     /* ════════════════════════════════
        STATS
     ════════════════════════════════ */
-    function renderStats() {
-        const stdPids = Object.keys(locationRules[currentLoc] || {});
-        const cpList = getCustomProducts(currentLoc);
-        const total = stdPids.length + cpList.length;
-        const filled = stdPids.filter(pid => getLocTotal(currentLoc, pid) > 0).length
-                     + cpList.filter(cp => getLocTotal(currentLoc, cp.id) > 0).length;
-        const pct = total > 0 ? Math.round(filled / total * 100) : 0;
-        document.getElementById('stTotal').textContent = total;
-        document.getElementById('stFilled').textContent = filled;
-        document.getElementById('stPct').textContent = pct + '%';
+    function renderStats(){
+        const stdPids=Object.keys(locationRules[currentLoc]||{});
+        const cpList=getCustomProducts(currentLoc);
+        const total=stdPids.length+cpList.length;
+        const filled=stdPids.filter(pid=>getLocTotal(currentLoc,pid)>0).length
+                    +cpList.filter(cp=>getLocTotal(currentLoc,cp.id)>0).length;
+        const pct=total>0?Math.round(filled/total*100):0;
+        document.getElementById('stTotal').textContent=total;
+        document.getElementById('stFilled').textContent=filled;
+        document.getElementById('stPct').textContent=pct+'%';
     }
 
     /* ════════════════════════════════
        SWITCH LOCATION
     ════════════════════════════════ */
-    function switchLocation(idx) {
-        currentLocIdx = idx;
-        currentLoc = locations[idx];
+    function switchLocation(idx){
+        currentLocIdx=idx; currentLoc=locations[idx];
         renderLocStrip();
-        const active = document.getElementById(`locchip_${idx}`);
-        if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
-        renderStats();
-        renderProducts();
-        // Сбросить форму добавления продукта
-        document.getElementById('addProductFormWrap').innerHTML = '';
+        const active=document.getElementById(`locchip_${idx}`);
+        if(active)active.scrollIntoView({block:'nearest',inline:'center'});
+        renderStats(); renderProducts();
+        document.getElementById('addProductFormWrap').innerHTML='';
     }
 
     /* ════════════════════════════════
        RENDER PRODUCTS
     ════════════════════════════════ */
-    function renderProducts() {
-        const container = document.getElementById('productsList');
-        container.innerHTML = '';
-
-        // Стандартные
-        const rules = locationRules[currentLoc] || {};
-        const stdPids = new Set(Object.keys(rules));
-        stdProducts.forEach(p => { if (getCU(currentLoc, p.id).length > 0) stdPids.add(p.id); });
-
-        stdPids.forEach(pid => {
-            const product = stdProducts.find(p => p.id === pid);
-            if (!product) return;
-            container.appendChild(buildStdProductCard(product, rules[pid] || []));
+    function renderProducts(){
+        const container=document.getElementById('productsList');
+        container.innerHTML='';
+        const rules=locationRules[currentLoc]||{};
+        const stdPids=new Set(Object.keys(rules));
+        stdProducts.forEach(p=>{if(getCU(currentLoc,p.id).length>0)stdPids.add(p.id);});
+        stdPids.forEach(pid=>{
+            const product=stdProducts.find(p=>p.id===pid);
+            if(!product)return;
+            container.appendChild(buildStdProductCard(product,rules[pid]||[]));
         });
-
-        // Кастомные
-        getCustomProducts(currentLoc).forEach(cp => {
-            container.appendChild(buildCustomProductCard(cp));
-        });
+        getCustomProducts(currentLoc).forEach(cp=>{container.appendChild(buildCustomProductCard(cp));});
     }
 
     /* ════════════════════════════════
        СТАНДАРТНАЯ КАРТОЧКА
     ════════════════════════════════ */
-    function buildStdProductCard(product, unitRules) {
-        const pid = product.id;
-        const totalVal = fmt(product.baseUnit, getLocTotal(currentLoc, pid));
-        const hasData = totalVal > 0;
-
-        const card = document.createElement('div');
-        card.className = 'product-card' + (hasData ? ' has-data' : '');
-        card.id = `pcard_${pid}`;
-
-        const header = document.createElement('div');
-        header.className = 'product-header';
-        header.innerHTML = `
+    function buildStdProductCard(product,unitRules){
+        const pid=product.id;
+        const totalVal=fmt(product.baseUnit,getLocTotal(currentLoc,pid));
+        const hasData=totalVal>0;
+        const card=document.createElement('div');
+        card.className='product-card'+(hasData?' has-data':'');
+        card.id=`pcard_${pid}`;
+        const header=document.createElement('div');
+        header.className='product-header';
+        header.innerHTML=`
             <div class="product-indicator"></div>
             <div class="product-name">${product.name}</div>
             <div class="product-meta">
@@ -777,59 +963,45 @@
                 <div class="product-unit-tag">${product.baseUnit}</div>
             </div>
             <div class="product-chevron">⌄</div>`;
-        header.onclick = () => card.classList.toggle('open');
+        header.onclick=()=>card.classList.toggle('open');
         card.appendChild(header);
-
-        const body = document.createElement('div');
-        body.className = 'product-body';
-
-        unitRules.forEach((unit, uIdx) => {
-            body.appendChild(buildUnitBlock(currentLoc, pid, uIdx, unit.label, false, null, product.baseUnit));
-        });
-        getCU(currentLoc, pid).forEach((cu, cuIdx) => {
-            body.appendChild(buildUnitBlock(currentLoc, pid, cuIdx, cu.label, true, cu.coefficient, product.baseUnit));
-        });
-
-        const footer = document.createElement('div');
-        footer.className = 'product-footer';
-
-        const addBtn = document.createElement('button');
-        addBtn.className = 'add-custom-btn';
-        addBtn.textContent = '➕ Своя единица';
-        addBtn.onclick = () => toggleCustomUnitForm(body, currentLoc, pid, false);
-
-        const clrBtn = document.createElement('button');
-        clrBtn.className = 'clear-product-btn';
-        clrBtn.textContent = '🗑 Очистить';
-        clrBtn.onclick = () => {
-            if (!confirm(`Очистить "${product.name}"?`)) return;
-            unitRules.forEach((_, uIdx) => setRows(currentLoc, pid, uIdx, [null]));
-            setCU(currentLoc, pid, []);
-            refreshStdCard(pid, product, unitRules);
+        const body=document.createElement('div');
+        body.className='product-body';
+        unitRules.forEach((unit,uIdx)=>{body.appendChild(buildUnitBlock(currentLoc,pid,uIdx,unit.label,false,null,product.baseUnit));});
+        getCU(currentLoc,pid).forEach((cu,cuIdx)=>{body.appendChild(buildUnitBlock(currentLoc,pid,cuIdx,cu.label,true,cu.coefficient,product.baseUnit));});
+        const footer=document.createElement('div');
+        footer.className='product-footer';
+        const addBtn=document.createElement('button');
+        addBtn.className='add-custom-btn';
+        addBtn.textContent='➕ Своя единица';
+        addBtn.onclick=()=>toggleCustomUnitForm(body,currentLoc,pid,false);
+        const clrBtn=document.createElement('button');
+        clrBtn.className='clear-product-btn';
+        clrBtn.textContent='🗑 Очистить';
+        clrBtn.onclick=()=>{
+            if(!confirm(`Очистить "${product.name}"?`))return;
+            unitRules.forEach((_,uIdx)=>setRows(currentLoc,pid,uIdx,[null]));
+            setCU(currentLoc,pid,[]);
+            refreshStdCard(pid,product,unitRules);
         };
-
-        footer.appendChild(addBtn);
-        footer.appendChild(clrBtn);
-        body.appendChild(footer);
-        card.appendChild(body);
+        footer.appendChild(addBtn); footer.appendChild(clrBtn);
+        body.appendChild(footer); card.appendChild(body);
         return card;
     }
 
     /* ════════════════════════════════
        КАСТОМНАЯ КАРТОЧКА ПРОДУКТА
     ════════════════════════════════ */
-    function buildCustomProductCard(cp) {
-        const pid = cp.id;
-        const totalVal = fmt(cp.baseUnit, getLocTotal(currentLoc, pid));
-        const hasData = totalVal > 0;
-
-        const card = document.createElement('div');
-        card.className = 'product-card custom-product' + (hasData ? ' has-data' : '');
-        card.id = `pcard_${pid}`;
-
-        const header = document.createElement('div');
-        header.className = 'product-header';
-        header.innerHTML = `
+    function buildCustomProductCard(cp){
+        const pid=cp.id;
+        const totalVal=fmt(cp.baseUnit,getLocTotal(currentLoc,pid));
+        const hasData=totalVal>0;
+        const card=document.createElement('div');
+        card.className='product-card custom-product'+(hasData?' has-data':'');
+        card.id=`pcard_${pid}`;
+        const header=document.createElement('div');
+        header.className='product-header';
+        header.innerHTML=`
             <div class="product-indicator"></div>
             <div class="product-name">${cp.name}</div>
             <div class="product-meta">
@@ -838,210 +1010,143 @@
                 <div class="custom-tag">свой</div>
             </div>
             <div class="product-chevron">⌄</div>`;
-        header.onclick = () => card.classList.toggle('open');
+        header.onclick=()=>card.classList.toggle('open');
         card.appendChild(header);
-
-        const body = document.createElement('div');
-        body.className = 'product-body';
-
-        // Основной блок ввода (базовая единица)
+        const body=document.createElement('div');
+        body.className='product-body';
         body.appendChild(buildCustomProductUnitBlock(cp));
-
-        // Кастомные единицы кастомного продукта
-        (cp.customUnits || []).forEach((cu, cuIdx) => {
-            body.appendChild(buildCPCustomUnitBlock(cp, cuIdx));
-        });
-
-        const footer = document.createElement('div');
-        footer.className = 'product-footer';
-
-        const addUnitBtn = document.createElement('button');
-        addUnitBtn.className = 'add-custom-btn';
-        addUnitBtn.textContent = '➕ Своя единица';
-        addUnitBtn.onclick = () => toggleCustomUnitForm(body, currentLoc, pid, true);
-
-        const clrBtn = document.createElement('button');
-        clrBtn.className = 'clear-product-btn';
-        clrBtn.textContent = '🗑 Очистить';
-        clrBtn.onclick = () => {
-            if (!confirm(`Очистить "${cp.name}"?`)) return;
-            let cps = getCustomProducts(currentLoc);
-            const idx = cps.findIndex(p => p.id === pid);
-            if (idx !== -1) {
-                cps[idx].rows = [null];
-                cps[idx].customUnits = [];
-                setCustomProducts(currentLoc, cps);
-            }
+        (cp.customUnits||[]).forEach((_,cuIdx)=>{body.appendChild(buildCPCustomUnitBlock(cp,cuIdx));});
+        const footer=document.createElement('div');
+        footer.className='product-footer';
+        const addUnitBtn=document.createElement('button');
+        addUnitBtn.className='add-custom-btn';
+        addUnitBtn.textContent='➕ Своя единица';
+        addUnitBtn.onclick=()=>toggleCustomUnitForm(body,currentLoc,pid,true);
+        const clrBtn=document.createElement('button');
+        clrBtn.className='clear-product-btn';
+        clrBtn.textContent='🗑 Очистить';
+        clrBtn.onclick=()=>{
+            if(!confirm(`Очистить "${cp.name}"?`))return;
+            let cps=getCustomProducts(currentLoc);
+            const idx=cps.findIndex(p=>p.id===pid);
+            if(idx!==-1){cps[idx].rows=[null];cps[idx].customUnits=[];setCustomProducts(currentLoc,cps);}
             refreshCustomCard(pid);
         };
-
-        const delBtn = document.createElement('button');
-        delBtn.className = 'delete-product-btn';
-        delBtn.textContent = '✖ Удалить продукт';
-        delBtn.onclick = () => {
-            if (!confirm(`Удалить продукт "${cp.name}" из этого помещения?`)) return;
-            let cps = getCustomProducts(currentLoc);
-            setCustomProducts(currentLoc, cps.filter(p => p.id !== pid));
-            renderProducts();
-            renderStats();
-            updateLocChipData(currentLocIdx);
-            updateNavBadge();
+        const delBtn=document.createElement('button');
+        delBtn.className='delete-product-btn';
+        delBtn.textContent='✖ Удалить продукт';
+        delBtn.onclick=()=>{
+            if(!confirm(`Удалить продукт "${cp.name}"?`))return;
+            let cps=getCustomProducts(currentLoc);
+            setCustomProducts(currentLoc,cps.filter(p=>p.id!==pid));
+            renderProducts(); renderStats(); updateLocChipData(currentLocIdx); updateNavBadge();
             toast(`🗑 "${cp.name}" удалён`);
         };
-
-        footer.appendChild(addUnitBtn);
-        footer.appendChild(clrBtn);
-        footer.appendChild(delBtn);
-        body.appendChild(footer);
-        card.appendChild(body);
+        footer.appendChild(addUnitBtn); footer.appendChild(clrBtn); footer.appendChild(delBtn);
+        body.appendChild(footer); card.appendChild(body);
         return card;
     }
 
-    /* ── Блок ввода базовой единицы кастомного продукта ── */
-    function buildCustomProductUnitBlock(cp) {
-        const pid = cp.id;
-        const s = getStep(cp.baseUnit);
-
-        const block = document.createElement('div');
-        block.className = 'unit-block';
-
-        const bHeader = document.createElement('div');
-        bHeader.className = 'unit-block-header';
-        bHeader.innerHTML = `
-            <div class="unit-name">${cp.baseUnit}</div>
-            <div class="unit-subtotal" id="cpust_${pid}_base"></div>`;
+    function buildCustomProductUnitBlock(cp){
+        const pid=cp.id; const s=getStep(cp.baseUnit);
+        const block=document.createElement('div');
+        block.className='unit-block';
+        const bHeader=document.createElement('div');
+        bHeader.className='unit-block-header';
+        bHeader.innerHTML=`<div class="unit-name">${cp.baseUnit}</div><div class="unit-subtotal" id="cpust_${pid}_base"></div>`;
         block.appendChild(bHeader);
-
-        const rowsWrap = document.createElement('div');
-        rowsWrap.className = 'unit-rows';
+        const rowsWrap=document.createElement('div');
+        rowsWrap.className='unit-rows';
         block.appendChild(rowsWrap);
-
-        function refreshRows() {
-            const cps = getCustomProducts(currentLoc);
-            const cur = cps.find(p => p.id === pid);
-            if (!cur) return;
-            const data = cur.rows || [null];
-            rowsWrap.innerHTML = '';
-            let subTotal = 0;
-
-            data.forEach((val, i) => {
-                const v = val == null || val === '' ? 0 : parseFloat(val);
-                subTotal += v;
-                const row = makeRowDOM(val, s,
-                    (nv) => {
-                        let c = getCustomProducts(currentLoc);
-                        const ci = c.findIndex(p => p.id === pid);
-                        if (ci !== -1) { c[ci].rows[i] = nv; setCustomProducts(currentLoc, c); }
-                        updateCPSubtotal(pid, 'base', cp.baseUnit);
-                        updateCPCardTotal(pid, cp.baseUnit);
-                        updateNavBadge();
-                        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
-                    },
-                    () => {
-                        let c = getCustomProducts(currentLoc);
-                        const ci = c.findIndex(p => p.id === pid);
-                        if (ci !== -1) { c[ci].rows.push(null); setCustomProducts(currentLoc, c); }
-                        refreshRows();
-                    },
-                    () => {
-                        let c = getCustomProducts(currentLoc);
-                        const ci = c.findIndex(p => p.id === pid);
-                        if (ci !== -1) {
-                            if (c[ci].rows.length === 1) c[ci].rows = [null];
-                            else c[ci].rows.splice(i, 1);
-                            setCustomProducts(currentLoc, c);
-                        }
-                        refreshRows();
-                        updateCPSubtotal(pid, 'base', cp.baseUnit);
-                        updateCPCardTotal(pid, cp.baseUnit);
-                        updateNavBadge();
-                    },
-                    i
-                );
+        function refreshRows(){
+            const cps=getCustomProducts(currentLoc);
+            const cur=cps.find(p=>p.id===pid);
+            if(!cur)return;
+            const data=cur.rows||[null];
+            rowsWrap.innerHTML='';
+            let sub=0;
+            data.forEach((val,i)=>{
+                const v=val==null||val===''?0:parseFloat(val); sub+=v;
+                const row=makeRowDOM(val,s,(nv)=>{
+                    let c=getCustomProducts(currentLoc);
+                    const ci=c.findIndex(p=>p.id===pid);
+                    if(ci!==-1){c[ci].rows[i]=nv;setCustomProducts(currentLoc,c);}
+                    updateCPSubtotal(pid,'base',cp.baseUnit); updateCPCardTotal(pid,cp.baseUnit); updateNavBadge();
+                    if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
+                },()=>{
+                    let c=getCustomProducts(currentLoc);
+                    const ci=c.findIndex(p=>p.id===pid);
+                    if(ci!==-1){c[ci].rows.push(null);setCustomProducts(currentLoc,c);}
+                    refreshRows();
+                },()=>{
+                    let c=getCustomProducts(currentLoc);
+                    const ci=c.findIndex(p=>p.id===pid);
+                    if(ci!==-1){if(c[ci].rows.length===1)c[ci].rows=[null];else c[ci].rows.splice(i,1);setCustomProducts(currentLoc,c);}
+                    refreshRows(); updateCPSubtotal(pid,'base',cp.baseUnit); updateCPCardTotal(pid,cp.baseUnit); updateNavBadge();
+                },i);
                 rowsWrap.appendChild(row);
             });
-
-            const stEl = document.getElementById(`cpust_${pid}_base`);
-            if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, s)}` : '';
+            const el=document.getElementById(`cpust_${pid}_base`);
+            if(el)el.textContent=sub>0?`= ${rnd(sub,s)}`:'';
         }
-
         refreshRows();
         return block;
     }
 
-    /* ── Блок кастомной единицы кастомного продукта ── */
-    function buildCPCustomUnitBlock(cp, cuIdx) {
-        const pid = cp.id;
-        const block = document.createElement('div');
-        block.className = 'unit-block';
-
-        const bHeader = document.createElement('div');
-        bHeader.className = 'unit-block-header';
-
-        const nameEl = document.createElement('div');
-        nameEl.className = 'unit-name';
-        nameEl.textContent = `${cp.customUnits[cuIdx].label} ×${cp.customUnits[cuIdx].coefficient}`;
-
-        const delBtn = document.createElement('button');
-        delBtn.style.cssText = 'background:var(--red-light);border:none;color:var(--red);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;';
-        delBtn.textContent = '✖';
-        delBtn.onclick = () => {
-            let cps = getCustomProducts(currentLoc);
-            const ci = cps.findIndex(p => p.id === pid);
-            if (ci !== -1) { cps[ci].customUnits.splice(cuIdx, 1); setCustomProducts(currentLoc, cps); }
+    function buildCPCustomUnitBlock(cp,cuIdx){
+        const pid=cp.id;
+        const block=document.createElement('div');
+        block.className='unit-block';
+        const bHeader=document.createElement('div');
+        bHeader.className='unit-block-header';
+        const nameEl=document.createElement('div');
+        nameEl.className='unit-name';
+        nameEl.textContent=`${cp.customUnits[cuIdx].label} ×${cp.customUnits[cuIdx].coefficient}`;
+        const delBtn=document.createElement('button');
+        delBtn.style.cssText='background:var(--red-light);border:none;color:var(--red);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;';
+        delBtn.textContent='✖';
+        delBtn.onclick=()=>{
+            let cps=getCustomProducts(currentLoc);
+            const ci=cps.findIndex(p=>p.id===pid);
+            if(ci!==-1){cps[ci].customUnits.splice(cuIdx,1);setCustomProducts(currentLoc,cps);}
             refreshCustomCard(pid);
         };
-
-        bHeader.appendChild(nameEl);
-        bHeader.appendChild(delBtn);
-        block.appendChild(bHeader);
-
-        const rowsWrap = document.createElement('div');
-        rowsWrap.className = 'unit-rows';
+        bHeader.appendChild(nameEl); bHeader.appendChild(delBtn); block.appendChild(bHeader);
+        const rowsWrap=document.createElement('div');
+        rowsWrap.className='unit-rows';
         block.appendChild(rowsWrap);
-
-        function refreshRows() {
-            const cps = getCustomProducts(currentLoc);
-            const cur = cps.find(p => p.id === pid);
-            if (!cur || !cur.customUnits[cuIdx]) return;
-            const coef = cur.customUnits[cuIdx].coefficient;
-            const data = cur.customUnits[cuIdx].rows || [null];
-            rowsWrap.innerHTML = '';
-
-            data.forEach((val, i) => {
-                const row = makeRowDOM(val, 1,
-                    (nv) => {
-                        let c = getCustomProducts(currentLoc);
-                        const ci = c.findIndex(p => p.id === pid);
-                        if (ci !== -1) { c[ci].customUnits[cuIdx].rows[i] = nv; setCustomProducts(currentLoc, c); }
-                        updateCPCardTotal(pid, cur.baseUnit);
-                        updateNavBadge();
-                        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
-                    },
-                    () => {
-                        let c = getCustomProducts(currentLoc);
-                        const ci = c.findIndex(p => p.id === pid);
-                        if (ci !== -1) { c[ci].customUnits[cuIdx].rows.push(null); setCustomProducts(currentLoc, c); }
-                        refreshRows();
-                    },
-                    () => {
-                        let c = getCustomProducts(currentLoc);
-                        const ci = c.findIndex(p => p.id === pid);
-                        if (ci !== -1) {
-                            if (c[ci].customUnits[cuIdx].rows.length === 1) c[ci].customUnits[cuIdx].rows = [null];
-                            else c[ci].customUnits[cuIdx].rows.splice(i, 1);
-                            setCustomProducts(currentLoc, c);
-                        }
-                        refreshRows();
-                        updateCPCardTotal(pid, cur.baseUnit);
-                        updateNavBadge();
-                    },
-                    i
-                );
+        function refreshRows(){
+            const cps=getCustomProducts(currentLoc);
+            const cur=cps.find(p=>p.id===pid);
+            if(!cur||!cur.customUnits[cuIdx])return;
+            const coef=cur.customUnits[cuIdx].coefficient;
+            const data=cur.customUnits[cuIdx].rows||[null];
+            rowsWrap.innerHTML='';
+            data.forEach((val,i)=>{
+                const row=makeRowDOM(val,1,(nv)=>{
+                    let c=getCustomProducts(currentLoc);
+                    const ci=c.findIndex(p=>p.id===pid);
+                    if(ci!==-1){c[ci].customUnits[cuIdx].rows[i]=nv;setCustomProducts(currentLoc,c);}
+                    updateCPCardTotal(pid,cur.baseUnit); updateNavBadge();
+                    if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
+                },()=>{
+                    let c=getCustomProducts(currentLoc);
+                    const ci=c.findIndex(p=>p.id===pid);
+                    if(ci!==-1){c[ci].customUnits[cuIdx].rows.push(null);setCustomProducts(currentLoc,c);}
+                    refreshRows();
+                },()=>{
+                    let c=getCustomProducts(currentLoc);
+                    const ci=c.findIndex(p=>p.id===pid);
+                    if(ci!==-1){
+                        if(c[ci].customUnits[cuIdx].rows.length===1)c[ci].customUnits[cuIdx].rows=[null];
+                        else c[ci].customUnits[cuIdx].rows.splice(i,1);
+                        setCustomProducts(currentLoc,c);
+                    }
+                    refreshRows(); updateCPCardTotal(pid,cur.baseUnit); updateNavBadge();
+                },i);
                 rowsWrap.appendChild(row);
             });
         }
-
         refreshRows();
         return block;
     }
@@ -1049,94 +1154,60 @@
     /* ════════════════════════════════
        СТАНДАРТНЫЙ UNIT BLOCK
     ════════════════════════════════ */
-    function buildUnitBlock(loc, pid, idx, label, isCustom, coef, baseUnit) {
-        const s = getStep(label);
-        const block = document.createElement('div');
-        block.className = 'unit-block';
-
-        const bHeader = document.createElement('div');
-        bHeader.className = 'unit-block-header';
-        const nameEl = document.createElement('div');
-        nameEl.className = 'unit-name';
-        nameEl.textContent = isCustom ? `${label} ×${coef}` : label;
-        const subEl = document.createElement('div');
-        subEl.className = 'unit-subtotal';
-        subEl.id = `ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`;
-
-        if (isCustom) {
-            const delBtn = document.createElement('button');
-            delBtn.style.cssText = 'background:var(--red-light);border:none;color:var(--red);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;';
-            delBtn.textContent = '✖';
-            delBtn.onclick = () => {
-                let cu = getCU(loc, pid);
-                cu.splice(idx, 1);
-                setCU(loc, pid, cu);
-                refreshStdCard(pid, stdProducts.find(p=>p.id===pid), locationRules[loc]?.[pid]||[]);
+    function buildUnitBlock(loc,pid,idx,label,isCustom,coef,baseUnit){
+        const s=getStep(label);
+        const block=document.createElement('div');
+        block.className='unit-block';
+        const bHeader=document.createElement('div');
+        bHeader.className='unit-block-header';
+        const nameEl=document.createElement('div');
+        nameEl.className='unit-name';
+        nameEl.textContent=isCustom?`${label} ×${coef}`:label;
+        const subEl=document.createElement('div');
+        subEl.className='unit-subtotal';
+        subEl.id=`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`;
+        if(isCustom){
+            const delBtn=document.createElement('button');
+            delBtn.style.cssText='background:var(--red-light);border:none;color:var(--red);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;';
+            delBtn.textContent='✖';
+            delBtn.onclick=()=>{
+                let cu=getCU(loc,pid);cu.splice(idx,1);setCU(loc,pid,cu);
+                refreshStdCard(pid,stdProducts.find(p=>p.id===pid),locationRules[loc]?.[pid]||[]);
             };
-            bHeader.appendChild(nameEl);
-            bHeader.appendChild(delBtn);
-        } else {
-            bHeader.appendChild(nameEl);
-            bHeader.appendChild(subEl);
-        }
+            bHeader.appendChild(nameEl); bHeader.appendChild(delBtn);
+        } else { bHeader.appendChild(nameEl); bHeader.appendChild(subEl); }
         block.appendChild(bHeader);
-
-        const rowsWrap = document.createElement('div');
-        rowsWrap.className = 'unit-rows';
+        const rowsWrap=document.createElement('div');
+        rowsWrap.className='unit-rows';
         block.appendChild(rowsWrap);
-
-        function refreshRows() {
-            const data = isCustom ? (getCU(loc, pid)[idx]?.rows || [null]) : getRows(loc, pid, idx);
-            rowsWrap.innerHTML = '';
-            let subTotal = 0;
-
-            data.forEach((val, i) => {
-                const v = val == null || val === '' ? 0 : parseFloat(val);
-                subTotal += isCustom ? v * coef : (locationRules[loc]?.[pid]?.[idx]?.toBase(v) || 0);
-
-                const row = makeRowDOM(val, s,
-                    (nv) => {
-                        if (isCustom) {
-                            let cu = getCU(loc, pid); if (cu[idx]) { cu[idx].rows[i] = nv; setCU(loc, pid, cu); }
-                        } else {
-                            let r = getRows(loc, pid, idx); r[i] = nv; setRows(loc, pid, idx, r);
-                        }
-                        updateSubtotal(loc, pid, idx, isCustom, coef);
-                        updateCardTotal(pid, baseUnit);
-                        updateNavBadge();
-                        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
-                    },
-                    () => {
-                        if (isCustom) {
-                            let cu = getCU(loc, pid); if (cu[idx]) { cu[idx].rows.push(null); setCU(loc, pid, cu); }
-                        } else {
-                            let r = getRows(loc, pid, idx); r.push(null); setRows(loc, pid, idx, r);
-                        }
-                        refreshRows();
-                    },
-                    () => {
-                        if (isCustom) {
-                            let cu = getCU(loc, pid);
-                            if (cu[idx]) { if (cu[idx].rows.length===1) cu[idx].rows=[null]; else cu[idx].rows.splice(i,1); setCU(loc,pid,cu); }
-                        } else {
-                            let r = getRows(loc, pid, idx);
-                            if (r.length===1) r=[null]; else r.splice(i,1);
-                            setRows(loc, pid, idx, r);
-                        }
-                        refreshRows();
-                        updateSubtotal(loc, pid, idx, isCustom, coef);
-                        updateCardTotal(pid, baseUnit);
-                        updateNavBadge();
-                    },
-                    i
-                );
+        function refreshRows(){
+            const data=isCustom?(getCU(loc,pid)[idx]?.rows||[null]):getRows(loc,pid,idx);
+            rowsWrap.innerHTML='';
+            let sub=0;
+            data.forEach((val,i)=>{
+                const v=val==null||val===''?0:parseFloat(val);
+                sub+=isCustom?v*coef:(locationRules[loc]?.[pid]?.[idx]?.toBase(v)||0);
+                const row=makeRowDOM(val,s,(nv)=>{
+                    if(isCustom){let cu=getCU(loc,pid);if(cu[idx]){cu[idx].rows[i]=nv;setCU(loc,pid,cu);}}
+                    else{let r=getRows(loc,pid,idx);r[i]=nv;setRows(loc,pid,idx,r);}
+                    updateSubtotal(loc,pid,idx,isCustom,coef);
+                    updateCardTotal(pid,baseUnit); updateNavBadge();
+                    if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
+                },()=>{
+                    if(isCustom){let cu=getCU(loc,pid);if(cu[idx]){cu[idx].rows.push(null);setCU(loc,pid,cu);}}
+                    else{let r=getRows(loc,pid,idx);r.push(null);setRows(loc,pid,idx,r);}
+                    refreshRows();
+                },()=>{
+                    if(isCustom){let cu=getCU(loc,pid);if(cu[idx]){if(cu[idx].rows.length===1)cu[idx].rows=[null];else cu[idx].rows.splice(i,1);setCU(loc,pid,cu);}}
+                    else{let r=getRows(loc,pid,idx);if(r.length===1)r=[null];else r.splice(i,1);setRows(loc,pid,idx,r);}
+                    refreshRows(); updateSubtotal(loc,pid,idx,isCustom,coef);
+                    updateCardTotal(pid,baseUnit); updateNavBadge();
+                },i);
                 rowsWrap.appendChild(row);
             });
-
-            const stEl = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
-            if (stEl) stEl.textContent = subTotal > 0 ? `= ${rnd(subTotal, 0.1)}` : '';
+            const stEl=document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
+            if(stEl)stEl.textContent=sub>0?`= ${rnd(sub,0.1)}`:'';
         }
-
         refreshRows();
         return block;
     }
@@ -1144,161 +1215,119 @@
     /* ════════════════════════════════
        ФАБРИКА СТРОКИ ВВОДА
     ════════════════════════════════ */
-    function makeRowDOM(val, s, onSave, onAdd, onRemove, rowIdx) {
-        const row = document.createElement('div');
-        row.className = 'row-item';
-
-        const num = document.createElement('span');
-        num.className = 'row-num';
-        num.textContent = rowIdx + 1;
-
-        const vc = document.createElement('div');
-        vc.className = 'vc';
-
-        const dec = document.createElement('button');
-        dec.className = 'vc-btn';
-        dec.textContent = '−';
-
-        const inp = document.createElement('input');
-        inp.className = 'vc-input';
-        inp.type = 'number';
-        inp.inputMode = 'decimal';
-        inp.step = s;
-        inp.placeholder = '0';
-        inp.value = val == null || val === '' ? '' : val;
-
-        const inc = document.createElement('button');
-        inc.className = 'vc-btn';
-        inc.textContent = '+';
-
+    function makeRowDOM(val,s,onSave,onAdd,onRemove,rowIdx){
+        const row=document.createElement('div');
+        row.className='row-item';
+        const num=document.createElement('span');
+        num.className='row-num';
+        num.textContent=rowIdx+1;
+        const vc=document.createElement('div');
+        vc.className='vc';
+        const dec=document.createElement('button');
+        dec.className='vc-btn'; dec.textContent='−';
+        const inp=document.createElement('input');
+        inp.className='vc-input'; inp.type='number'; inp.inputMode='decimal';
+        inp.step=s; inp.placeholder='0';
+        inp.value=val==null||val===''?'':val;
+        const inc=document.createElement('button');
+        inc.className='vc-btn'; inc.textContent='+';
         vc.appendChild(dec); vc.appendChild(inp); vc.appendChild(inc);
-
-        const acts = document.createElement('div');
-        acts.className = 'row-actions';
-
-        const addRow = document.createElement('button');
-        addRow.className = 'row-action-btn';
-        addRow.textContent = '+';
-
-        const delRow = document.createElement('button');
-        delRow.className = 'row-action-btn del';
-        delRow.textContent = '−';
-
+        const acts=document.createElement('div');
+        acts.className='row-actions';
+        const addRow=document.createElement('button');
+        addRow.className='row-action-btn'; addRow.textContent='+';
+        const delRow=document.createElement('button');
+        delRow.className='row-action-btn del'; delRow.textContent='−';
         acts.appendChild(addRow); acts.appendChild(delRow);
         row.appendChild(num); row.appendChild(vc); row.appendChild(acts);
-
-        const save = () => {
-            let nv = inp.value === '' ? null : rnd(parseFloat(inp.value) || 0, s);
-            if (nv !== null) inp.value = nv;
+        const save=()=>{
+            let nv=inp.value===''?null:rnd(parseFloat(inp.value)||0,s);
+            if(nv!==null)inp.value=nv;
             onSave(nv);
         };
-        inp.addEventListener('change', save);
-        inp.addEventListener('blur', save);
-        dec.addEventListener('click', () => {
-            let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
-            inp.value = rnd(Math.max(0, v - s), s);
-            save();
-        });
-        inc.addEventListener('click', () => {
-            let v = inp.value === '' ? 0 : parseFloat(inp.value) || 0;
-            inp.value = rnd(v + s, s);
-            save();
-        });
-        addRow.addEventListener('click', onAdd);
-        delRow.addEventListener('click', onRemove);
-
+        inp.addEventListener('change',save);
+        inp.addEventListener('blur',save);
+        dec.addEventListener('click',()=>{let v=inp.value===''?0:parseFloat(inp.value)||0;inp.value=rnd(Math.max(0,v-s),s);save();});
+        inc.addEventListener('click',()=>{let v=inp.value===''?0:parseFloat(inp.value)||0;inp.value=rnd(v+s,s);save();});
+        addRow.addEventListener('click',onAdd);
+        delRow.addEventListener('click',onRemove);
         return row;
     }
 
     /* ════════════════════════════════
        ОБНОВЛЕНИЕ БЕЗ ПЕРЕРИСОВКИ
     ════════════════════════════════ */
-    function updateSubtotal(loc, pid, idx, isCustom, coef) {
-        const data = isCustom ? (getCU(loc, pid)[idx]?.rows || [null]) : getRows(loc, pid, idx);
-        let t = 0;
-        data.forEach(v => {
-            const n = v == null || v === '' ? 0 : parseFloat(v);
-            t += isCustom ? n * coef : (locationRules[loc]?.[pid]?.[idx]?.toBase(n) || 0);
-        });
-        const el = document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
-        if (el) el.textContent = t > 0 ? `= ${rnd(t, 0.1)}` : '';
+    function updateSubtotal(loc,pid,idx,isCustom,coef){
+        const data=isCustom?(getCU(loc,pid)[idx]?.rows||[null]):getRows(loc,pid,idx);
+        let t=0;
+        data.forEach(v=>{const n=v==null||v===''?0:parseFloat(v);t+=isCustom?n*coef:(locationRules[loc]?.[pid]?.[idx]?.toBase(n)||0);});
+        const el=document.getElementById(`ust_${loc}_${pid}_${idx}_${isCustom?'c':'s'}`);
+        if(el)el.textContent=t>0?`= ${rnd(t,0.1)}`:'';
     }
-
-    function updateCardTotal(pid, baseUnit) {
-        const el = document.getElementById(`ptotal_${pid}`);
-        const card = document.getElementById(`pcard_${pid}`);
-        if (!el || !card) return;
-        const val = fmt(baseUnit, getLocTotal(currentLoc, pid));
-        el.textContent = val;
-        el.className = 'product-total' + (val > 0 ? '' : ' zero');
-        card.classList.toggle('has-data', val > 0);
-        updateLocChipData(currentLocIdx);
-        renderStats();
+    function updateCardTotal(pid,baseUnit){
+        const el=document.getElementById(`ptotal_${pid}`);
+        const card=document.getElementById(`pcard_${pid}`);
+        if(!el||!card)return;
+        const val=fmt(baseUnit,getLocTotal(currentLoc,pid));
+        el.textContent=val;
+        el.className='product-total'+(val>0?'':' zero');
+        card.classList.toggle('has-data',val>0);
+        updateLocChipData(currentLocIdx); renderStats();
     }
-
-    function updateCPSubtotal(pid, key, baseUnit) {
-        const cps = getCustomProducts(currentLoc);
-        const cp = cps.find(p => p.id === pid);
-        if (!cp) return;
-        const data = cp.rows || [null];
-        const s = getStep(baseUnit);
-        let t = 0;
-        data.forEach(v => { t += v == null || v === '' ? 0 : parseFloat(v); });
-        const el = document.getElementById(`cpust_${pid}_${key}`);
-        if (el) el.textContent = t > 0 ? `= ${rnd(t, s)}` : '';
+    function updateCPSubtotal(pid,key,baseUnit){
+        const cps=getCustomProducts(currentLoc);
+        const cp=cps.find(p=>p.id===pid);
+        if(!cp)return;
+        const data=cp.rows||[null];
+        const s=getStep(baseUnit);
+        let t=0;
+        data.forEach(v=>{t+=v==null||v===''?0:parseFloat(v);});
+        const el=document.getElementById(`cpust_${pid}_${key}`);
+        if(el)el.textContent=t>0?`= ${rnd(t,s)}`:'';
     }
-
-    function updateCPCardTotal(pid, baseUnit) {
-        const el = document.getElementById(`ptotal_${pid}`);
-        const card = document.getElementById(`pcard_${pid}`);
-        if (!el || !card) return;
-        const val = fmt(baseUnit, getLocTotal(currentLoc, pid));
-        el.textContent = val;
-        el.className = 'product-total' + (val > 0 ? '' : ' zero');
-        card.classList.toggle('has-data', val > 0);
-        updateLocChipData(currentLocIdx);
-        renderStats();
+    function updateCPCardTotal(pid,baseUnit){
+        const el=document.getElementById(`ptotal_${pid}`);
+        const card=document.getElementById(`pcard_${pid}`);
+        if(!el||!card)return;
+        const val=fmt(baseUnit,getLocTotal(currentLoc,pid));
+        el.textContent=val;
+        el.className='product-total'+(val>0?'':' zero');
+        card.classList.toggle('has-data',val>0);
+        updateLocChipData(currentLocIdx); renderStats();
     }
-
-    function refreshStdCard(pid, product, unitRules) {
-        const card = document.getElementById(`pcard_${pid}`);
-        if (!card) return;
-        const wasOpen = card.classList.contains('open');
-        const newCard = buildStdProductCard(product, unitRules);
-        if (wasOpen) newCard.classList.add('open');
+    function refreshStdCard(pid,product,unitRules){
+        const card=document.getElementById(`pcard_${pid}`);
+        if(!card)return;
+        const wasOpen=card.classList.contains('open');
+        const newCard=buildStdProductCard(product,unitRules);
+        if(wasOpen)newCard.classList.add('open');
         card.replaceWith(newCard);
-        updateLocChipData(currentLocIdx);
-        renderStats();
-        updateNavBadge();
-        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+        updateLocChipData(currentLocIdx); renderStats(); updateNavBadge();
+        if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
     }
-
-    function refreshCustomCard(pid) {
-        const card = document.getElementById(`pcard_${pid}`);
-        if (!card) return;
-        const cps = getCustomProducts(currentLoc);
-        const cp = cps.find(p => p.id === pid);
-        if (!cp) return;
-        const wasOpen = card.classList.contains('open');
-        const newCard = buildCustomProductCard(cp);
-        if (wasOpen) newCard.classList.add('open');
+    function refreshCustomCard(pid){
+        const card=document.getElementById(`pcard_${pid}`);
+        if(!card)return;
+        const cps=getCustomProducts(currentLoc);
+        const cp=cps.find(p=>p.id===pid);
+        if(!cp)return;
+        const wasOpen=card.classList.contains('open');
+        const newCard=buildCustomProductCard(cp);
+        if(wasOpen)newCard.classList.add('open');
         card.replaceWith(newCard);
-        updateLocChipData(currentLocIdx);
-        renderStats();
-        updateNavBadge();
-        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+        updateLocChipData(currentLocIdx); renderStats(); updateNavBadge();
+        if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
     }
 
     /* ════════════════════════════════
-       ФОРМА ДОБАВЛЕНИЯ СВОЕЙ ЕДИНИЦЫ
+       CUSTOM UNIT FORM
     ════════════════════════════════ */
-    function toggleCustomUnitForm(body, loc, pid, isForCustomProduct) {
-        const existing = body.querySelector('.custom-form');
-        if (existing) { existing.remove(); return; }
-
-        const form = document.createElement('div');
-        form.className = 'custom-form';
-        form.innerHTML = `
+    function toggleCustomUnitForm(body,loc,pid,isForCustomProduct){
+        const existing=body.querySelector('.custom-form');
+        if(existing){existing.remove();return;}
+        const form=document.createElement('div');
+        form.className='custom-form';
+        form.innerHTML=`
             <div class="custom-form-title">➕ Новая единица</div>
             <input type="text" placeholder="Название (напр. коробка 10 кг)" id="cfLabel">
             <input type="number" step="any" inputmode="decimal" placeholder="Сколько базовых единиц" id="cfCoef">
@@ -1306,45 +1335,35 @@
                 <button class="cf-save" id="cfSave">💾 Сохранить</button>
                 <button class="cf-cancel" id="cfCancel">Отмена</button>
             </div>`;
-        const footer = body.querySelector('.product-footer');
-        body.insertBefore(form, footer);
-
-        form.querySelector('#cfSave').onclick = () => {
-            const label = form.querySelector('#cfLabel').value.trim();
-            const coef = parseFloat(form.querySelector('#cfCoef').value);
-            if (!label || isNaN(coef) || coef <= 0) { toast('⚠️ Введите корректные данные'); return; }
-
-            if (isForCustomProduct) {
-                let cps = getCustomProducts(loc);
-                const ci = cps.findIndex(p => p.id === pid);
-                if (ci !== -1) {
-                    if (!cps[ci].customUnits) cps[ci].customUnits = [];
-                    cps[ci].customUnits.push({ label, coefficient: coef, rows: [null] });
-                    setCustomProducts(loc, cps);
-                    refreshCustomCard(pid);
-                }
+        const footer=body.querySelector('.product-footer');
+        body.insertBefore(form,footer);
+        form.querySelector('#cfSave').onclick=()=>{
+            const label=form.querySelector('#cfLabel').value.trim();
+            const coef=parseFloat(form.querySelector('#cfCoef').value);
+            if(!label||isNaN(coef)||coef<=0){toast('⚠️ Введите корректные данные');return;}
+            if(isForCustomProduct){
+                let cps=getCustomProducts(loc);
+                const ci=cps.findIndex(p=>p.id===pid);
+                if(ci!==-1){if(!cps[ci].customUnits)cps[ci].customUnits=[];cps[ci].customUnits.push({label,coefficient:coef,rows:[null]});setCustomProducts(loc,cps);refreshCustomCard(pid);}
             } else {
-                let cu = getCU(loc, pid);
-                cu.push({ label, coefficient: coef, rows: [null] });
-                setCU(loc, pid, cu);
-                const product = stdProducts.find(p => p.id === pid);
-                refreshStdCard(pid, product, locationRules[loc]?.[pid] || []);
+                let cu=getCU(loc,pid);cu.push({label,coefficient:coef,rows:[null]});setCU(loc,pid,cu);
+                const product=stdProducts.find(p=>p.id===pid);
+                refreshStdCard(pid,product,locationRules[loc]?.[pid]||[]);
             }
         };
-        form.querySelector('#cfCancel').onclick = () => form.remove();
+        form.querySelector('#cfCancel').onclick=()=>form.remove();
         form.querySelector('#cfLabel').focus();
     }
 
     /* ════════════════════════════════
-       ФОРМА ДОБАВЛЕНИЯ НОВОГО ПРОДУКТА
+       ADD PRODUCT FORM
     ════════════════════════════════ */
-    function showAddProductForm() {
-        const wrap = document.getElementById('addProductFormWrap');
-        if (wrap.querySelector('.add-product-form')) { wrap.innerHTML = ''; return; }
-
-        const form = document.createElement('div');
-        form.className = 'add-product-form';
-        form.innerHTML = `
+    function showAddProductForm(){
+        const wrap=document.getElementById('addProductFormWrap');
+        if(wrap.querySelector('.add-product-form')){wrap.innerHTML='';return;}
+        const form=document.createElement('div');
+        form.className='add-product-form';
+        form.innerHTML=`
             <div class="add-product-form-title">🆕 Новый продукт для «${currentLoc}»</div>
             <input type="text" placeholder="Название продукта" id="apfName">
             <select id="apfUnit">
@@ -1359,91 +1378,69 @@
                 <button class="apf-save" id="apfSave">✅ Добавить</button>
                 <button class="apf-cancel" id="apfCancel">Отмена</button>
             </div>`;
-        wrap.innerHTML = '';
-        wrap.appendChild(form);
-
-        form.querySelector('#apfSave').onclick = () => {
-            const name = form.querySelector('#apfName').value.trim();
-            const baseUnit = form.querySelector('#apfUnit').value;
-            if (!name) { toast('⚠️ Введите название продукта'); return; }
-
-            const newProduct = { id: genId(), name, baseUnit, rows: [null], customUnits: [] };
-            let cps = getCustomProducts(currentLoc);
+        wrap.innerHTML=''; wrap.appendChild(form);
+        form.querySelector('#apfSave').onclick=()=>{
+            const name=form.querySelector('#apfName').value.trim();
+            const baseUnit=form.querySelector('#apfUnit').value;
+            if(!name){toast('⚠️ Введите название продукта');return;}
+            const newProduct={id:genId(),name,baseUnit,rows:[null],customUnits:[]};
+            let cps=getCustomProducts(currentLoc);
             cps.push(newProduct);
-            setCustomProducts(currentLoc, cps);
-
-            wrap.innerHTML = '';
-            renderProducts();
-            renderStats();
-            updateLocChipData(currentLocIdx);
-            updateNavBadge();
+            setCustomProducts(currentLoc,cps);
+            wrap.innerHTML='';
+            renderProducts(); renderStats(); updateLocChipData(currentLocIdx); updateNavBadge();
             toast(`✅ Продукт «${name}» добавлен`);
-
-            // Открыть новую карточку
-            setTimeout(() => {
-                const newCard = document.getElementById(`pcard_${newProduct.id}`);
-                if (newCard) {
-                    newCard.classList.add('open');
-                    newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 100);
+            setTimeout(()=>{
+                const newCard=document.getElementById(`pcard_${newProduct.id}`);
+                if(newCard){newCard.classList.add('open');newCard.scrollIntoView({behavior:'smooth',block:'center'});}
+            },100);
         };
-        form.querySelector('#apfCancel').onclick = () => { wrap.innerHTML = ''; };
+        form.querySelector('#apfCancel').onclick=()=>{wrap.innerHTML='';};
         form.querySelector('#apfName').focus();
     }
 
     /* ════════════════════════════════
        SUMMARY
     ════════════════════════════════ */
-    function renderSummary() {
-        const allRows = [];
-
-        // Стандартные продукты
-        stdProducts.forEach(p => {
-            const total = locations.reduce((s, loc) => s + getLocTotal(loc, p.id), 0);
-            const display = fmt(p.baseUnit, total);
-            const detail = locations.filter(loc => locationRules[loc]?.[p.id])
-                .map(loc => { const v = fmt(p.baseUnit, getLocTotal(loc, p.id)); return v > 0 ? `${loc}: ${v}` : null; })
+    function renderSummary(){
+        const allRows=[];
+        stdProducts.forEach(p=>{
+            const total=locations.reduce((s,loc)=>s+getLocTotal(loc,p.id),0);
+            const display=fmt(p.baseUnit,total);
+            const detail=locations.filter(loc=>locationRules[loc]?.[p.id])
+                .map(loc=>{const v=fmt(p.baseUnit,getLocTotal(loc,p.id));return v>0?`${loc}: ${v}`:null;})
                 .filter(Boolean).join('\n');
-            allRows.push({ pid: p.id, name: p.name, unit: p.baseUnit, total: display, detail, isCustom: false });
+            allRows.push({pid:p.id,name:p.name,unit:p.baseUnit,total:display,detail,isCustom:false});
         });
-
-        // Кастомные продукты — собираем уникальные по id (один продукт может быть только в одном помещении)
-        const seenCp = new Set();
-        locations.forEach(loc => {
-            getCustomProducts(loc).forEach(cp => {
-                if (seenCp.has(cp.id)) return;
+        const seenCp=new Set();
+        locations.forEach(loc=>{
+            getCustomProducts(loc).forEach(cp=>{
+                if(seenCp.has(cp.id))return;
                 seenCp.add(cp.id);
-                const total = getLocTotal(loc, cp.id);
-                const display = fmt(cp.baseUnit, total);
-                allRows.push({ pid: cp.id, name: cp.name, unit: cp.baseUnit, total: display, detail: loc, isCustom: true });
+                const total=getLocTotal(loc,cp.id);
+                const display=fmt(cp.baseUnit,total);
+                allRows.push({pid:cp.id,name:cp.name,unit:cp.baseUnit,total:display,detail:loc,isCustom:true});
             });
         });
-
-        const filled = allRows.filter(r => r.total > 0).length;
-        document.getElementById('summaryStats').innerHTML = `
+        const filled=allRows.filter(r=>r.total>0).length;
+        document.getElementById('summaryStats').innerHTML=`
             <div class="ss-card"><div class="ss-val">${allRows.length}</div><div class="ss-lbl">Всего позиций</div></div>
             <div class="ss-card"><div class="ss-val green">${filled}</div><div class="ss-lbl">Заполнено</div></div>
             <div class="ss-card"><div class="ss-val blue">${Math.round(filled/allRows.length*100)}%</div><div class="ss-lbl">Готовность</div></div>
-            <div class="ss-card"><div class="ss-val">${allRows.length - filled}</div><div class="ss-lbl">Пустых</div></div>`;
-
-        let rows = allRows;
-        if (searchQ) rows = rows.filter(r => r.name.toLowerCase().includes(searchQ.toLowerCase()));
-        if (filterOnlyFilled) rows = rows.filter(r => r.total > 0);
-
-        const list = document.getElementById('summaryList');
-        list.innerHTML = '';
-        if (rows.length === 0) {
-            list.innerHTML = `<div class="empty-state"><div class="ei">🔍</div><p>Ничего не найдено</p></div>`;
-            return;
-        }
-        rows.forEach(r => {
-            const item = document.createElement('div');
-            item.className = 'sum-item' + (r.total===0?' zero':'') + (r.isCustom?' custom':'');
-            item.innerHTML = `
+            <div class="ss-card"><div class="ss-val">${allRows.length-filled}</div><div class="ss-lbl">Пустых</div></div>`;
+        let rows=allRows;
+        if(searchQ)rows=rows.filter(r=>r.name.toLowerCase().includes(searchQ.toLowerCase()));
+        if(filterOnlyFilled)rows=rows.filter(r=>r.total>0);
+        const list=document.getElementById('summaryList');
+        list.innerHTML='';
+        if(rows.length===0){list.innerHTML=`<div class="empty-state"><div class="ei">🔍</div><p>Ничего не найдено</p></div>`;return;}
+        rows.forEach(r=>{
+            const item=document.createElement('div');
+            item.className='sum-item'+(r.total===0?' zero':'')+(r.isCustom?' custom':'');
+            item.innerHTML=`
                 <div class="sum-item-left">
                     <div class="sum-item-name">${r.name}${r.isCustom?' <span style="font-size:10px;color:var(--orange);background:var(--orange-light);padding:1px 6px;border-radius:10px;font-weight:700;">свой</span>':''}</div>
-                    ${r.detail ? `<div class="sum-item-detail">${r.detail.replace(/\n/g,'<br>')}</div>` : ''}
+                    ${r.detail?`<div class="sum-item-detail">${r.detail.replace(/\n/g,'<br>')}</div>`:''}
                 </div>
                 <div class="sum-item-right">
                     <div class="sum-item-val ${r.total===0?'zero':''}">${r.total}</div>
@@ -1453,127 +1450,409 @@
         });
     }
 
-    function copySummary() {
-        const rows = [];
-        stdProducts.forEach(p => {
-            const total = fmt(p.baseUnit, locations.reduce((s, loc) => s + getLocTotal(loc, p.id), 0));
-            const detail = locations.filter(loc => locationRules[loc]?.[p.id])
-                .map(loc => { const v = fmt(p.baseUnit, getLocTotal(loc, p.id)); return v>0?`${loc}: ${v}`:null; })
-                .filter(Boolean).join(', ');
-            rows.push({ name: p.name, unit: p.baseUnit, total, detail });
+    /* ════════════════════════════════
+       DS — СЕЙФ
+    ════════════════════════════════ */
+    function renderSafe(){
+        const body=document.getElementById('safeBody');
+        body.innerHTML='';
+        const ds=getDsData();
+        NOMINALS.forEach(n=>{
+            const rows=ds.safe[n]||[null];
+            const nomTotal=rows.reduce((s,v)=>s+n*(v==null||v===''?0:parseInt(v)||0),0);
+            const nomRow=document.createElement('div');
+            nomRow.className='nominal-row';
+            nomRow.id=`nomrow_${n}`;
+            const nomHeader=document.createElement('div');
+            nomHeader.className='nominal-header';
+            nomHeader.innerHTML=`
+                <div class="nominal-label">
+                    <span class="nominal-badge">${n} ₽</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div class="nominal-sum ${nomTotal===0?'zero':''}" id="nomsum_${n}">${fmtMoney(nomTotal)}</div>
+                    <div class="nominal-chevron">⌄</div>
+                </div>`;
+            nomHeader.onclick=()=>nomRow.classList.toggle('open');
+            nomRow.appendChild(nomHeader);
+
+            const rowsWrap=document.createElement('div');
+            rowsWrap.className='nominal-rows-wrap';
+            const inputRows=document.createElement('div');
+            inputRows.className='nominal-input-rows';
+            inputRows.id=`nominputrows_${n}`;
+            rowsWrap.appendChild(inputRows);
+            nomRow.appendChild(rowsWrap);
+
+            function refreshNomRows(){
+                const dsNow=getDsData();
+                const data=dsNow.safe[n]||[null];
+                inputRows.innerHTML='';
+                data.forEach((val,i)=>{
+                    const nomItem=document.createElement('div');
+                    nomItem.className='nom-row-item';
+                    const numEl=document.createElement('span');
+                    numEl.className='nom-row-num';
+                    numEl.textContent=i+1;
+                    const vc=document.createElement('div');
+                    vc.className='nom-vc';
+                    const dec=document.createElement('button');
+                    dec.className='nom-vc-btn'; dec.textContent='−';
+                    const inp=document.createElement('input');
+                    inp.className='nom-vc-input'; inp.type='number'; inp.inputMode='numeric';
+                    inp.step=1; inp.min=0; inp.placeholder='0';
+                    inp.value=val==null||val===''?'':val;
+                    const inc2=document.createElement('button');
+                    inc2.className='nom-vc-btn'; inc2.textContent='+';
+                    vc.appendChild(dec); vc.appendChild(inp); vc.appendChild(inc2);
+                    const acts=document.createElement('div');
+                    acts.className='nom-row-actions';
+                    const addBtn=document.createElement('button');
+                    addBtn.className='nom-row-btn'; addBtn.textContent='+';
+                    const delBtn=document.createElement('button');
+                    delBtn.className='nom-row-btn del'; delBtn.textContent='−';
+                    acts.appendChild(addBtn); acts.appendChild(delBtn);
+                    nomItem.appendChild(numEl); nomItem.appendChild(vc); nomItem.appendChild(acts);
+                    inputRows.appendChild(nomItem);
+
+                    const saveNom=()=>{
+                        let nv=inp.value===''?null:Math.max(0,parseInt(inp.value)||0);
+                        if(nv!==null)inp.value=nv;
+                        let ds2=getDsData();
+                        ds2.safe[n][i]=nv;
+                        saveDsData(ds2);
+                        updateNomTotal(n);
+                        updateSafeTotal();
+                        updateGrandTotal();
+                    };
+                    inp.addEventListener('change',saveNom);
+                    inp.addEventListener('blur',saveNom);
+                    dec.addEventListener('click',()=>{
+                        let v=inp.value===''?0:parseInt(inp.value)||0;
+                        inp.value=Math.max(0,v-1); saveNom();
+                    });
+                    inc2.addEventListener('click',()=>{
+                        let v=inp.value===''?0:parseInt(inp.value)||0;
+                        inp.value=v+1; saveNom();
+                    });
+                    addBtn.addEventListener('click',()=>{
+                        let ds2=getDsData();
+                        ds2.safe[n].push(null);
+                        saveDsData(ds2);
+                        refreshNomRows();
+                    });
+                    delBtn.addEventListener('click',()=>{
+                        let ds2=getDsData();
+                        if(ds2.safe[n].length===1)ds2.safe[n]=[null];
+                        else ds2.safe[n].splice(i,1);
+                        saveDsData(ds2);
+                        refreshNomRows();
+                        updateNomTotal(n);
+                        updateSafeTotal();
+                        updateGrandTotal();
+                    });
+                });
+            }
+            refreshNomRows();
+            body.appendChild(nomRow);
         });
-        const seenCp = new Set();
-        locations.forEach(loc => {
-            getCustomProducts(loc).forEach(cp => {
-                if (seenCp.has(cp.id)) return;
-                seenCp.add(cp.id);
-                rows.push({ name: cp.name + ' [свой]', unit: cp.baseUnit, total: fmt(cp.baseUnit, getLocTotal(loc, cp.id)), detail: loc });
-            });
-        });
-        let tsv = 'Продукт\tЕд. изм.\tИтого\tДетализация\n';
-        rows.forEach(r => tsv += `${r.name}\t${r.unit}\t${r.total}\t${r.detail}\n`);
-        navigator.clipboard.writeText(tsv)
-            .then(() => toast('✅ Скопировано в буфер обмена'))
-            .catch(() => toast('❌ Ошибка копирования'));
+    }
+
+    function updateNomTotal(n){
+        const ds=getDsData();
+        const rows=ds.safe[n]||[null];
+        const total=rows.reduce((s,v)=>s+n*(v==null||v===''?0:parseInt(v)||0),0);
+        const el=document.getElementById(`nomsum_${n}`);
+        if(el){el.textContent=fmtMoney(total);el.className='nominal-sum'+(total===0?' zero':'');}
+    }
+    function updateSafeTotal(){
+        const total=calcSafeTotal();
+        const el=document.getElementById('safeTotal');
+        const hel=document.getElementById('safeTotalHeader');
+        if(el)el.textContent=fmtMoney(total);
+        if(hel)hel.textContent=fmtMoney(total);
     }
 
     /* ════════════════════════════════
-       CLEAR / RESET
+       DS — КАССЫ / АВТО
     ════════════════════════════════ */
-    function clearLocation() {
-        if (!confirm(`Очистить все данные для "${currentLoc}"?`)) return;
-        const rules = locationRules[currentLoc] || {};
-        Object.keys(rules).forEach(pid => {
-            rules[pid].forEach((_, uIdx) => setRows(currentLoc, pid, uIdx, [null]));
-            setCU(currentLoc, pid, []);
+    function renderCashList(type){
+        const ds=getDsData();
+        const items=type==='kassa'?ds.kassas:ds.avtos;
+        const listId=type==='kassa'?'kassaList':'avtoList';
+        const container=document.getElementById(listId);
+        if(!container)return;
+        container.innerHTML='';
+        items.forEach((item,idx)=>{
+            container.appendChild(buildCashCard(item,idx,type));
         });
-        // Сбрасываем кастомные продукты (очищаем данные, но не удаляем сами продукты)
-        let cps = getCustomProducts(currentLoc);
-        cps.forEach(cp => { cp.rows = [null]; cp.customUnits = []; });
-        setCustomProducts(currentLoc, cps);
-
-        document.getElementById('addProductFormWrap').innerHTML = '';
-        renderLocStrip();
-        renderStats();
-        renderProducts();
-        updateNavBadge();
-        toast('🧹 Помещение очищено');
+        updateCashSectionTotal(type);
     }
 
-    function fullReset() {
-        if (!confirm('⚠️ Удалить ВСЕ данные по всем помещениям?')) return;
-        locations.forEach(loc => {
-            const rules = locationRules[loc] || {};
-            Object.keys(rules).forEach(pid => {
-                rules[pid].forEach((_, uIdx) => setRows(loc, pid, uIdx, [null]));
-                setCU(loc, pid, []);
-            });
-            stdProducts.forEach(p => setCU(loc, p.id, []));
-            setCustomProducts(loc, []);
+    function buildCashCard(item,idx,type){
+        const result=calcCashItem(item);
+        const card=document.createElement('div');
+        card.className='cash-card';
+        card.id=`cashcard_${item.id}`;
+
+        const header=document.createElement('div');
+        header.className='cash-card-header';
+        const resClass=result>0?'positive':result<0?'negative':'zero';
+        header.innerHTML=`
+            <div class="cash-card-title">
+                ${type==='kassa'?'💵':'🚗'} ${item.name}
+            </div>
+            <div class="cash-card-result ${resClass}" id="cashresheader_${item.id}">${fmtMoney(result)}</div>`;
+        card.appendChild(header);
+
+        const body=document.createElement('div');
+        body.className='cash-card-body';
+
+        // Всего
+        const vsField=document.createElement('div');
+        vsField.className='cash-field';
+        vsField.innerHTML=`<div class="cash-field-label">Всего</div>`;
+        const vsInp=document.createElement('input');
+        vsInp.className='cash-field-input';
+        vsInp.type='number'; vsInp.inputMode='decimal';
+        vsInp.placeholder='0'; vsInp.value=item.vsego||'';
+        vsField.appendChild(vsInp);
+        body.appendChild(vsField);
+
+        // Выручка
+        const vrField=document.createElement('div');
+        vrField.className='cash-field';
+        vrField.innerHTML=`<div class="cash-field-label">Выручка</div>`;
+        const vrInp=document.createElement('input');
+        vrInp.className='cash-field-input';
+        vrInp.type='number'; vrInp.inputMode='decimal';
+        vrInp.placeholder='0'; vrInp.value=item.vyruchka||'';
+        vrField.appendChild(vrInp);
+        body.appendChild(vrField);
+
+        // Итог
+        const resRow=document.createElement('div');
+        resRow.className='cash-result-row';
+        const resVal=result>0?'positive':result<0?'negative':'zero';
+        resRow.innerHTML=`
+            <div class="cash-result-label">Итог (Всего − Выручка)</div>
+            <div class="cash-result-val ${resVal}" id="cashres_${item.id}">${fmtMoney(result)}</div>`;
+        body.appendChild(resRow);
+        card.appendChild(body);
+
+        // Кнопка удалить (если больше одной)
+        const ds=getDsData();
+        const items=type==='kassa'?ds.kassas:ds.avtos;
+        if(items.length>1){
+            const footer=document.createElement('div');
+            footer.className='cash-card-footer';
+            const delBtn=document.createElement('button');
+            delBtn.className='delete-cash-btn';
+            delBtn.textContent=`✖ Удалить ${type==='kassa'?'кассу':'авто'}`;
+            delBtn.onclick=()=>{
+                if(!confirm(`Удалить "${item.name}"?`))return;
+                let ds2=getDsData();
+                if(type==='kassa')ds2.kassas.splice(idx,1);
+                else ds2.avtos.splice(idx,1);
+                saveDsData(ds2);
+                renderCashList(type);
+                updateGrandTotal();
+            };
+            footer.appendChild(delBtn);
+            card.appendChild(footer);
+        }
+
+        // Events
+        const saveField=()=>{
+            let ds2=getDsData();
+            const arr=type==='kassa'?ds2.kassas:ds2.avtos;
+            const ci=arr.findIndex(x=>x.id===item.id);
+            if(ci!==-1){
+                arr[ci].vsego=vsInp.value;
+                arr[ci].vyruchka=vrInp.value;
+                saveDsData(ds2);
+                const newRes=calcCashItem(arr[ci]);
+                const rc=newRes>0?'positive':newRes<0?'negative':'zero';
+                const el=document.getElementById(`cashres_${item.id}`);
+                const hel=document.getElementById(`cashresheader_${item.id}`);
+                if(el){el.textContent=fmtMoney(newRes);el.className=`cash-result-val ${rc}`;}
+                if(hel){hel.textContent=fmtMoney(newRes);hel.className=`cash-card-result ${rc}`;}
+                updateCashSectionTotal(type);
+                updateGrandTotal();
+            }
+        };
+        vsInp.addEventListener('change',saveField);
+        vsInp.addEventListener('blur',saveField);
+        vrInp.addEventListener('change',saveField);
+        vrInp.addEventListener('blur',saveField);
+
+        return card;
+    }
+
+    function updateCashSectionTotal(type){
+        const ds=getDsData();
+        const items=type==='kassa'?ds.kassas:ds.avtos;
+        const total=items.reduce((s,it)=>s+calcCashItem(it),0);
+        const hid=type==='kassa'?'kassaTotalHeader':'avtoTotalHeader';
+        const el=document.getElementById(hid);
+        if(el)el.textContent=fmtMoney(total);
+    }
+
+    /* ════════════════════════════════
+       DS — ОБЩИЙ ИТОГ
+    ════════════════════════════════ */
+    function updateGrandTotal(){
+        const safeT=calcSafeTotal();
+        const kassaT=calcKassasTotal();
+        const avtoT=calcAvtosTotal();
+        const grand=safeT+kassaT+avtoT;
+
+        const ds=getDsData();
+        const breakdown=document.getElementById('dsGrandBreakdown');
+        if(!breakdown)return;
+        let lines=`<div class="ds-grand-line"><div class="ds-grand-line-label">🏦 Сейф</div><div class="ds-grand-line-val">${fmtMoney(safeT)}</div></div>`;
+        ds.kassas.forEach(k=>{
+            const r=calcCashItem(k);
+            lines+=`<div class="ds-grand-line"><div class="ds-grand-line-label">💵 ${k.name}</div><div class="ds-grand-line-val">${fmtMoney(r)}</div></div>`;
         });
-        document.getElementById('addProductFormWrap').innerHTML = '';
-        renderLocStrip();
-        renderStats();
-        renderProducts();
-        updateNavBadge();
-        if (document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+        ds.avtos.forEach(a=>{
+            const r=calcCashItem(a);
+            lines+=`<div class="ds-grand-line"><div class="ds-grand-line-label">🚗 ${a.name}</div><div class="ds-grand-line-val">${fmtMoney(r)}</div></div>`;
+        });
+        breakdown.innerHTML=lines;
+        const sumEl=document.getElementById('dsGrandSum');
+        if(sumEl)sumEl.textContent=fmtMoney(grand);
+    }
+
+    /* ════════════════════════════════
+       DS — ADD KASSA / AVTO
+    ════════════════════════════════ */
+    function addKassa(){
+        let ds=getDsData();
+        const num=ds.kassas.length+1;
+        ds.kassas.push({id:'k'+Date.now(),name:`Касса ${num}`,vsego:'',vyruchka:''});
+        saveDsData(ds);
+        renderCashList('kassa');
+        updateGrandTotal();
+    }
+    function addAvto(){
+        let ds=getDsData();
+        const num=ds.avtos.length+1;
+        ds.avtos.push({id:'a'+Date.now(),name:`Авто ${num}`,vsego:'',vyruchka:''});
+        saveDsData(ds);
+        renderCashList('avto');
+        updateGrandTotal();
+    }
+
+    /* ════════════════════════════════
+       DS — RENDER ALL
+    ════════════════════════════════ */
+    function renderDs(){
+        renderSafe();
+        renderCashList('kassa');
+        renderCashList('avto');
+        updateSafeTotal();
+        updateGrandTotal();
+    }
+
+    /* ════════════════════════════════
+       DS — CLEAR
+    ════════════════════════════════ */
+    function clearDs(){
+        if(!confirm('Очистить все данные ДС?'))return;
+        const fresh={
+            safe:NOMINALS.reduce((acc,n)=>{acc[n]=[null];return acc;},{}),
+            kassas:[
+                {id:'k1',name:'Касса 1',vsego:'',vyruchka:''},
+                {id:'k2',name:'Касса 2',vsego:'',vyruchka:''}
+            ],
+            avtos:[{id:'a1',name:'Авто 1',vsego:'',vyruchka:''}]
+        };
+        saveDsData(fresh);
+        renderDs();
+        toast('🧹 Данные ДС очищены');
+    }
+
+    /* ════════════════════════════════
+       CLEAR / RESET INVENTORY
+    ════════════════════════════════ */
+    function clearLocation(){
+        if(!confirm(`Очистить все данные для "${currentLoc}"?`))return;
+        const rules=locationRules[currentLoc]||{};
+        Object.keys(rules).forEach(pid=>{
+            rules[pid].forEach((_,uIdx)=>setRows(currentLoc,pid,uIdx,[null]));
+            setCU(currentLoc,pid,[]);
+        });
+        let cps=getCustomProducts(currentLoc);
+        cps.forEach(cp=>{cp.rows=[null];cp.customUnits=[];});
+        setCustomProducts(currentLoc,cps);
+        document.getElementById('addProductFormWrap').innerHTML='';
+        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+        toast('🧹 Помещение очищено');
+    }
+    function fullReset(){
+        if(!confirm('⚠️ Удалить ВСЕ данные по всем помещениям?'))return;
+        locations.forEach(loc=>{
+            const rules=locationRules[loc]||{};
+            Object.keys(rules).forEach(pid=>{
+                rules[pid].forEach((_,uIdx)=>setRows(loc,pid,uIdx,[null]));
+                setCU(loc,pid,[]);
+            });
+            stdProducts.forEach(p=>setCU(loc,p.id,[]));
+            setCustomProducts(loc,[]);
+        });
+        document.getElementById('addProductFormWrap').innerHTML='';
+        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+        if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
         toast('🗑️ Все данные удалены');
     }
 
     /* ════════════════════════════════
        TAB SWITCH
     ════════════════════════════════ */
-    function switchTab(tab) {
-        document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        if (tab === 'inventory') {
+    function switchTab(tab){
+        document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        document.getElementById('appBody').scrollTop=0;
+        if(tab==='inventory'){
             document.getElementById('tabInventory').classList.add('active');
             document.getElementById('navInventory').classList.add('active');
-        } else {
+        } else if(tab==='summary'){
             document.getElementById('tabSummary').classList.add('active');
             document.getElementById('navSummary').classList.add('active');
             renderSummary();
+        } else if(tab==='ds'){
+            document.getElementById('tabDs').classList.add('active');
+            document.getElementById('navDs').classList.add('active');
+            renderDs();
         }
-        document.getElementById('appBody').scrollTop = 0;
     }
 
     /* ════════════════════════════════
        INIT
     ════════════════════════════════ */
-    function init() {
-        renderLocStrip();
-        renderStats();
-        renderProducts();
-        updateNavBadge();
+    function init(){
+        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
 
-        document.getElementById('clearLocBtn').onclick = clearLocation;
-        document.getElementById('hardResetBtn').onclick = fullReset;
-        document.getElementById('copyBtn').onclick = copySummary;
-        document.getElementById('addProductBtn').onclick = showAddProductForm;
+        document.getElementById('clearLocBtn').onclick=clearLocation;
+        document.getElementById('hardResetBtn').onclick=fullReset;
+        document.getElementById('addProductBtn').onclick=showAddProductForm;
+        document.getElementById('addKassaBtn').onclick=addKassa;
+        document.getElementById('addAvtoBtn').onclick=addAvto;
+        document.getElementById('dsClearBtn').onclick=clearDs;
 
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.onclick = () => switchTab(btn.dataset.tab);
+        document.querySelectorAll('.nav-btn').forEach(btn=>{
+            btn.onclick=()=>switchTab(btn.dataset.tab);
         });
 
-        document.getElementById('searchInput').oninput = e => {
-            searchQ = e.target.value;
-            renderSummary();
+        document.getElementById('searchInput').oninput=e=>{
+            searchQ=e.target.value; renderSummary();
         };
 
-        const btnAll = document.getElementById('filterAllBtn');
-        const btnFilled = document.getElementById('filterFilledBtn');
-        btnAll.onclick = () => {
-            filterOnlyFilled = false;
-            btnAll.classList.add('active');
-            btnFilled.classList.remove('active');
-            renderSummary();
-        };
-        btnFilled.onclick = () => {
-            filterOnlyFilled = true;
-            btnFilled.classList.add('active');
-            btnAll.classList.remove('active');
-            renderSummary();
-        };
+        const btnAll=document.getElementById('filterAllBtn');
+        const btnFilled=document.getElementById('filterFilledBtn');
+        btnAll.onclick=()=>{filterOnlyFilled=false;btnAll.classList.add('active');btnFilled.classList.remove('active');renderSummary();};
+        btnFilled.onclick=()=>{filterOnlyFilled=true;btnFilled.classList.add('active');btnAll.classList.remove('active');renderSummary();};
     }
 
     init();
