@@ -1463,117 +1463,216 @@
        DS — СЕЙФ
     ════════════════════════════════ */
     function renderSafe(){
-        const body=document.getElementById('safeBody');
-        body.innerHTML='';
-        const ds=getDsData();
-        NOMINALS.forEach(n=>{
-            const rows=ds.safe[n]||[null];
-            const nomTotal=rows.reduce((s,v)=>s+n*(v==null||v===''?0:parseInt(v)||0),0);
-            const nomRow=document.createElement('div');
-            nomRow.className='nominal-row';
-            nomRow.id=`nomrow_${n}`;
-            const nomHeader=document.createElement('div');
-            nomHeader.className='nominal-header';
-            nomHeader.innerHTML=`
-                <div class="nominal-label">
-                    <span class="nominal-badge">${n} ₽</span>
+    const body=document.getElementById('safeBody');
+    body.innerHTML='';
+    const ds=getDsData();
+    NOMINALS.forEach(n=>{
+        const rows=ds.safe[n]||[null];
+        const nomTotal=calcNominalTotal(n);
+        const nomRow=document.createElement('div');
+        nomRow.className='nominal-row';
+        nomRow.id=`nomrow_${n}`;
+        const nomHeader=document.createElement('div');
+        nomHeader.className='nominal-header';
+        nomHeader.innerHTML=`
+            <div class="nominal-label">
+                <span class="nominal-badge">${n} ₽</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div class="nominal-sum ${nomTotal===0?'zero':''}" id="nomsum_${n}">${fmtMoney(nomTotal)}</div>
+                <div class="nominal-chevron">⌄</div>
+            </div>`;
+        nomHeader.onclick=()=>nomRow.classList.toggle('open');
+        nomRow.appendChild(nomHeader);
+
+        const rowsWrap=document.createElement('div');
+        rowsWrap.className='nominal-rows-wrap';
+        const inputRows=document.createElement('div');
+        inputRows.className='nominal-input-rows';
+        inputRows.id=`nominputrows_${n}`;
+        rowsWrap.appendChild(inputRows);
+
+        // ── БЛОК СТАКАНОВ для 10₽ и 1₽ ──
+        if(n===10||n===1){
+            const cupBlock=document.createElement('div');
+            cupBlock.style.cssText=`
+                margin-top:8px; background:var(--purple-light);
+                border:1.5px solid #ddd6fe; border-radius:12px;
+                padding:10px 12px; display:flex; flex-direction:column; gap:8px;
+            `;
+            cupBlock.innerHTML=`
+                <div style="font-size:12px;font-weight:700;color:var(--purple);display:flex;align-items:center;gap:6px;">
+                    🥤 Стаканы (${n} ₽)
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;">
-                    <div class="nominal-sum ${nomTotal===0?'zero':''}" id="nomsum_${n}">${fmtMoney(nomTotal)}</div>
-                    <div class="nominal-chevron">⌄</div>
+                    <div style="flex:1;">
+                        <div style="font-size:11px;color:var(--gray-500);font-weight:600;margin-bottom:4px;">В стакане (шт)</div>
+                        <input
+                            type="number" inputmode="numeric" min="0" placeholder="0"
+                            id="cup_per_${n}"
+                            style="width:100%;background:#fff;border:1.5px solid #ddd6fe;
+                                   border-radius:10px;padding:10px 12px;font-size:17px;
+                                   font-weight:700;color:var(--gray-800);text-align:center;"
+                        >
+                    </div>
+                    <div style="font-size:22px;color:var(--gray-400);padding-top:18px;">×</div>
+                    <div style="flex:1;">
+                        <div style="font-size:11px;color:var(--gray-500);font-weight:600;margin-bottom:4px;">Стаканов (шт)</div>
+                        <input
+                            type="number" inputmode="numeric" min="0" placeholder="0"
+                            id="cup_count_${n}"
+                            style="width:100%;background:#fff;border:1.5px solid #ddd6fe;
+                                   border-radius:10px;padding:10px 12px;font-size:17px;
+                                   font-weight:700;color:var(--gray-800);text-align:center;"
+                        >
+                    </div>
+                    <div style="font-size:22px;color:var(--gray-400);padding-top:18px;">=</div>
+                    <div style="flex:1;">
+                        <div style="font-size:11px;color:var(--gray-500);font-weight:600;margin-bottom:4px;">Итого</div>
+                        <div
+                            id="cup_result_${n}"
+                            style="width:100%;background:var(--purple-light);border:1.5px solid #ddd6fe;
+                                   border-radius:10px;padding:10px 12px;font-size:17px;
+                                   font-weight:700;color:var(--purple);text-align:center;min-height:44px;
+                                   display:flex;align-items:center;justify-content:center;"
+                        >0 ₽</div>
+                    </div>
                 </div>`;
-            nomHeader.onclick=()=>nomRow.classList.toggle('open');
-            nomRow.appendChild(nomHeader);
+            rowsWrap.appendChild(cupBlock);
 
-            const rowsWrap=document.createElement('div');
-            rowsWrap.className='nominal-rows-wrap';
-            const inputRows=document.createElement('div');
-            inputRows.className='nominal-input-rows';
-            inputRows.id=`nominputrows_${n}`;
-            rowsWrap.appendChild(inputRows);
-            nomRow.appendChild(rowsWrap);
+            // Восстанавливаем сохранённые значения
+            const ds2=getDsData();
+            const cups=ds2.safe[`cups_${n}`]||{per:'',count:''};
+            setTimeout(()=>{
+                const perEl=document.getElementById(`cup_per_${n}`);
+                const cntEl=document.getElementById(`cup_count_${n}`);
+                const resEl=document.getElementById(`cup_result_${n}`);
+                if(perEl)perEl.value=cups.per||'';
+                if(cntEl)cntEl.value=cups.count||'';
+                if(resEl){
+                    const cupTotal=calcCupTotal(n);
+                    resEl.textContent=fmtMoney(cupTotal);
+                }
+                const saveCup=()=>{
+                    const per=parseInt(perEl.value)||0;
+                    const cnt=parseInt(cntEl.value)||0;
+                    const total=per*cnt*n;
+                    resEl.textContent=fmtMoney(total);
+                    let ds3=getDsData();
+                    ds3.safe[`cups_${n}`]={per:perEl.value,count:cntEl.value};
+                    saveDsData(ds3);
+                    updateNomTotal(n);
+                    updateSafeTotal();
+                    updateGrandTotal();
+                };
+                if(perEl)perEl.addEventListener('input',saveCup);
+                if(cntEl)cntEl.addEventListener('input',saveCup);
+            },0);
+        }
 
-            function refreshNomRows(){
-                const dsNow=getDsData();
-                const data=dsNow.safe[n]||[null];
-                inputRows.innerHTML='';
-                data.forEach((val,i)=>{
-                    const nomItem=document.createElement('div');
-                    nomItem.className='nom-row-item';
-                    const numEl=document.createElement('span');
-                    numEl.className='nom-row-num';
-                    numEl.textContent=i+1;
-                    const vc=document.createElement('div');
-                    vc.className='nom-vc';
-                    const dec=document.createElement('button');
-                    dec.className='nom-vc-btn'; dec.textContent='−';
-                    const inp=document.createElement('input');
-                    inp.className='nom-vc-input'; inp.type='number'; inp.inputMode='numeric';
-                    inp.step=1; inp.min=0; inp.placeholder='0';
-                    inp.value=val==null||val===''?'':val;
-                    const inc2=document.createElement('button');
-                    inc2.className='nom-vc-btn'; inc2.textContent='+';
-                    vc.appendChild(dec); vc.appendChild(inp); vc.appendChild(inc2);
-                    const acts=document.createElement('div');
-                    acts.className='nom-row-actions';
-                    const addBtn=document.createElement('button');
-                    addBtn.className='nom-row-btn'; addBtn.textContent='+';
-                    const delBtn=document.createElement('button');
-                    delBtn.className='nom-row-btn del'; delBtn.textContent='−';
-                    acts.appendChild(addBtn); acts.appendChild(delBtn);
-                    nomItem.appendChild(numEl); nomItem.appendChild(vc); nomItem.appendChild(acts);
-                    inputRows.appendChild(nomItem);
+        nomRow.appendChild(rowsWrap);
 
-                    const saveNom=()=>{
-                        let nv=inp.value===''?null:Math.max(0,parseInt(inp.value)||0);
-                        if(nv!==null)inp.value=nv;
-                        let ds2=getDsData();
-                        ds2.safe[n][i]=nv;
-                        saveDsData(ds2);
-                        updateNomTotal(n);
-                        updateSafeTotal();
-                        updateGrandTotal();
-                    };
-                    inp.addEventListener('change',saveNom);
-                    inp.addEventListener('blur',saveNom);
-                    dec.addEventListener('click',()=>{
-                        let v=inp.value===''?0:parseInt(inp.value)||0;
-                        inp.value=Math.max(0,v-1); saveNom();
-                    });
-                    inc2.addEventListener('click',()=>{
-                        let v=inp.value===''?0:parseInt(inp.value)||0;
-                        inp.value=v+1; saveNom();
-                    });
-                    addBtn.addEventListener('click',()=>{
-                        let ds2=getDsData();
-                        ds2.safe[n].push(null);
-                        saveDsData(ds2);
-                        refreshNomRows();
-                    });
-                    delBtn.addEventListener('click',()=>{
-                        let ds2=getDsData();
-                        if(ds2.safe[n].length===1)ds2.safe[n]=[null];
-                        else ds2.safe[n].splice(i,1);
-                        saveDsData(ds2);
-                        refreshNomRows();
-                        updateNomTotal(n);
-                        updateSafeTotal();
-                        updateGrandTotal();
-                    });
+        function refreshNomRows(){
+            const dsNow=getDsData();
+            const data=dsNow.safe[n]||[null];
+            inputRows.innerHTML='';
+            data.forEach((val,i)=>{
+                const nomItem=document.createElement('div');
+                nomItem.className='nom-row-item';
+                const numEl=document.createElement('span');
+                numEl.className='nom-row-num';
+                numEl.textContent=i+1;
+                const vc=document.createElement('div');
+                vc.className='nom-vc';
+                const dec=document.createElement('button');
+                dec.className='nom-vc-btn'; dec.textContent='−';
+                const inp=document.createElement('input');
+                inp.className='nom-vc-input'; inp.type='number'; inp.inputMode='numeric';
+                inp.step=1; inp.min=0; inp.placeholder='0';
+                inp.value=val==null||val===''?'':val;
+                const inc2=document.createElement('button');
+                inc2.className='nom-vc-btn'; inc2.textContent='+';
+                vc.appendChild(dec); vc.appendChild(inp); vc.appendChild(inc2);
+                const acts=document.createElement('div');
+                acts.className='nom-row-actions';
+                const addBtn=document.createElement('button');
+                addBtn.className='nom-row-btn'; addBtn.textContent='+';
+                const delBtn=document.createElement('button');
+                delBtn.className='nom-row-btn del'; delBtn.textContent='−';
+                acts.appendChild(addBtn); acts.appendChild(delBtn);
+                nomItem.appendChild(numEl); nomItem.appendChild(vc); nomItem.appendChild(acts);
+                inputRows.appendChild(nomItem);
+
+                const saveNom=()=>{
+                    let nv=inp.value===''?null:Math.max(0,parseInt(inp.value)||0);
+                    if(nv!==null)inp.value=nv;
+                    let ds2=getDsData();
+                    ds2.safe[n][i]=nv;
+                    saveDsData(ds2);
+                    updateNomTotal(n);
+                    updateSafeTotal();
+                    updateGrandTotal();
+                };
+                inp.addEventListener('change',saveNom);
+                inp.addEventListener('blur',saveNom);
+                dec.addEventListener('click',()=>{
+                    let v=inp.value===''?0:parseInt(inp.value)||0;
+                    inp.value=Math.max(0,v-1); saveNom();
                 });
-            }
-            refreshNomRows();
-            body.appendChild(nomRow);
-        });
+                inc2.addEventListener('click',()=>{
+                    let v=inp.value===''?0:parseInt(inp.value)||0;
+                    inp.value=v+1; saveNom();
+                });
+                addBtn.addEventListener('click',()=>{
+                    let ds2=getDsData();
+                    ds2.safe[n].push(null);
+                    saveDsData(ds2);
+                    refreshNomRows();
+                });
+                delBtn.addEventListener('click',()=>{
+                    let ds2=getDsData();
+                    if(ds2.safe[n].length===1)ds2.safe[n]=[null];
+                    else ds2.safe[n].splice(i,1);
+                    saveDsData(ds2);
+                    refreshNomRows();
+                    updateNomTotal(n);
+                    updateSafeTotal();
+                    updateGrandTotal();
+                });
+            });
+        }
+        refreshNomRows();
+        body.appendChild(nomRow);
+    });
     }
 
-    function updateNomTotal(n){
-        const ds=getDsData();
-        const rows=ds.safe[n]||[null];
-        const total=rows.reduce((s,v)=>s+n*(v==null||v===''?0:parseInt(v)||0),0);
-        const el=document.getElementById(`nomsum_${n}`);
-        if(el){el.textContent=fmtMoney(total);el.className='nominal-sum'+(total===0?' zero':'');}
+    function calcCupTotal(n){
+    if(n!==10&&n!==1)return 0;
+    const ds=getDsData();
+    const cups=ds.safe[`cups_${n}`]||{per:'',count:''};
+    const per=parseInt(cups.per)||0;
+    const cnt=parseInt(cups.count)||0;
+    return per*cnt*n;
+}
+
+function calcNominalTotal(n){
+    const ds=getDsData();
+    const rows=ds.safe[n]||[null];
+    const rowsTotal=rows.reduce((s,v)=>s+n*(v==null||v===''?0:parseInt(v)||0),0);
+    const cupTotal=calcCupTotal(n);
+    return rowsTotal+cupTotal;
+}
+
+function updateNomTotal(n){
+    const total=calcNominalTotal(n);
+    const el=document.getElementById(`nomsum_${n}`);
+    if(el){el.textContent=fmtMoney(total);el.className='nominal-sum'+(total===0?' zero':'');}
+    // обновляем поле результата стакана
+    if(n===10||n===1){
+        const resEl=document.getElementById(`cup_result_${n}`);
+        if(resEl)resEl.textContent=fmtMoney(calcCupTotal(n));
     }
+}
     function updateSafeTotal(){
         const total=calcSafeTotal();
         const el=document.getElementById('safeTotal');
