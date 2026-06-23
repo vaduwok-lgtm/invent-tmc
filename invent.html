@@ -835,14 +835,8 @@
     }
 
     function calcSafeTotal(){
-        const ds=getDsData();
-        let total=0;
-        NOMINALS.forEach(n=>{
-            const rows=ds.safe[n]||[null];
-            rows.forEach(v=>{total+=n*(v==null||v===''?0:parseInt(v)||0);});
-        });
-        return total;
-    }
+    return NOMINALS.reduce((s,n)=>s+calcNominalTotal(n),0);
+}
     function calcCashItem(item){
         const vsego=parseMoney(item.vsego);
         const vyruchka=parseMoney(item.vyruchka);
