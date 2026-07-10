@@ -1959,7 +1959,11 @@ function updateNomTotal(n){
         btnFilled.onclick=()=>{filterOnlyFilled=true;btnFilled.classList.add('active');btnAll.classList.remove('active');renderSummary();};
     }
 
-    init();
+        init();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
 })();
 </script>
 </body>
