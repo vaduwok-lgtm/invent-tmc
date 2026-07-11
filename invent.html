@@ -65,6 +65,19 @@
             padding: 6px; border-radius: 8px; color: var(--gray-400); touch-action: manipulation;
         }
         .header-reset-btn:active { background: var(--red-light); color: var(--red); }
+        .header-undo-btn {
+            background: none; border: none; font-size: 22px; cursor: pointer;
+            padding: 6px; border-radius: 8px; color: var(--gray-400); touch-action: manipulation;
+            position: relative;
+        }
+        .header-undo-btn:active:not(:disabled) { background: var(--primary-light); color: var(--primary); }
+        .header-undo-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .undo-badge {
+            position: absolute; top: 2px; right: 2px;
+            background: var(--primary); color: white; font-size: 9px; font-weight: 700;
+            min-width: 15px; height: 15px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; padding: 0 3px;
+        }
 
         /* ── BODY ── */
         .app-body {
@@ -533,6 +546,29 @@
             white-space: nowrap; pointer-events: none;
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ── CONFIRM MODAL ── */
+        .confirm-overlay {
+            position: fixed; inset: 0; background: rgba(15,23,42,0.5);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px; z-index: 2000; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .confirm-overlay.show { opacity: 1; pointer-events: auto; }
+        .confirm-box {
+            background: #fff; border-radius: 16px; padding: 20px;
+            width: 100%; max-width: 320px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transform: scale(0.95); transition: transform 0.2s;
+        }
+        .confirm-overlay.show .confirm-box { transform: scale(1); }
+        .confirm-msg { font-size: 15px; font-weight: 600; color: var(--gray-800); line-height: 1.4; margin-bottom: 16px; }
+        .confirm-btns { display: flex; gap: 8px; }
+        .confirm-btns button {
+            flex: 1; padding: 12px; border-radius: 10px; font-size: 14px;
+            font-weight: 700; border: none; cursor: pointer; touch-action: manipulation;
+        }
+        .confirm-cancel { background: var(--gray-100); color: var(--gray-600); }
+        .confirm-ok { background: var(--red); color: white; }
     </style>
 </head>
 <body>
@@ -540,6 +576,9 @@
 <header class="app-header">
     <div class="logo">📦</div>
     <div style="flex:1;"><div class="header-title">Инвентаризация</div></div>
+    <button class="header-undo-btn" id="undoBtn" title="Отменить последнее действие" disabled>
+        ↩️<span class="undo-badge" id="undoBadge" style="display:none;"></span>
+    </button>
     <button class="header-reset-btn" id="hardResetBtn">🗑️</button>
 </header>
 
@@ -646,6 +685,16 @@
 </nav>
 
 <div class="toast" id="toast"></div>
+
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+        <div class="confirm-msg" id="confirmMsg"></div>
+        <div class="confirm-btns">
+            <button class="confirm-cancel" id="confirmCancelBtn">Отмена</button>
+            <button class="confirm-ok" id="confirmOkBtn">Да, удалить</button>
+        </div>
+    </div>
+</div>
 
 <script>
 (function () {
@@ -802,6 +851,65 @@
     function saveDsData(data){ localStorage.setItem('ds_data', JSON.stringify(data)); }
 
     /* ════════════════════════════════
+       UNDO — универсальный откат последних действий
+    ════════════════════════════════ */
+    const UNDO_KEY = '__undo_stack__';
+    const MAX_UNDO = 10;
+
+    function getAppDataKeys(){
+        const keys=[];
+        for(let i=0;i<localStorage.length;i++){
+            const k=localStorage.key(i);
+            if(k && (k.startsWith('inv_')||k.startsWith('cu_')||k.startsWith('cprods_')||k==='ds_data')) keys.push(k);
+        }
+        return keys;
+    }
+    function snapshotAppData(){
+        const snap={};
+        getAppDataKeys().forEach(k=>{snap[k]=localStorage.getItem(k);});
+        return snap;
+    }
+    function pushUndoSnapshot(label){
+        try{
+            const stack=JSON.parse(localStorage.getItem(UNDO_KEY)||'[]');
+            stack.push({label:label||'', data:snapshotAppData()});
+            while(stack.length>MAX_UNDO) stack.shift();
+            localStorage.setItem(UNDO_KEY, JSON.stringify(stack));
+        }catch(e){ console.error('Не удалось сохранить снимок для отмены', e); }
+        updateUndoButton();
+    }
+    function undoLastAction(){
+        let stack;
+        try{ stack=JSON.parse(localStorage.getItem(UNDO_KEY)||'[]'); }catch(e){ stack=[]; }
+        if(!stack.length){ toast('Нечего отменять'); return; }
+        const last=stack.pop();
+        localStorage.setItem(UNDO_KEY, JSON.stringify(stack));
+
+        getAppDataKeys().forEach(k=>localStorage.removeItem(k));
+        Object.keys(last.data).forEach(k=>localStorage.setItem(k,last.data[k]));
+
+        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+        document.getElementById('addProductFormWrap').innerHTML='';
+        if(document.getElementById('tabSummary').classList.contains('active')) renderSummary();
+        if(document.getElementById('tabDs').classList.contains('active')) renderDs();
+
+        updateUndoButton();
+        toast(last.label ? `↩️ Отменено: ${last.label}` : '↩️ Действие отменено');
+    }
+    function updateUndoButton(){
+        let stack;
+        try{ stack=JSON.parse(localStorage.getItem(UNDO_KEY)||'[]'); }catch(e){ stack=[]; }
+        const btn=document.getElementById('undoBtn');
+        const badge=document.getElementById('undoBadge');
+        if(!btn)return;
+        btn.disabled = stack.length===0;
+        if(badge){
+            if(stack.length>0){ badge.style.display='flex'; badge.textContent=stack.length; }
+            else badge.style.display='none';
+        }
+    }
+
+    /* ════════════════════════════════
        CALC — инвентаризация
     ════════════════════════════════ */
     function getLocTotal(loc,pid){
@@ -863,6 +971,20 @@
         const t=document.getElementById('toast');
         t.textContent=msg; t.classList.add('show');
         setTimeout(()=>t.classList.remove('show'),2200);
+    }
+
+    /* ════════════════════════════════
+       ПОДТВЕРЖДЕНИЕ (замена нативного confirm)
+    ════════════════════════════════ */
+    let _confirmCallback=null;
+    function showConfirm(msg,onOk){
+        document.getElementById('confirmMsg').textContent=msg;
+        document.getElementById('confirmOverlay').classList.add('show');
+        _confirmCallback=onOk;
+    }
+    function hideConfirm(){
+        document.getElementById('confirmOverlay').classList.remove('show');
+        _confirmCallback=null;
     }
 
     /* ════════════════════════════════
@@ -984,10 +1106,12 @@
         clrBtn.className='clear-product-btn';
         clrBtn.textContent='🗑 Очистить';
         clrBtn.onclick=()=>{
-            if(!confirm(`Очистить "${product.name}"?`))return;
-            unitRules.forEach((_,uIdx)=>setRows(currentLoc,pid,uIdx,[null]));
-            setCU(currentLoc,pid,[]);
-            refreshStdCard(pid,product,unitRules);
+            showConfirm(`Очистить "${product.name}"?`,()=>{
+                pushUndoSnapshot(`Очистка «${product.name}»`);
+                unitRules.forEach((_,uIdx)=>setRows(currentLoc,pid,uIdx,[null]));
+                setCU(currentLoc,pid,[]);
+                refreshStdCard(pid,product,unitRules);
+            });
         };
         footer.appendChild(addBtn); footer.appendChild(clrBtn);
         body.appendChild(footer); card.appendChild(body);
@@ -1031,21 +1155,25 @@
         clrBtn.className='clear-product-btn';
         clrBtn.textContent='🗑 Очистить';
         clrBtn.onclick=()=>{
-            if(!confirm(`Очистить "${cp.name}"?`))return;
-            let cps=getCustomProducts(currentLoc);
-            const idx=cps.findIndex(p=>p.id===pid);
-            if(idx!==-1){cps[idx].rows=[null];cps[idx].customUnits=[];setCustomProducts(currentLoc,cps);}
-            refreshCustomCard(pid);
+            showConfirm(`Очистить "${cp.name}"?`,()=>{
+                pushUndoSnapshot(`Очистка «${cp.name}»`);
+                let cps=getCustomProducts(currentLoc);
+                const idx=cps.findIndex(p=>p.id===pid);
+                if(idx!==-1){cps[idx].rows=[null];cps[idx].customUnits=[];setCustomProducts(currentLoc,cps);}
+                refreshCustomCard(pid);
+            });
         };
         const delBtn=document.createElement('button');
         delBtn.className='delete-product-btn';
         delBtn.textContent='✖ Удалить продукт';
         delBtn.onclick=()=>{
-            if(!confirm(`Удалить продукт "${cp.name}"?`))return;
-            let cps=getCustomProducts(currentLoc);
-            setCustomProducts(currentLoc,cps.filter(p=>p.id!==pid));
-            renderProducts(); renderStats(); updateLocChipData(currentLocIdx); updateNavBadge();
-            toast(`🗑 "${cp.name}" удалён`);
+            showConfirm(`Удалить продукт "${cp.name}"?`,()=>{
+                pushUndoSnapshot(`Удаление «${cp.name}»`);
+                let cps=getCustomProducts(currentLoc);
+                setCustomProducts(currentLoc,cps.filter(p=>p.id!==pid));
+                renderProducts(); renderStats(); updateLocChipData(currentLocIdx); updateNavBadge();
+                toast(`🗑 "${cp.name}" удалён`);
+            });
         };
         footer.appendChild(addUnitBtn); footer.appendChild(clrBtn); footer.appendChild(delBtn);
         body.appendChild(footer); card.appendChild(body);
@@ -1232,7 +1360,7 @@
         dec.className='vc-btn'; dec.textContent='−';
         const inp=document.createElement('input');
         inp.className='vc-input'; inp.type='number'; inp.inputMode='decimal';
-        inp.step=s; inp.placeholder='0';
+        inp.step=s; inp.min=0; inp.placeholder='0';
         inp.value=val==null||val===''?'':val;
         const inc=document.createElement('button');
         inc.className='vc-btn'; inc.textContent='+';
@@ -1246,7 +1374,7 @@
         acts.appendChild(addRow); acts.appendChild(delRow);
         row.appendChild(num); row.appendChild(vc); row.appendChild(acts);
         const save=()=>{
-            let nv=inp.value===''?null:rnd(parseFloat(inp.value)||0,s);
+            let nv=inp.value===''?null:rnd(Math.max(0,parseFloat(inp.value)||0),s);
             if(nv!==null)inp.value=nv;
             onSave(nv);
         };
@@ -1431,7 +1559,7 @@
         document.getElementById('summaryStats').innerHTML=`
             <div class="ss-card"><div class="ss-val">${allRows.length}</div><div class="ss-lbl">Всего позиций</div></div>
             <div class="ss-card"><div class="ss-val green">${filled}</div><div class="ss-lbl">Заполнено</div></div>
-            <div class="ss-card"><div class="ss-val blue">${Math.round(filled/allRows.length*100)}%</div><div class="ss-lbl">Готовность</div></div>
+            <div class="ss-card"><div class="ss-val blue">${allRows.length?Math.round(filled/allRows.length*100):0}%</div><div class="ss-lbl">Готовность</div></div>
             <div class="ss-card"><div class="ss-val">${allRows.length-filled}</div><div class="ss-lbl">Пустых</div></div>`;
         let rows=allRows;
         if(searchQ)rows=rows.filter(r=>r.name.toLowerCase().includes(searchQ.toLowerCase()));
@@ -1754,13 +1882,15 @@ function updateNomTotal(n){
             delBtn.className='delete-cash-btn';
             delBtn.textContent=`✖ Удалить ${type==='kassa'?'кассу':'авто'}`;
             delBtn.onclick=()=>{
-                if(!confirm(`Удалить "${item.name}"?`))return;
-                let ds2=getDsData();
-                if(type==='kassa')ds2.kassas.splice(idx,1);
-                else ds2.avtos.splice(idx,1);
-                saveDsData(ds2);
-                renderCashList(type);
-                updateGrandTotal();
+                showConfirm(`Удалить "${item.name}"?`,()=>{
+                    pushUndoSnapshot(`Удаление «${item.name}»`);
+                    let ds2=getDsData();
+                    if(type==='kassa')ds2.kassas.splice(idx,1);
+                    else ds2.avtos.splice(idx,1);
+                    saveDsData(ds2);
+                    renderCashList(type);
+                    updateGrandTotal();
+                });
             };
             footer.appendChild(delBtn);
             card.appendChild(footer);
@@ -1863,52 +1993,58 @@ function updateNomTotal(n){
        DS — CLEAR
     ════════════════════════════════ */
     function clearDs(){
-        if(!confirm('Очистить все данные ДС?'))return;
-        const fresh={
-            safe:NOMINALS.reduce((acc,n)=>{acc[n]=[null];return acc;},{}),
-            kassas:[
-                {id:'k1',name:'Касса 1',vsego:'',vyruchka:''},
-                {id:'k2',name:'Касса 2',vsego:'',vyruchka:''}
-            ],
-            avtos:[{id:'a1',name:'Авто 1',vsego:'',vyruchka:''}]
-        };
-        saveDsData(fresh);
-        renderDs();
-        toast('🧹 Данные ДС очищены');
+        showConfirm('Очистить все данные ДС?',()=>{
+            pushUndoSnapshot('Очистка ДС');
+            const fresh={
+                safe:NOMINALS.reduce((acc,n)=>{acc[n]=[null];return acc;},{}),
+                kassas:[
+                    {id:'k1',name:'Касса 1',vsego:'',vyruchka:''},
+                    {id:'k2',name:'Касса 2',vsego:'',vyruchka:''}
+                ],
+                avtos:[{id:'a1',name:'Авто 1',vsego:'',vyruchka:''}]
+            };
+            saveDsData(fresh);
+            renderDs();
+            toast('🧹 Данные ДС очищены');
+        });
     }
 
     /* ════════════════════════════════
        CLEAR / RESET INVENTORY
     ════════════════════════════════ */
     function clearLocation(){
-        if(!confirm(`Очистить все данные для "${currentLoc}"?`))return;
-        const rules=locationRules[currentLoc]||{};
-        Object.keys(rules).forEach(pid=>{
-            rules[pid].forEach((_,uIdx)=>setRows(currentLoc,pid,uIdx,[null]));
-            setCU(currentLoc,pid,[]);
+        showConfirm(`Очистить все данные для "${currentLoc}"?`,()=>{
+            pushUndoSnapshot(`Очистка помещения «${currentLoc}»`);
+            const rules=locationRules[currentLoc]||{};
+            Object.keys(rules).forEach(pid=>{
+                rules[pid].forEach((_,uIdx)=>setRows(currentLoc,pid,uIdx,[null]));
+                setCU(currentLoc,pid,[]);
+            });
+            let cps=getCustomProducts(currentLoc);
+            cps.forEach(cp=>{cp.rows=[null];cp.customUnits=[];});
+            setCustomProducts(currentLoc,cps);
+            document.getElementById('addProductFormWrap').innerHTML='';
+            renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+            toast('🧹 Помещение очищено');
         });
-        let cps=getCustomProducts(currentLoc);
-        cps.forEach(cp=>{cp.rows=[null];cp.customUnits=[];});
-        setCustomProducts(currentLoc,cps);
-        document.getElementById('addProductFormWrap').innerHTML='';
-        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
-        toast('🧹 Помещение очищено');
     }
     function fullReset(){
-        if(!confirm('⚠️ Удалить ВСЕ данные по всем помещениям?'))return;
-        locations.forEach(loc=>{
-            const rules=locationRules[loc]||{};
-            Object.keys(rules).forEach(pid=>{
-                rules[pid].forEach((_,uIdx)=>setRows(loc,pid,uIdx,[null]));
-                setCU(loc,pid,[]);
+        showConfirm('⚠️ Удалить ВСЕ данные по всем помещениям?',()=>{
+            pushUndoSnapshot('Полный сброс инвентаризации');
+            locations.forEach(loc=>{
+                const rules=locationRules[loc]||{};
+                Object.keys(rules).forEach(pid=>{
+                    rules[pid].forEach((_,uIdx)=>setRows(loc,pid,uIdx,[null]));
+                    setCU(loc,pid,[]);
+                });
+                stdProducts.forEach(p=>setCU(loc,p.id,[]));
+                setCustomProducts(loc,[]);
             });
-            stdProducts.forEach(p=>setCU(loc,p.id,[]));
-            setCustomProducts(loc,[]);
+            document.getElementById('addProductFormWrap').innerHTML='';
+            renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+            if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
+            toast('🗑️ Все данные удалены');
         });
-        document.getElementById('addProductFormWrap').innerHTML='';
-        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
-        if(document.getElementById('tabSummary').classList.contains('active'))renderSummary();
-        toast('🗑️ Все данные удалены');
     }
 
     /* ════════════════════════════════
@@ -1937,6 +2073,7 @@ function updateNomTotal(n){
     ════════════════════════════════ */
     function init(){
         renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+        updateUndoButton();
 
         document.getElementById('clearLocBtn').onclick=clearLocation;
         document.getElementById('hardResetBtn').onclick=fullReset;
@@ -1944,6 +2081,14 @@ function updateNomTotal(n){
         document.getElementById('addKassaBtn').onclick=addKassa;
         document.getElementById('addAvtoBtn').onclick=addAvto;
         document.getElementById('dsClearBtn').onclick=clearDs;
+        document.getElementById('undoBtn').onclick=undoLastAction;
+
+        document.getElementById('confirmOkBtn').onclick=()=>{
+            const cb=_confirmCallback;
+            hideConfirm();
+            if(cb)cb();
+        };
+        document.getElementById('confirmCancelBtn').onclick=hideConfirm;
 
         document.querySelectorAll('.nav-btn').forEach(btn=>{
             btn.onclick=()=>switchTab(btn.dataset.tab);
