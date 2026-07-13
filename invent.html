@@ -383,7 +383,7 @@
         .nominal-header {
             padding: 8px 12px; display: flex; align-items: center;
             justify-content: space-between; gap: 8px;
-            cursor: pointer; touch-action: manipulation; user-select: none;
+            user-select: none;
         }
         .nominal-label {
             font-size: 14px; font-weight: 700; color: var(--gray-700);
@@ -393,16 +393,16 @@
             background: var(--purple-light); color: var(--purple);
             font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
         }
+        .nominal-count {
+            font-size: 12px; font-weight: 600; color: var(--gray-400);
+        }
         .nominal-sum {
             font-size: 14px; font-weight: 700; color: var(--purple);
         }
         .nominal-sum.zero { color: var(--gray-300); }
-        .nominal-chevron { font-size: 16px; color: var(--gray-300); transition: transform 0.2s; }
-        .nominal-row.open .nominal-chevron { transform: rotate(180deg); }
         .nominal-rows-wrap {
-            display: none; padding: 0 8px 8px;
+            display: block; padding: 0 8px 8px;
         }
-        .nominal-row.open .nominal-rows-wrap { display: block; }
 
         /* Строки номинала */
         .nominal-input-rows { display: flex; flex-direction: column; gap: 6px; }
@@ -840,8 +840,7 @@
         return {
             safe: NOMINALS.reduce((acc,n)=>{ acc[n]=[null]; return acc; },{}),
             kassas: [
-                { id:'k1', name:'Касса 1', vsego:'', vyruchka:'' },
-                { id:'k2', name:'Касса 2', vsego:'', vyruchka:'' }
+                { id:'k1', name:'Касса 1', vsego:'', vyruchka:'' }
             ],
             avtos: [
                 { id:'a1', name:'Авто 1', vsego:'', vyruchka:'' }
@@ -1593,6 +1592,7 @@
     NOMINALS.forEach(n=>{
         const rows=ds.safe[n]||[null];
         const nomTotal=calcNominalTotal(n);
+        const nomCount=calcNominalCount(n);
         const nomRow=document.createElement('div');
         nomRow.className='nominal-row';
         nomRow.id=`nomrow_${n}`;
@@ -1603,10 +1603,9 @@
                 <span class="nominal-badge">${n} ₽</span>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
+                <div class="nominal-count" id="nomcount_${n}">${nomCount} шт</div>
                 <div class="nominal-sum ${nomTotal===0?'zero':''}" id="nomsum_${n}">${fmtMoney(nomTotal)}</div>
-                <div class="nominal-chevron">⌄</div>
             </div>`;
-        nomHeader.onclick=()=>nomRow.classList.toggle('open');
         nomRow.appendChild(nomHeader);
 
         const rowsWrap=document.createElement('div');
@@ -1787,10 +1786,28 @@ function calcNominalTotal(n){
     return rowsTotal+cupTotal;
 }
 
+function calcCupCount(n){
+    if(n!==10&&n!==1)return 0;
+    const ds=getDsData();
+    const cups=ds.safe[`cups_${n}`]||{per:'',count:''};
+    const per=parseInt(cups.per)||0;
+    const cnt=parseInt(cups.count)||0;
+    return per*cnt;
+}
+
+function calcNominalCount(n){
+    const ds=getDsData();
+    const rows=ds.safe[n]||[null];
+    const rowsCount=rows.reduce((s,v)=>s+(v==null||v===''?0:parseInt(v)||0),0);
+    return rowsCount+calcCupCount(n);
+}
+
 function updateNomTotal(n){
     const total=calcNominalTotal(n);
     const el=document.getElementById(`nomsum_${n}`);
     if(el){el.textContent=fmtMoney(total);el.className='nominal-sum'+(total===0?' zero':'');}
+    const countEl=document.getElementById(`nomcount_${n}`);
+    if(countEl)countEl.textContent=`${calcNominalCount(n)} шт`;
     // обновляем поле результата стакана
     if(n===10||n===1){
         const resEl=document.getElementById(`cup_result_${n}`);
@@ -1998,8 +2015,7 @@ function updateNomTotal(n){
             const fresh={
                 safe:NOMINALS.reduce((acc,n)=>{acc[n]=[null];return acc;},{}),
                 kassas:[
-                    {id:'k1',name:'Касса 1',vsego:'',vyruchka:''},
-                    {id:'k2',name:'Касса 2',vsego:'',vyruchka:''}
+                    {id:'k1',name:'Касса 1',vsego:'',vyruchka:''}
                 ],
                 avtos:[{id:'a1',name:'Авто 1',vsego:'',vyruchka:''}]
             };
