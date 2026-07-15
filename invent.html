@@ -569,6 +569,87 @@
         }
         .confirm-cancel { background: var(--gray-100); color: var(--gray-600); }
         .confirm-ok { background: var(--red); color: white; }
+
+        /* ── FAMILY TOOLS THEME ── */
+        :root {
+            --bg: #ffffff; --surface: #ffffff; --surface-elevated: #ffffff;
+            --text-primary: #111827; --text-secondary: #6b7280; --text-tertiary: #9ca3af;
+            --border: #e5e7eb; --border-light: #f3f4f6;
+            --accent: #2563eb; --accent-light: #eff6ff;
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+            --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px -1px rgba(0,0,0,.04);
+            --gray-50: var(--bg); --gray-100: var(--border-light); --gray-200: var(--border);
+            --gray-300: var(--text-tertiary); --gray-400: var(--text-tertiary);
+            --gray-500: var(--text-secondary); --gray-600: var(--text-secondary);
+            --gray-700: #374151; --gray-800: var(--text-primary);
+            --primary: var(--accent); --primary-light: var(--accent-light);
+            --green: var(--success); --red: var(--danger); --orange: var(--warning);
+        }
+        body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text-primary); }
+        .app-header { border: 0; padding: 0 20px; }
+        .logo { width: 32px; height: 32px; background: var(--text-primary); border-radius: 10px; font-size: 0; }
+        .logo::after { content: "□"; font-size: 20px; color: #fff; font-weight: 300; line-height: 1; }
+        .header-title { font-size: 18px; letter-spacing: -.02em; }
+        .header-reset-btn, .header-undo-btn { color: var(--text-secondary); font-size: 0; }
+        .header-reset-btn::after { content: "⌫"; font-size: 21px; }
+        .header-undo-btn::before { content: "↶"; font-size: 24px; }
+        .bottom-nav { border-top: 1px solid var(--border-light); }
+        .nav-btn { color: var(--text-tertiary); font-weight: 500; }
+        .nav-btn .nav-icon { font-size: 0; width: 20px; height: 20px; position: relative; }
+        .nav-btn .nav-icon::after { color: currentColor; font-size: 20px; line-height: 20px; }
+        #navInventory .nav-icon::after { content: "□"; } #navSummary .nav-icon::after { content: "⌁"; } #navDs .nav-icon::after { content: "◇"; }
+        .nav-btn.active::after { display: none; }
+        .loc-strip-wrap { border: 0; padding: 12px 16px 8px; gap: 8px; }
+        .loc-chip { border: 1px solid var(--border); color: var(--text-secondary); padding: 8px 14px; border-radius: 10px; }
+        .loc-chip.active { background: var(--accent-light); border-color: var(--accent-light); color: var(--accent); }
+        .stats-row { padding: 10px 16px 4px; gap: 8px; }
+        .stat-pill, .ss-card { border-color: var(--border); box-shadow: var(--shadow-sm); border-radius: 12px; }
+        .stat-pill .sp-val.green, .ss-card .ss-val.green { color: var(--success); }
+        .products-list { padding: 14px 16px; gap: 10px; }
+        .product-card { border-color: var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); position: relative; }
+        .product-card.has-data, .product-card.custom-product, .product-card.custom-product.has-data { border-color: var(--border); }
+        .product-card::before { content: ""; position: absolute; z-index: 2; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 0 3px 3px 0; background: #9ca3af; }
+        .product-card.cat-chicken::before { background: #f59e0b; }
+        .product-card.cat-potato::before { background: #eab308; }
+        .product-card.cat-sauce::before { background: #10b981; }
+        .product-card.cat-drink::before { background: #3b82f6; }
+        .product-header { padding: 14px 16px 14px 19px; }
+        .product-indicator { display: none; }
+        .product-name { font-size: 14px; text-transform: uppercase; letter-spacing: .015em; }
+        .product-total { color: var(--text-primary); font-size: 16px; }
+        .product-total.zero { color: var(--text-tertiary); }
+        .product-unit-tag, .custom-tag { background: transparent; padding: 0; color: var(--text-tertiary); font-weight: 500; }
+        .product-body { background: #fff; border-top-color: var(--border-light); padding: 10px; width: 100%; }
+        .product-card.open { display: flex; flex-direction: column; }
+        .unit-block { border-color: var(--border-light); border-radius: 10px; }
+        .unit-block-header { background: #fff; border-bottom-color: var(--border-light); padding: 10px 12px; }
+        .unit-name { color: var(--text-secondary); font-size: 11px; }
+        .unit-subtotal { color: var(--text-primary); }
+        .vc, .nom-vc { background: #fff; border-color: var(--border); height: 44px; }
+        .vc-btn, .nom-vc-btn { height: 44px; width: 44px; font-size: 22px; color: var(--text-secondary); }
+        .vc-btn:active, .nom-vc-btn:active { background: var(--border-light); color: var(--text-primary); }
+        .vc-input, .nom-vc-input { font-size: 16px; background: #fff; }
+        .row-action-btn, .nom-row-btn { height: 44px; background: #fff; border-color: var(--border); }
+        .add-custom-btn, .clear-product-btn, .delete-product-btn { border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text-secondary); }
+        .clear-product-btn, .delete-product-btn { color: var(--danger); border-color: #fee2e2; background: #fff; }
+        .add-product-btn, .add-cash-btn { border: 1px dashed var(--border); background: #fff; color: var(--text-secondary); border-radius: 12px; }
+        .clear-loc-btn, .ds-clear-btn { background: #fff; border: 1px solid #fee2e2; color: var(--danger); }
+        .summary-header { padding: 20px 16px 12px; } .summary-header h2 { font-size: 20px; }
+        .search-wrap { padding: 0 16px 12px; } .search-wrap input { border: 1px solid var(--border); border-radius: 10px; }
+        .search-icon { font-size: 0; } .search-icon::after { content: "⌕"; font-size: 21px; }
+        .filter-row { overflow-x: auto; padding: 0 16px 12px; }
+        .filter-chip { padding: 7px 2px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; white-space: nowrap; }
+        .filter-chip.active { background: transparent; border-color: var(--accent); color: var(--text-primary); }
+        .sum-item, .ds-section, .cash-card { border-color: var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .ds-section-header, .cash-card-header { background: #fff; border-bottom-color: var(--border-light); }
+        .ds-section-total, .safe-total-label, .safe-total-val, .cash-result-label { color: var(--text-primary); }
+        .safe-total-row, .cash-result-row { background: #fff; border-color: var(--border); }
+        .ds-grand-total { background: var(--text-primary); border-radius: 12px; }
+        .app-body button, .loc-chip, .filter-chip, .nav-btn { transition: transform 100ms ease, background-color 100ms ease, color 100ms ease; }
+        .app-body button:active, .loc-chip:active, .filter-chip:active, .nav-btn:active { transform: scale(.95); }
+        .scroll-top-fab { position: fixed; right: 20px; bottom: calc(var(--nav-h) + var(--safe-bottom) + 18px); width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--text-primary); color: #fff; font-size: 22px; cursor: pointer; box-shadow: var(--shadow-lg); opacity: 0; transform: scale(.75); pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 20; }
+        .scroll-top-fab.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
     </style>
 </head>
 <body>
@@ -684,6 +765,8 @@
     </button>
 </nav>
 
+<button class="scroll-top-fab" id="scrollTopFab" type="button" aria-label="Наверх">↑</button>
+
 <div class="toast" id="toast"></div>
 
 <div class="confirm-overlay" id="confirmOverlay">
@@ -731,6 +814,14 @@
         { id:"p26", name:"Бекон нарезанный",           baseUnit:"кг" },
         { id:"p27", name:"Масло фритюрное",            baseUnit:"кг" }
     ];
+
+    function productCategory(id){
+        if(["p1","p2","p3","p4","p5","p6","p7","p8","p9","p24","p25"].includes(id)) return 'cat-chicken';
+        if(["p10","p11"].includes(id)) return 'cat-potato';
+        if(["p12","p13","p14","p15","p16","p17","p26","p27"].includes(id)) return 'cat-sauce';
+        if(["p18","p19","p20","p21","p22","p23"].includes(id)) return 'cat-drink';
+        return 'cat-other';
+    }
 
     function mu(label, fn) { return { label, toBase: fn }; }
     const RM = {1:22.31,2:20.09,3:17.87,4:15.65,5:13.43,6:11.21,7:8.99,8:6.77};
@@ -1077,7 +1168,7 @@
         const totalVal=fmt(product.baseUnit,getLocTotal(currentLoc,pid));
         const hasData=totalVal>0;
         const card=document.createElement('div');
-        card.className='product-card'+(hasData?' has-data':'');
+        card.className='product-card '+productCategory(pid)+(hasData?' has-data':'');
         card.id=`pcard_${pid}`;
         const header=document.createElement('div');
         header.className='product-header';
@@ -1125,7 +1216,7 @@
         const totalVal=fmt(cp.baseUnit,getLocTotal(currentLoc,pid));
         const hasData=totalVal>0;
         const card=document.createElement('div');
-        card.className='product-card custom-product'+(hasData?' has-data':'');
+        card.className='product-card custom-product cat-other'+(hasData?' has-data':'');
         card.id=`pcard_${pid}`;
         const header=document.createElement('div');
         header.className='product-header';
@@ -2118,6 +2209,10 @@ function updateNomTotal(n){
         const btnFilled=document.getElementById('filterFilledBtn');
         btnAll.onclick=()=>{filterOnlyFilled=false;btnAll.classList.add('active');btnFilled.classList.remove('active');renderSummary();};
         btnFilled.onclick=()=>{filterOnlyFilled=true;btnFilled.classList.add('active');btnAll.classList.remove('active');renderSummary();};
+        const appBody=document.getElementById('appBody');
+        const scrollTopFab=document.getElementById('scrollTopFab');
+        appBody.addEventListener('scroll',()=>scrollTopFab.classList.toggle('visible',appBody.scrollTop>200),{passive:true});
+        scrollTopFab.onclick=()=>appBody.scrollTo({top:0,behavior:'smooth'});
     }
 
         init();
