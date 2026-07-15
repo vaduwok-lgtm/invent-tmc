@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -606,15 +607,16 @@
         .stats-row { padding: 10px 16px 4px; gap: 8px; }
         .stat-pill, .ss-card { border-color: var(--border); box-shadow: var(--shadow-sm); border-radius: 12px; }
         .stat-pill .sp-val.green, .ss-card .ss-val.green { color: var(--success); }
+        .category-strip-wrap { display: flex; gap: 8px; padding: 12px 16px 2px; overflow-x: auto; scrollbar-width: none; }
+        .category-strip-wrap::-webkit-scrollbar { display: none; }
+        .category-chip { flex-shrink: 0; padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text-secondary); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; touch-action: manipulation; }
+        .category-chip.active { color: var(--accent); border-color: var(--accent-light); background: var(--accent-light); }
         .products-list { padding: 14px 16px; gap: 10px; }
-        .product-card { border-color: var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); position: relative; }
-        .product-card.has-data, .product-card.custom-product, .product-card.custom-product.has-data { border-color: var(--border); }
-        .product-card::before { content: ""; position: absolute; z-index: 2; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 0 3px 3px 0; background: #9ca3af; }
-        .product-card.cat-chicken::before { background: #f59e0b; }
-        .product-card.cat-potato::before { background: #eab308; }
-        .product-card.cat-sauce::before { background: #10b981; }
-        .product-card.cat-drink::before { background: #3b82f6; }
-        .product-header { padding: 14px 16px 14px 19px; }
+        .product-card { border-color: var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .product-card.has-data { border-color: #bfdbfe; background: #fbfdff; }
+        .product-card.custom-product { border-color: var(--border); }
+        .product-card.custom-product.has-data { border-color: #bfdbfe; background: #fbfdff; }
+        .product-header { padding: 14px 16px; }
         .product-indicator { display: none; }
         .product-name { font-size: 14px; text-transform: uppercase; letter-spacing: .015em; }
         .product-total { color: var(--text-primary); font-size: 16px; }
@@ -673,6 +675,7 @@
             <div class="stat-pill"><div class="sp-val green" id="stFilled">—</div><div class="sp-lbl">Заполнено</div></div>
             <div class="stat-pill"><div class="sp-val blue" id="stPct">—</div><div class="sp-lbl">Готовность</div></div>
         </div>
+        <div class="category-strip-wrap" id="categoryStrip" aria-label="Категории товаров"></div>
         <div class="products-list" id="productsList"></div>
         <div id="addProductFormWrap"></div>
         <button class="add-product-btn" id="addProductBtn">➕ Добавить свой продукт</button>
@@ -815,12 +818,16 @@
         { id:"p27", name:"Масло фритюрное",            baseUnit:"кг" }
     ];
 
+    const PRODUCT_CATEGORIES = {
+        chicken: { label:'Курица', ids:['p1','p2','p3','p4','p5','p6','p7'] },
+        potato: { label:'Картофель', ids:['p8','p9','p10','p11','p24','p25'] },
+        mixes: { label:'Смеси', ids:['p12','p13','p14'] },
+        pantry: { label:'Бакалея', ids:['p15','p16','p17','p26','p27'] },
+        beer: { label:'Пиво', ids:['p18','p19'] },
+        containers: { label:'Тара', ids:['p20','p21','p22','p23'] }
+    };
     function productCategory(id){
-        if(["p1","p2","p3","p4","p5","p6","p7","p8","p9","p24","p25"].includes(id)) return 'cat-chicken';
-        if(["p10","p11"].includes(id)) return 'cat-potato';
-        if(["p12","p13","p14","p15","p16","p17","p26","p27"].includes(id)) return 'cat-sauce';
-        if(["p18","p19","p20","p21","p22","p23"].includes(id)) return 'cat-drink';
-        return 'cat-other';
+        return Object.keys(PRODUCT_CATEGORIES).find(key=>PRODUCT_CATEGORIES[key].ids.includes(id)) || 'other';
     }
 
     function mu(label, fn) { return { label, toBase: fn }; }
@@ -906,6 +913,7 @@
     const locations = ["На станции","Морозный ларь","Дефрост","Морозильная камера","Холодильная камера","Сухой склад"];
     let currentLocIdx = 0;
     let currentLoc = locations[0];
+    let currentCategory = 'all';
     let filterOnlyFilled = true;
     let searchQ = '';
 
@@ -1139,7 +1147,7 @@
         renderLocStrip();
         const active=document.getElementById(`locchip_${idx}`);
         if(active)active.scrollIntoView({block:'nearest',inline:'center'});
-        renderStats(); renderProducts();
+        renderStats(); renderCategoryStrip(); renderProducts();
         document.getElementById('addProductFormWrap').innerHTML='';
     }
 
@@ -1154,10 +1162,25 @@
         stdProducts.forEach(p=>{if(getCU(currentLoc,p.id).length>0)stdPids.add(p.id);});
         stdPids.forEach(pid=>{
             const product=stdProducts.find(p=>p.id===pid);
-            if(!product)return;
+            if(!product || (currentCategory!=='all' && productCategory(pid)!==currentCategory))return;
             container.appendChild(buildStdProductCard(product,rules[pid]||[]));
         });
-        getCustomProducts(currentLoc).forEach(cp=>{container.appendChild(buildCustomProductCard(cp));});
+        if(currentCategory==='all')getCustomProducts(currentLoc).forEach(cp=>{container.appendChild(buildCustomProductCard(cp));});
+    }
+
+    function renderCategoryStrip(){
+        const strip=document.getElementById('categoryStrip');
+        const available=Object.keys(locationRules[currentLoc]||{});
+        const visible=Object.keys(PRODUCT_CATEGORIES).filter(key=>available.some(id=>productCategory(id)===key));
+        if(currentCategory!=='all' && !visible.includes(currentCategory))currentCategory='all';
+        strip.innerHTML='';
+        [{key:'all',label:'Все'},...visible.map(key=>({key,label:PRODUCT_CATEGORIES[key].label}))].forEach(category=>{
+            const chip=document.createElement('button');
+            chip.type='button'; chip.className='category-chip'+(category.key===currentCategory?' active':'');
+            chip.textContent=category.label;
+            chip.onclick=()=>{currentCategory=category.key;renderCategoryStrip();renderProducts();};
+            strip.appendChild(chip);
+        });
     }
 
     /* ════════════════════════════════
@@ -1216,7 +1239,7 @@
         const totalVal=fmt(cp.baseUnit,getLocTotal(currentLoc,pid));
         const hasData=totalVal>0;
         const card=document.createElement('div');
-        card.className='product-card custom-product cat-other'+(hasData?' has-data':'');
+        card.className='product-card custom-product'+(hasData?' has-data':'');
         card.id=`pcard_${pid}`;
         const header=document.createElement('div');
         header.className='product-header';
@@ -2179,7 +2202,7 @@ function updateNomTotal(n){
        INIT
     ════════════════════════════════ */
     function init(){
-        renderLocStrip(); renderStats(); renderProducts(); updateNavBadge();
+        renderLocStrip(); renderStats(); renderCategoryStrip(); renderProducts(); updateNavBadge();
         updateUndoButton();
 
         document.getElementById('clearLocBtn').onclick=clearLocation;
