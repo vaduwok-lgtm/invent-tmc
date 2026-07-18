@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -628,6 +629,13 @@
             background: var(--purple-light); border: 1.5px solid #ddd6fe;
             border-radius: 12px; display: flex; align-items: center; justify-content: space-between;
         }
+        .safe-bags-list { padding: 0 12px; display: flex; flex-direction: column; gap: 8px; }
+        .safe-bag-add-btn { width: calc(100% - 24px); margin: 10px 12px 0; }
+        .safe-bag-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+        .safe-bag-card .cash-card-header { padding: 12px 14px; }
+        .safe-bag-card .cash-card-body { padding: 10px 12px 12px; }
+        .safe-bag-card .cash-field { background: var(--canvas); }
+        .safe-bag-card .cash-result-row { margin-top: 0; }
         .safe-total-label { font-size: 14px; font-weight: 700; color: var(--purple); }
         .safe-total-val { font-size: 22px; font-weight: 700; color: var(--purple); }
 
@@ -921,6 +929,8 @@
                     <div class="ds-section-total" id="safeTotalHeader">0 ₽</div>
                 </div>
                 <div class="safe-body" id="safeBody"></div>
+                <div id="safeBagsList" class="safe-bags-list"></div>
+                <button class="add-cash-btn safe-bag-add-btn" id="addSafeBagBtn">＋ Добавить сейф-пакет</button>
                 <div class="safe-total-row">
                     <div class="safe-total-label">ИТОГО по сейфу</div>
                     <div class="safe-total-val" id="safeTotal">0 ₽</div>
@@ -1167,12 +1177,18 @@
        STORAGE — ДС
     ════════════════════════════════ */
     const NOMINALS = [5000,2000,1000,500,200,100,50,10,5,2,1];
+    function defaultSafeBags(){return [{id:'sb1',name:'Сейф-пакет 1',amount:''}];}
 
     function getDsData() {
         const r = localStorage.getItem('ds_data');
-        if (r) return JSON.parse(r);
+        if (r) {
+            const data=JSON.parse(r);
+            if(!Array.isArray(data.safeBags)||data.safeBags.length===0)data.safeBags=defaultSafeBags();
+            return data;
+        }
         return {
             safe: NOMINALS.reduce((acc,n)=>{ acc[n]=[null]; return acc; },{}),
+            safeBags: defaultSafeBags(),
             kassas: [
                 { id:'k1', name:'Касса 1', vsego:'', vyruchka:'' }
             ],
@@ -1278,8 +1294,12 @@
     }
 
     function calcSafeTotal(){
-    return NOMINALS.reduce((s,n)=>s+calcNominalTotal(n),0);
+    return NOMINALS.reduce((s,n)=>s+calcNominalTotal(n),0)+calcSafeBagsTotal();
 }
+    function calcSafeBagsTotal(){
+        const ds=getDsData();
+        return (ds.safeBags||[]).reduce((sum,bag)=>sum+parseMoney(bag.amount),0);
+    }
     function calcCashItem(item){
         const vsego=parseMoney(item.vsego);
         const vyruchka=parseMoney(item.vyruchka);
@@ -2118,6 +2138,53 @@
     });
     }
 
+    function renderSafeBags(){
+        const container=document.getElementById('safeBagsList');
+        if(!container)return;
+        const ds=getDsData();
+        container.innerHTML='';
+        (ds.safeBags||[]).forEach((bag,idx)=>{
+            const card=document.createElement('div');
+            card.className='safe-bag-card';
+            card.id=`safebag_${bag.id}`;
+            const header=document.createElement('div');
+            header.className='cash-card-header';
+            header.innerHTML=`<div class="cash-card-title">▣ ${bag.name}</div><div class="cash-card-result ${parseMoney(bag.amount)>0?'positive':'zero'}" id="safebagresheader_${bag.id}">${fmtMoney(parseMoney(bag.amount))}</div>`;
+            card.appendChild(header);
+            const body=document.createElement('div');
+            body.className='cash-card-body';
+            const field=document.createElement('div');
+            field.className='cash-field';
+            field.innerHTML='<div class="cash-field-label">Сумма в сейф-пакете</div>';
+            const input=document.createElement('input');
+            input.className='cash-field-input'; input.type='number'; input.inputMode='decimal'; input.min='0'; input.placeholder='0'; input.value=bag.amount||'';
+            field.appendChild(input); body.appendChild(field);
+            const result=document.createElement('div');
+            result.className='cash-result-row';
+            result.innerHTML=`<div class="cash-result-label">Итого по пакету</div><div class="cash-result-val ${parseMoney(bag.amount)>0?'positive':'zero'}" id="safebagres_${bag.id}">${fmtMoney(parseMoney(bag.amount))}</div>`;
+            body.appendChild(result); card.appendChild(body);
+            if((ds.safeBags||[]).length>1){
+                const footer=document.createElement('div'); footer.className='cash-card-footer';
+                const del=document.createElement('button'); del.className='delete-cash-btn'; del.textContent='✖ Удалить сейф-пакет';
+                del.onclick=()=>{showConfirm(`Удалить «${bag.name}»?`,()=>{pushUndoSnapshot(`Удаление «${bag.name}»`);const next=getDsData();next.safeBags=next.safeBags.filter(x=>x.id!==bag.id);saveDsData(next);renderSafeBags();updateSafeTotal();updateGrandTotal();});};
+                footer.appendChild(del); card.appendChild(footer);
+            }
+            const save=()=>{
+                const next=getDsData(); const current=next.safeBags.find(x=>x.id===bag.id); if(!current)return;
+                current.amount=input.value; saveDsData(next);
+                const value=parseMoney(current.amount); const cls=value>0?'positive':'zero';
+                const valEl=document.getElementById(`safebagres_${bag.id}`); const headEl=document.getElementById(`safebagresheader_${bag.id}`);
+                if(valEl){valEl.textContent=fmtMoney(value);valEl.className=`cash-result-val ${cls}`;}
+                if(headEl){headEl.textContent=fmtMoney(value);headEl.className=`cash-card-result ${cls}`;}
+                updateSafeTotal(); updateGrandTotal();
+            };
+            input.addEventListener('change',save); input.addEventListener('blur',save);
+            container.appendChild(card);
+        });
+        const addBtn=document.getElementById('addSafeBagBtn');
+        if(addBtn){addBtn.disabled=(ds.safeBags||[]).length>=6;addBtn.title=addBtn.disabled?'Можно добавить не более 6 сейф-пакетов':'';}
+    }
+
     function calcCupTotal(n){
     if(n!==10&&n!==1)return 0;
     const ds=getDsData();
@@ -2335,6 +2402,14 @@ function updateNomTotal(n){
         renderCashList('kassa');
         updateGrandTotal();
     }
+    function addSafeBag(){
+        const ds=getDsData();
+        if(ds.safeBags.length>=6){toast('Можно добавить не более 6 сейф-пакетов');return;}
+        const num=ds.safeBags.length+1;
+        ds.safeBags.push({id:'sb'+Date.now(),name:`Сейф-пакет ${num}`,amount:''});
+        saveDsData(ds);
+        renderSafeBags(); updateSafeTotal(); updateGrandTotal();
+    }
     function addAvto(){
         let ds=getDsData();
         const num=ds.avtos.length+1;
@@ -2349,6 +2424,7 @@ function updateNomTotal(n){
     ════════════════════════════════ */
     function renderDs(){
         renderSafe();
+        renderSafeBags();
         renderCashList('kassa');
         renderCashList('avto');
         updateSafeTotal();
@@ -2363,6 +2439,7 @@ function updateNomTotal(n){
             pushUndoSnapshot('Очистка ДС');
             const fresh={
                 safe:NOMINALS.reduce((acc,n)=>{acc[n]=[null];return acc;},{}),
+                safeBags:defaultSafeBags(),
                 kassas:[
                     {id:'k1',name:'Касса 1',vsego:'',vyruchka:''}
                 ],
@@ -2443,6 +2520,7 @@ function updateNomTotal(n){
         document.getElementById('clearLocBtn').onclick=clearLocation;
         document.getElementById('hardResetBtn').onclick=fullReset;
         document.getElementById('addProductBtn').onclick=showAddProductForm;
+        document.getElementById('addSafeBagBtn').onclick=addSafeBag;
         document.getElementById('addKassaBtn').onclick=addKassa;
         document.getElementById('addAvtoBtn').onclick=addAvto;
         document.getElementById('dsClearBtn').onclick=clearDs;
